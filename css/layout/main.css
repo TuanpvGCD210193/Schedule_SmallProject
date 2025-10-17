@@ -284,6 +284,68 @@ body[data-theme="tuan"] .date-label.today {
     border-left: none;
 }
 
+/* Schedule Wrapper dùng Flexbox để xếp cột Giờ và Grid Lịch cạnh nhau */
+.schedule-wrapper {
+    display: flex;
+    overflow-x: auto; /* Cho phép cuộn ngang nếu cần */
+    max-width: 100%;
+    margin-top: 10px;
+}
+
+/* 1. TRỤC THỜI GIAN (Cột Giờ) */
+.time-axis {
+    flex-shrink: 0; /* Không cho phép cột giờ co lại */
+    width: 50px; /* Chiều rộng cố định */
+    padding-top: 40px; /* Căn chỉnh với header ngày */
+    position: relative;
+}
+
+.time-label-line {
+    /* Đảm bảo mỗi nhãn giờ chiếm đúng 60px chiều cao */
+    height: 60px; 
+    text-align: right;
+    padding-right: 8px;
+    margin-top: -10px; /* Dịch lên để căn chỉnh đúng dòng */
+    font-size: 0.75rem;
+    color: #888;
+}
+
+/* 2. GRID LỊCH (Phần chính) */
+.week-view-grid {
+    flex-grow: 1; /* Cho phép Grid chiếm hết không gian còn lại */
+    display: grid;
+    /* KHÔNG CÓ CỘT GIỜ NỮA, chỉ còn 7 cột cho 7 ngày */
+    grid-template-columns: repeat(7, 1fr); 
+    grid-template-rows: auto;
+    border: 1px solid #e0e0e0;
+}
+
+/* Các Header Ngày (T2, T3,...) */
+.day-header {
+    /* Dùng Flexbox để căn chỉnh tên thứ và ngày */
+    display: flex; 
+    flex-direction: column;
+    align-items: center;
+    padding: 5px 0;
+    border-bottom: 1px solid #e0e0e0;
+    border-right: 1px solid #e0e0e0;
+}
+
+.day-header:last-child {
+    border-right: none;
+}
+
+/* Cột sự kiện chính */
+.day-column {
+    border-right: 1px solid #e0e0e0;
+    position: relative; 
+    height: 1440px; /* 24 giờ * 60px/giờ */
+}
+.day-column:last-child {
+    border-right: none;
+}
+
+
 /*=====================================
   EVENT BOX STYLES
 =====================================*/
@@ -342,6 +404,12 @@ body[data-theme="tuan"] .event-box {
 }
 body[data-theme="tuan"] .fab {
     background-color: #007aff; /* Màu xanh */
+}
+
+.button--danger {
+    background-color: #ff3b30;
+    color: white;
+    margin-right: auto; /* Đẩy nút Xóa về phía bên trái */
 }
 
 .modal-overlay {
@@ -478,4 +546,34 @@ body[data-theme="tuan"] .view-toggle-btn.active {
 /* Ẩn tiêu đề Tháng/Năm khi ở chế độ xem Ngày */
 #month-year-header {
     display: none; 
+}
+
+
+/* Thêm đoạn này vào phần CSS của Modal */
+.modal-toggle {
+    display: flex;
+    justify-content: center;
+    background-color: #f0f0f0;
+    border-radius: 20px;
+    padding: 4px;
+    margin-bottom: 20px;
+}
+
+.modal-toggle-btn {
+    flex: 1;
+    padding: 8px 12px;
+    border-radius: 16px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #555;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.modal-toggle-btn.active {
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    color: #c2185b;
+}
+body[data-theme="tuan"] .modal-toggle-btn.active {
+    color: #007aff;
 }

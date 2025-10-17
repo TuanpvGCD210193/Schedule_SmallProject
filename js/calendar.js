@@ -1,4 +1,3 @@
-// Import hàm addEvent mới
 import { getUserEvents, addEvent } from './data/database.js';
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -6,14 +5,22 @@ document.addEventListener('DOMContentLoaded', () => {
     const backButton = document.getElementById('back-to-functions-btn');
     const monthYearHeader = document.getElementById('month-year-header');
     const weekGrid = document.getElementById('week-view-grid');
+    const timeAxis = document.getElementById('time-axis');
     const prevWeekBtn = document.getElementById('prev-week-btn');
     const nextWeekBtn = document.getElementById('next-week-btn');
     
-    // Mới: Lấy các element của Modal và Form
+    // Modal elements
     const addEventFab = document.getElementById('add-event-fab');
     const eventModal = document.getElementById('event-modal');
-    const cancelBtn = document.getElementById('cancel-btn');
+    const modalTitle = document.getElementById('modal-title');
     const eventForm = document.getElementById('event-form');
+    const cancelBtn = document.getElementById('cancel-btn');
+    
+    // Modal mode elements
+    const eventModeBtn = document.getElementById('event-mode-btn');
+    const scheduleModeBtn = document.getElementById('schedule-mode-btn');
+    const singleEventFields = document.getElementById('single-event-fields');
+    const recurringFields = document.getElementById('recurring-fields');
     const weekdayButtons = document.querySelectorAll('.weekday-btn');
 
     // --- State ---
@@ -21,44 +28,64 @@ document.addEventListener('DOMContentLoaded', () => {
     const currentUser = urlParams.get('user');
     let currentDate = new Date();
     let userEvents = {};
+    let currentModalMode = 'event';
 
     // --- HÀM QUẢN LÝ MODAL ---
-    const openModal = () => eventModal.classList.remove('hidden');
+    function setModalMode(mode) {
+        currentModalMode = mode;
+        if (mode === 'event') {
+            modalTitle.textContent = 'Tạo Sự Kiện Mới';
+            document.getElementById('event-title').placeholder = "VD: Họp nhóm dự án";
+            eventModeBtn.classList.add('active');
+            scheduleModeBtn.classList.remove('active');
+            singleEventFields.classList.remove('hidden');
+            recurringFields.classList.add('hidden');
+        } else {
+            modalTitle.textContent = 'Tạo Lịch Học Mới';
+            document.getElementById('event-title').placeholder = "VD: Phát triển ứng dụng Web";
+            scheduleModeBtn.classList.add('active');
+            eventModeBtn.classList.remove('active');
+            recurringFields.classList.remove('hidden');
+            singleEventFields.classList.add('hidden');
+        }
+    }
+
+    const openModal = () => {
+        setModalMode('event'); 
+        eventModal.classList.remove('hidden');
+    };
     const closeModal = () => {
         eventModal.classList.add('hidden');
-        eventForm.reset(); // Xóa dữ liệu đã nhập trong form
-        weekdayButtons.forEach(btn => btn.classList.remove('active')); // Bỏ chọn các ngày
+        eventForm.reset();
+        weekdayButtons.forEach(btn => btn.classList.remove('active'));
     };
+    
+    // --- HÀM HELPER VÀ RENDER ---
+    
+    function createTimeAxisLabels() {
+        timeAxis.innerHTML = '';
+        for (let hour = 0; hour < 24; hour++) {
+            const hourString = hour.toString().padStart(2, '0') + ':00';
+            timeAxis.innerHTML += `<div class="time-label-line">${hourString}</div>`;
+        }
+    }
 
-    // ===================================
-    // HÀM HELPER VÀ RENDER (ĐÃ HOÀN THIỆN)
-    // ===================================
-
-    /**
-     * Lấy mảng 7 ngày trong tuần chứa ngày được cung cấp
-     */
     function getWeekDays(date) {
         const startOfWeek = new Date(date);
-        // Lùi ngày về Chủ Nhật của tuần đó (ngày đầu tiên trong tuần theo getDay())
         startOfWeek.setDate(date.getDate() - date.getDay()); 
-        
         const week = []; 
         for (let i = 0; i < 7; i++) {
             const day = new Date(startOfWeek);
             day.setDate(startOfWeek.getDate() + i);
-            week.push(day); // Thêm lần lượt 7 ngày vào mảng
+            week.push(day); 
         }
         return week;
     }
 
-    /**
-     * Tạo một phần tử HTML cho sự kiện
-     */
     function createEventElement(event) {
         const element = document.createElement('div');
         element.className = 'event-box';
         
-        // Tính toán vị trí và chiều cao dựa trên thời gian
         const startHour = parseInt(event.startTime.split(':')[0]);
         const startMinute = parseInt(event.startTime.split(':')[1]);
         const endHour = parseInt(event.endTime.split(':')[0]);
@@ -68,95 +95,66 @@ document.addEventListener('DOMContentLoaded', () => {
         const totalEndMinutes = endHour * 60 + endMinute;
         const durationMinutes = totalEndMinutes - totalStartMinutes;
         
-        // Giả định 1 phút = 1px (Chiếm 1440px/ngày)
         element.style.top = `${totalStartMinutes}px`;
         element.style.height = `${durationMinutes}px`;
 
         element.innerHTML = `
-            <p class="event-subject">${event.subjectName}</p>
+            <p class="event-subject">${event.subjectName || event.title}</p>
             <p class="event-time">${event.startTime} - ${event.endTime}</p>
             <p class="event-classroom">${event.classroom || ''}</p>
         `;
         return element;
     }
 
-    /**
-     * Render các sự kiện cho tuần hiện tại
-     */
     function renderEventsForWeek(weekDays) {
         const dayColumns = document.querySelectorAll('.day-column');
 
-        weekDays.forEach((day, index) => {
-            const dayColumn = dayColumns[index];
-            if (!dayColumn) return;
-
-            // Xóa sự kiện cũ trước khi vẽ lại
+        dayColumns.forEach((dayColumn, index) => {
+            const day = weekDays[index];
+            if (!dayColumn || !day) return;
             dayColumn.innerHTML = '';
 
             const dateKey = `${day.getFullYear()}${(day.getMonth() + 1).toString().padStart(2, '0')}${day.getDate().toString().padStart(2, '0')}`;
+            const dateString = day.toISOString().split('T')[0];
 
             for (const eventId in userEvents) {
                 const event = userEvents[eventId];
-                const exceptions = event.exceptions || {};
-
-                // A. XỬ LÝ SỰ KIỆN LẶP LẠI (RECURRING)
-                if (event.type === 'recurring') {
-                    const startDate = new Date(event.startDate);
-                    const endDate = new Date(event.endDate);
-                    // JS getDay(): CN=0, T2=1,..., T7=6. Cần quy đổi: T2=2, T3=3, ... CN=7
-                    const dayOfWeek = day.getDay() === 0 ? 7 : day.getDay();
-                    const dayOfWeekMapped = dayOfWeek === 7 ? 7 : dayOfWeek + 1;
-
-
-                    // KIỂM TRA NGOẠI LỆ: Nếu ngày này bị hủy, bỏ qua
-                    if (exceptions[dateKey] && exceptions[dateKey].status === 'cancelled') {
-                        continue; 
-                    }
-
-                    // TÍNH TOÁN NGÀY HỌC
-                    if (day >= startDate && day <= endDate && event.daysOfWeek.includes(dayOfWeekMapped)) {
-                        const eventElement = createEventElement(event);
-                        dayColumn.appendChild(eventElement);
-                    }
+                
+                if (event.type === 'single' && event.date === dateString) {
+                    dayColumn.appendChild(createEventElement(event));
                 }
 
-                // B. XỬ LÝ CÁC BUỔI HỌC BÙ (ADDED) HOẶC SỰ KIỆN ĐƠN
-                if (exceptions[dateKey] && exceptions[dateKey].status === 'added') {
-                    // Tạo một sự kiện tạm thời với thông tin được ghi đè
-                    const addedEvent = {
-                        ...event, // Lấy thông tin gốc (tên môn, lớp...)
-                        ...exceptions[dateKey], // Ghi đè thời gian mới
-                        subjectName: event.subjectName + ' (Bù)' // Thêm nhãn Bù
-                    };
-                    const eventElement = createEventElement(addedEvent);
-                    dayColumn.appendChild(eventElement);
+                if (event.type === 'recurring' && event.daysOfWeek) {
+                    const exceptions = event.exceptions || {};
+                    const startDate = new Date(event.startDate);
+                    const endDate = new Date(event.endDate);
+                    
+                    if (exceptions[dateKey]?.status === 'cancelled') continue;
+                    
+                    // SỬA LẠI LOGIC KIỂM TRA NGÀY: Đơn giản và chính xác hơn
+                    if (day >= startDate && day <= endDate && event.daysOfWeek.includes(day.getDay())) {
+                        dayColumn.appendChild(createEventElement(event));
+                    }
+
+                    if (exceptions[dateKey]?.status === 'added') {
+                        const addedEvent = { ...event, ...exceptions[dateKey], subjectName: event.subjectName + ' (Bù)' };
+                        dayColumn.appendChild(createEventElement(addedEvent));
+                    }
                 }
             }
         });
     }
 
-    /**
-     * VẼ GIAO DIỆN LỊCH TUẦN (HEADER, NGÀY)
-     */
     function renderWeek(dateInWeek) {
         weekGrid.innerHTML = '';
         const weekDays = getWeekDays(dateInWeek);
         const today = new Date();
-
-        // Cập nhật header Tháng/Năm
         const firstDay = weekDays[0];
         const lastDay = weekDays[6];
-        
-        // Điều chỉnh lại tiêu đề tháng/năm
-        const firstMonthName = `Thg ${firstDay.getMonth() + 1}`;
-        const lastMonthName = `Thg ${lastDay.getMonth() + 1}`;
-        monthYearHeader.textContent = (firstDay.getMonth() !== lastDay.getMonth()) 
-            ? `${firstMonthName} - ${lastMonthName}, ${lastDay.getFullYear()}`
-            : `Tháng ${firstDay.getMonth() + 1}, ${firstDay.getFullYear()}`;
-        
-        
-        // Thêm cột trống cho giờ và 7 cột ngày (header)
-        weekGrid.innerHTML += `<div></div>`; 
+        monthYearHeader.textContent = `Tháng ${firstDay.getMonth() + 1}, ${firstDay.getFullYear()}`;
+        if (firstDay.getMonth() !== lastDay.getMonth()) {
+            monthYearHeader.textContent = `Thg ${firstDay.getMonth() + 1} - Thg ${lastDay.getMonth() + 1}, ${lastDay.getFullYear()}`;
+        }
         const dayLabels = ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'];
         weekDays.forEach(day => {
             const isToday = day.toDateString() === today.toDateString();
@@ -167,93 +165,77 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
             `;
         });
-
-        // Thêm các cột giờ (time-slot-labels)
-        weekGrid.innerHTML += `<div class="time-slot-labels">`;
-        for(let hour = 0; hour < 24; hour++) {
-            const hourString = hour.toString().padStart(2, '0') + ':00';
-            weekGrid.innerHTML += `<div class="time-label">${hourString}</div>`;
-        }
-        weekGrid.innerHTML += `</div>`;
-        
-        // Thêm 7 cột ngày cho sự kiện
         for (let i = 0; i < 7; i++) {
-            weekGrid.innerHTML += `<div class="day-column" style="height: 1440px;"></div>`;
+            weekGrid.innerHTML += `<div class="day-column"></div>`;
         }
-
         renderEventsForWeek(weekDays);
     }
-
-
-    /**
-     * Khởi tạo trang và gán tất cả sự kiện
-     */
+    
+    // --- KHỞI TẠO TRANG ---
     async function initialize() {
         if (currentUser) {
             document.body.setAttribute('data-theme', currentUser);
-            userEvents = await getUserEvents(currentUser);
+            userEvents = await getUserEvents(currentUser) || {};
         }
 
-        if (backButton) {
-            backButton.addEventListener('click', () => window.history.back());
-        }
+        createTimeAxisLabels();
 
-        // --- GÁN SỰ KIỆN CHO MODAL & FORM ---
+        // Gán sự kiện
+        backButton.addEventListener('click', () => window.history.back());
         addEventFab.addEventListener('click', openModal);
         cancelBtn.addEventListener('click', closeModal);
-        eventModal.addEventListener('click', (e) => {
-            if (e.target === eventModal) {
-                closeModal();
-            }
-        });
+        eventModal.addEventListener('click', (e) => { if (e.target === eventModal) closeModal(); });
 
-        // Xử lý chọn các ngày trong tuần
+        eventModeBtn.addEventListener('click', () => setModalMode('event'));
+        scheduleModeBtn.addEventListener('click', () => setModalMode('schedule'));
+
         weekdayButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                button.classList.toggle('active');
-            });
+            button.addEventListener('click', () => button.classList.toggle('active'));
         });
 
-        // Xử lý khi nhấn nút "Lưu" (submit form)
         eventForm.addEventListener('submit', async (e) => {
-            e.preventDefault(); 
-            const selectedDays = Array.from(weekdayButtons)
-                .filter(btn => btn.classList.contains('active'))
-                .map(btn => parseInt(btn.dataset.day));
+            e.preventDefault();
+            let newEventData = {};
 
-            const newEventData = {
-                type: "recurring",
-                subjectName: document.getElementById('event-title').value,
-                startTime: document.getElementById('start-time').value,
-                endTime: document.getElementById('end-time').value,
-                startDate: document.getElementById('start-date').value,
-                endDate: document.getElementById('end-date').value,
-                daysOfWeek: selectedDays,
-                // Tạm thời để trống các trường này
-                campus: "", 
-                classroom: ""
-            };
-            
-            // VALIDATION: Kiểm tra xem có chọn ngày nào không
-            if (selectedDays.length === 0) {
-                alert("Vui lòng chọn ít nhất một ngày trong tuần để lặp lại!");
-                return;
+            if (currentModalMode === 'event') {
+                newEventData = {
+                    type: 'single',
+                    title: document.getElementById('event-title').value,
+                    date: document.getElementById('single-date').value,
+                    startTime: document.getElementById('start-time').value,
+                    endTime: document.getElementById('end-time').value,
+                };
+            } else { // 'schedule' mode
+                const selectedDays = Array.from(weekdayButtons)
+                    .filter(btn => btn.classList.contains('active'))
+                    .map(btn => parseInt(btn.dataset.day));
+                
+                // CẬP NHẬT LẠI LOGIC LƯU DỮ LIỆU
+                newEventData = {
+                    type: "recurring",
+                    subjectName: document.getElementById('event-title').value,
+                    campus: document.getElementById('event-campus').value, // Thêm mới
+                    classroom: document.getElementById('event-classroom').value, // Thêm mới
+                    startTime: document.getElementById('start-time').value,
+                    endTime: document.getElementById('end-time').value,
+                    startDate: document.getElementById('start-date').value,
+                    endDate: document.getElementById('end-date').value,
+                    daysOfWeek: selectedDays,
+                };
             }
             
             try {
                 await addEvent(currentUser, newEventData);
-                alert('Thêm lịch học thành công!');
+                alert('Thêm thành công!');
                 closeModal();
-                // Tải lại dữ liệu và render lại lịch để thấy sự kiện mới
-                userEvents = await getUserEvents(currentUser);
+                userEvents = await getUserEvents(currentUser) || {};
                 renderWeek(currentDate);
             } catch (error) {
-                console.error("Lỗi khi lưu sự kiện:", error);
+                console.error("Lỗi khi lưu:", error);
                 alert('Có lỗi xảy ra, vui lòng thử lại.');
             }
         });
 
-        // --- GÁN SỰ KIỆN CHO CÁC NÚT ĐIỀU HƯỚNG TUẦN ---
         nextWeekBtn.addEventListener('click', () => {
             currentDate.setDate(currentDate.getDate() + 7);
             renderWeek(currentDate);
@@ -264,8 +246,7 @@ document.addEventListener('DOMContentLoaded', () => {
             renderWeek(currentDate);
         });
         
-        // Dòng khởi tạo trang
-        renderWeek(currentDate); 
+        renderWeek(currentDate);
     }
 
     initialize();

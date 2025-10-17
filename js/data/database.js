@@ -1,8 +1,8 @@
 // js/data/database.js
 
-// 1. Import các hàm cần thiết từ Firebase SDK (Đã sửa lỗi import trùng lặp)
+// 1. Import các hàm cần thiết từ Firebase SDK (Đã cập nhật)
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
-import { getDatabase, ref, get, push } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-database.js";
+import { getDatabase, ref, get, push, update, remove } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-database.js";
 
 // 2. Cấu hình Firebase của bạn
 const firebaseConfig = {
@@ -58,12 +58,30 @@ export async function getUserEvents(userId) {
 
 /**
  * Hàm thêm một sự kiện mới vào database cho người dùng.
- * @param {string} userId - 'tuan' hoặc 'quynh'
- * @param {object} eventData - Đối tượng chứa dữ liệu sự kiện mới
- * @returns {Promise}
  */
 export function addEvent(userId, eventData) {
   const eventsRef = ref(db, `users/${userId}/events`);
   // Dùng push() để Firebase tự tạo một ID duy nhất
   return push(eventsRef, eventData);
+}
+
+/**
+ * [MỚI] Hàm CẬP NHẬT một sự kiện đã có.
+ * @param {string} userId - 'tuan' hoặc 'quynh'
+ * @param {string} eventId - ID của sự kiện cần cập nhật
+ * @param {object} eventData - Đối tượng chứa dữ liệu mới
+ */
+export function updateEvent(userId, eventId, eventData) {
+  const eventRef = ref(db, `users/${userId}/events/${eventId}`);
+  return update(eventRef, eventData);
+}
+
+/**
+ * [MỚI] Hàm XÓA một sự kiện.
+ * @param {string} userId - 'tuan' hoặc 'quynh'
+ * @param {string} eventId - ID của sự kiện cần xóa
+ */
+export function deleteEvent(userId, eventId) {
+  const eventRef = ref(db, `users/${userId}/events/${eventId}`);
+  return remove(eventRef);
 }
