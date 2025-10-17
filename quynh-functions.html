@@ -4,39 +4,588 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>UniSchedule | Chức năng</title>
-
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    <link rel="stylesheet" href="css/base/reset.css">
-    <link rel="stylesheet" href="css/layout/main.css">
+        :root {
+            --primary-pink: #ff6b9d;
+            --secondary-pink: #ffc2d4;
+            --light-pink: #ffe5ec;
+            --accent-orange: #ffab73;
+            --white: #ffffff;
+            --text-dark: #4a4a4a;
+            --shadow-soft: 0 8px 32px rgba(255, 107, 157, 0.15);
+            --shadow-hover: 0 12px 48px rgba(255, 107, 157, 0.25);
+        }
+
+        body {
+            font-family: 'Quicksand', 'Inter', sans-serif;
+            background: linear-gradient(135deg, #ffeef2 0%, #fff0f6 50%, #ffe5ec 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Volleyball Background Animation */
+        .volleyball-bg {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .volleyball {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background: radial-gradient(circle at 30% 30%, #fff, #ffd4e5);
+            border-radius: 50%;
+            opacity: 0.15;
+            animation: float-volleyball 15s infinite ease-in-out;
+        }
+
+        .volleyball::before,
+        .volleyball::after {
+            content: '';
+            position: absolute;
+            background: var(--primary-pink);
+            opacity: 0.3;
+        }
+
+        .volleyball::before {
+            width: 2px;
+            height: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .volleyball::after {
+            width: 100%;
+            height: 2px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .volleyball:nth-child(1) { left: 10%; top: 20%; animation-delay: 0s; }
+        .volleyball:nth-child(2) { left: 80%; top: 60%; animation-delay: 3s; }
+        .volleyball:nth-child(3) { left: 60%; top: 10%; animation-delay: 6s; }
+        .volleyball:nth-child(4) { left: 20%; top: 70%; animation-delay: 9s; }
+        .volleyball:nth-child(5) { left: 90%; top: 30%; animation-delay: 12s; }
+
+        @keyframes float-volleyball {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+            }
+            25% {
+                transform: translateY(-30px) rotate(90deg);
+            }
+            50% {
+                transform: translateY(-15px) rotate(180deg);
+            }
+            75% {
+                transform: translateY(-40px) rotate(270deg);
+            }
+        }
+
+        /* Net Pattern Background */
+        .net-pattern {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            opacity: 0.03;
+            background-image: 
+                repeating-linear-gradient(0deg, var(--primary-pink), var(--primary-pink) 2px, transparent 2px, transparent 20px),
+                repeating-linear-gradient(90deg, var(--primary-pink), var(--primary-pink) 2px, transparent 2px, transparent 20px);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Main Container */
+        .function-selection-screen {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 40px 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .selection-box {
+            width: 100%;
+            max-width: 600px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 40px;
+            padding: 50px 40px;
+            box-shadow: var(--shadow-soft);
+            border: 3px solid rgba(255, 107, 157, 0.1);
+            position: relative;
+            animation: slideUp 0.6s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Decorative Elements */
+        .selection-box::before,
+        .selection-box::after {
+            content: '🏐';
+            position: absolute;
+            font-size: 40px;
+            opacity: 0.2;
+            animation: bounce 2s infinite ease-in-out;
+        }
+
+        .selection-box::before {
+            top: -20px;
+            right: 30px;
+            animation-delay: 0.3s;
+        }
+
+        .selection-box::after {
+            bottom: -20px;
+            left: 30px;
+            animation-delay: 0.6s;
+        }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-10px) rotate(10deg);
+            }
+        }
+
+        /* User Profile */
+        .current-user-profile {
+            text-align: center;
+            margin-bottom: 30px;
+            animation: fadeIn 0.8s ease-out 0.2s both;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .profile-card__avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid var(--primary-pink);
+            box-shadow: 0 8px 24px rgba(255, 107, 157, 0.3);
+            margin-bottom: 15px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            animation: pulse-avatar 3s infinite ease-in-out;
+        }
+
+        @keyframes pulse-avatar {
+            0%, 100% {
+                transform: scale(1);
+                box-shadow: 0 8px 24px rgba(255, 107, 157, 0.3);
+            }
+            50% {
+                transform: scale(1.05);
+                box-shadow: 0 12px 32px rgba(255, 107, 157, 0.4);
+            }
+        }
+
+        .profile-card__avatar:hover {
+            transform: scale(1.1) rotate(5deg);
+            border-color: var(--accent-orange);
+        }
+
+        .profile-card__name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-pink);
+            margin-bottom: 5px;
+            text-shadow: 0 2px 10px rgba(255, 107, 157, 0.2);
+        }
+
+        /* Title */
+        .function-selection__title {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--primary-pink);
+            text-align: center;
+            margin-bottom: 40px;
+            position: relative;
+            animation: fadeIn 0.8s ease-out 0.4s both;
+        }
+
+        .function-selection__title::after {
+            content: '✨';
+            position: absolute;
+            right: -10px;
+            top: -5px;
+            font-size: 1.5rem;
+            animation: sparkle 1.5s infinite ease-in-out;
+        }
+
+        @keyframes sparkle {
+            0%, 100% {
+                opacity: 1;
+                transform: scale(1) rotate(0deg);
+            }
+            50% {
+                opacity: 0.5;
+                transform: scale(1.2) rotate(20deg);
+            }
+        }
+
+        /* Function List */
+        .function-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 25px;
+            animation: fadeIn 0.8s ease-out 0.6s both;
+        }
+
+        /* Function Cards */
+        .function-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 30px 20px;
+            background: linear-gradient(135deg, var(--white) 0%, var(--light-pink) 100%);
+            border-radius: 30px;
+            box-shadow: 0 4px 16px rgba(255, 107, 157, 0.1);
+            text-decoration: none;
+            border: 3px solid transparent;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .function-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 107, 157, 0.1) 0%, transparent 70%);
+            transition: all 0.6s ease;
+            opacity: 0;
+        }
+
+        .function-card:hover::before {
+            opacity: 1;
+            transform: translate(25%, 25%);
+        }
+
+        .function-card:hover {
+            transform: translateY(-10px) scale(1.05);
+            box-shadow: var(--shadow-hover);
+            border-color: var(--primary-pink);
+            background: linear-gradient(135deg, var(--light-pink) 0%, var(--secondary-pink) 100%);
+        }
+
+        .function-card:active {
+            transform: translateY(-5px) scale(1.02);
+        }
+
+        /* Icon Container */
+        .function-card__icon {
+            width: 70px;
+            height: 70px;
+            margin-bottom: 15px;
+            border-radius: 20px;
+            object-fit: cover;
+            border: 3px solid var(--secondary-pink);
+            transition: all 0.4s ease;
+            position: relative;
+            z-index: 1;
+            animation: float-icon 3s infinite ease-in-out;
+        }
+
+        @keyframes float-icon {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-5px);
+            }
+        }
+
+        .function-card:hover .function-card__icon {
+            transform: scale(1.15) rotate(5deg);
+            border-color: var(--primary-pink);
+            box-shadow: 0 8px 20px rgba(255, 107, 157, 0.3);
+        }
+
+        /* Function Name */
+        .function-card__name {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 1;
+        }
+
+        .function-card:hover .function-card__name {
+            color: var(--primary-pink);
+            transform: scale(1.1);
+        }
+
+        /* Back Button */
+        .back-button {
+            position: fixed;
+            top: 30px;
+            left: 30px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            background: var(--white);
+            border: 3px solid var(--primary-pink);
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--primary-pink);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 16px rgba(255, 107, 157, 0.15);
+            z-index: 100;
+            animation: slideInLeft 0.6s ease-out;
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .back-button:hover {
+            background: var(--primary-pink);
+            color: var(--white);
+            transform: translateX(-5px);
+            box-shadow: 0 6px 24px rgba(255, 107, 157, 0.3);
+        }
+
+        .back-button svg {
+            transition: transform 0.3s ease;
+        }
+
+        .back-button:hover svg {
+            transform: translateX(-3px);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .selection-box {
+                padding: 40px 25px;
+                border-radius: 30px;
+            }
+
+            .function-selection__title {
+                font-size: 1.6rem;
+            }
+
+            .function-list {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .function-card {
+                padding: 25px 20px;
+            }
+
+            .back-button {
+                top: 20px;
+                left: 20px;
+                padding: 10px 20px;
+                font-size: 0.9rem;
+            }
+
+            .volleyball {
+                width: 40px;
+                height: 40px;
+            }
+        }
+
+        /* Loading Animation */
+        @keyframes shimmer {
+            0% {
+                background-position: -1000px 0;
+            }
+            100% {
+                background-position: 1000px 0;
+            }
+        }
+
+        .loading {
+            animation: shimmer 2s infinite;
+            background: linear-gradient(to right, 
+                var(--light-pink) 0%, 
+                var(--secondary-pink) 50%, 
+                var(--light-pink) 100%);
+            background-size: 1000px 100%;
+        }
+
+        /* Heart Decoration */
+        .heart-decoration {
+            position: fixed;
+            font-size: 20px;
+            opacity: 0;
+            pointer-events: none;
+            animation: float-heart 3s ease-out forwards;
+        }
+
+        @keyframes float-heart {
+            0% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-100px) scale(1.5);
+            }
+        }
+    </style>
 </head>
 <body>
-    <div id="function-selection-screen" class="function-selection-screen">
-        
+    <!-- Volleyball Background -->
+    <div class="volleyball-bg">
+        <div class="volleyball"></div>
+        <div class="volleyball"></div>
+        <div class="volleyball"></div>
+        <div class="volleyball"></div>
+        <div class="volleyball"></div>
+    </div>
+
+    <!-- Net Pattern -->
+    <div class="net-pattern"></div>
+
+    <!-- Back Button -->
+    <button class="back-button" onclick="window.history.back()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+        </svg>
+        <span>Quay lại</span>
+    </button>
+
+    <!-- Main Content -->
+    <div class="function-selection-screen">
         <div class="selection-box">
             <div id="current-user-profile" class="current-user-profile">
-                </div>
+                <!-- Profile will be loaded here -->
+            </div>
+            
             <h2 class="function-selection__title">Chọn một chức năng</h2>
+            
             <div class="function-list">
                 <a href="#" class="function-card" data-function="calendar">
-                    <img src="assets/man-business-man-icon-illustration-eps-free-vector.jpg" class="function-card__icon" alt="Calendar Icon">
-                    <span class="function-card__name">Lịch</span>
+                    <img src="https://cdn-icons-png.flaticon.com/512/2693/2693507.png" class="function-card__icon" alt="Calendar Icon">
+                    <span class="function-card__name">📅 Lịch</span>
                 </a>
                 <a href="#" class="function-card" data-function="notes">
-                    <img src="assets/man-business-man-icon-illustration-eps-free-vector.jpg" class="function-card__icon" alt="Notes Icon">
-                    <span class="function-card__name">Ghi Chú</span>
+                    <img src="https://cdn-icons-png.flaticon.com/512/2541/2541988.png" class="function-card__icon" alt="Notes Icon">
+                    <span class="function-card__name">📝 Ghi Chú</span>
                 </a>
                 <a href="#" class="function-card" data-function="water">
-                    <img src="assets/man-business-man-icon-illustration-eps-free-vector.jpg" class="function-card__icon" alt="Water Icon">
-                    <span class="function-card__name">Uống Nước</span>
+                    <img src="https://cdn-icons-png.flaticon.com/512/2917/2917995.png" class="function-card__icon" alt="Water Icon">
+                    <span class="function-card__name">💧 Uống Nước</span>
                 </a>
             </div>
         </div>
-        
     </div>
 
-    <script type="module" src="js/functions.js"></script>
+    <script type="module">
+        // Get user from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const currentUser = urlParams.get('user');
+
+        // Load profile (simplified for demo)
+        const profileDisplay = document.getElementById('current-user-profile');
+        if (currentUser === 'quynh') {
+            profileDisplay.innerHTML = `
+                <img src="assets/quynh-avatar.jpg" alt="Avatar của Quỳnh" class="profile-card__avatar" onerror="this.src='https://ui-avatars.com/api/?name=Quynh&background=ff6b9d&color=fff&size=200'">
+                <p class="profile-card__name">_uyqhn 🏐</p>
+            `;
+        }
+
+        // Add click handlers to function cards
+        const functionCards = document.querySelectorAll('.function-card');
+        functionCards.forEach(card => {
+            card.addEventListener('click', (e) => {
+                e.preventDefault();
+                const functionName = card.dataset.function;
+                
+                // Create heart animation on click
+                createHeartAnimation(e.clientX, e.clientY);
+                
+                // Navigate after animation
+                setTimeout(() => {
+                    window.location.href = `${functionName}.html?user=${currentUser}`;
+                }, 300);
+            });
+        });
+
+        // Create floating heart animation
+        function createHeartAnimation(x, y) {
+            const heart = document.createElement('div');
+            heart.className = 'heart-decoration';
+            heart.textContent = '💖';
+            heart.style.left = x + 'px';
+            heart.style.top = y + 'px';
+            document.body.appendChild(heart);
+            
+            setTimeout(() => heart.remove(), 3000);
+        }
+
+        // Add hover effect with hearts
+        functionCards.forEach(card => {
+            card.addEventListener('mouseenter', function(e) {
+                const rect = this.getBoundingClientRect();
+                const x = rect.left + rect.width / 2;
+                const y = rect.top + rect.height / 2;
+                
+                // Occasionally spawn a heart on hover
+                if (Math.random() > 0.7) {
+                    createHeartAnimation(x, y);
+                }
+            });
+        });
+    </script>
 </body>
 </html>
