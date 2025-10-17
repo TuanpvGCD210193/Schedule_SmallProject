@@ -14,6 +14,7 @@
     --shadow-md: 0 4px 15px rgba(0, 0, 0, 0.1);
     --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.15);
     --transition: all 0.3s ease;
+    --hour-height: 60px; /* will be adjusted via JS to fill wrapper */
 }
 
 /*=====================================
@@ -472,13 +473,12 @@ body[data-theme="tuan"] .search-box input:focus {
 .time-axis {
     flex-shrink: 0;
     width: 60px;
-    padding-top: 50px;
     background: var(--bg-light);
     border-right: 2px solid var(--border-light);
 }
 
 .time-label-line {
-    height: 60px;
+    height: var(--hour-height);
     text-align: right;
     padding-right: 12px;
     margin-top: -10px;
@@ -553,14 +553,14 @@ body[data-theme="tuan"] .date-label.today {
 .day-column {
     border-right: 1px solid var(--border-light);
     position: relative;
-    height: 1440px;
+    height: calc(var(--hour-height) * 18);
     background: linear-gradient(to bottom, 
-        transparent 59px, 
-        var(--border-light) 59px, 
-        var(--border-light) 60px, 
-        transparent 60px
+        transparent calc(var(--hour-height) - 1px), 
+        var(--border-light) calc(var(--hour-height) - 1px), 
+        var(--border-light) var(--hour-height), 
+        transparent var(--hour-height)
     );
-    background-size: 100% 60px;
+    background-size: 100% var(--hour-height);
     cursor: crosshair;
     transition: background-color 0.2s ease;
 }
@@ -1077,6 +1077,112 @@ body[data-theme="tuan"] .button--primary:hover {
 
 body[data-theme="tuan"] .spinner {
     border-top-color: var(--primary-tuan);
+}
+
+.volleyball-bg,
+.net-pattern {
+    display: none;
+}
+
+/*=====================================
+  QUYNH THEMED DECORATIONS (Calendar)
+  Shown only when body[data-theme="quynh"]
+=====================================*/
+body[data-theme="quynh"] .volleyball-bg {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+    display: block;
+}
+
+body[data-theme="quynh"] .volleyball {
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    background: radial-gradient(circle at 30% 30%, #fff, #ffd4e5);
+    border-radius: 50%;
+    opacity: 0.12;
+    animation: float-volleyball 15s infinite ease-in-out;
+}
+
+body[data-theme="quynh"] .volleyball::before,
+body[data-theme="quynh"] .volleyball::after {
+    content: '';
+    position: absolute;
+    background: var(--primary-quynh);
+    opacity: 0.25;
+}
+
+body[data-theme="quynh"] .volleyball::before {
+    width: 2px;
+    height: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+body[data-theme="quynh"] .volleyball::after {
+    width: 100%;
+    height: 2px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+body[data-theme="quynh"] .volleyball:nth-child(1) { left: 10%; top: 20%; animation-delay: 0s; }
+body[data-theme="quynh"] .volleyball:nth-child(2) { left: 80%; top: 60%; animation-delay: 3s; }
+body[data-theme="quynh"] .volleyball:nth-child(3) { left: 60%; top: 10%; animation-delay: 6s; }
+body[data-theme="quynh"] .volleyball:nth-child(4) { left: 20%; top: 70%; animation-delay: 9s; }
+body[data-theme="quynh"] .volleyball:nth-child(5) { left: 90%; top: 30%; animation-delay: 12s; }
+
+@keyframes float-volleyball {
+    0%, 100% {
+        transform: translateY(0) rotate(0deg);
+    }
+    25% {
+        transform: translateY(-30px) rotate(90deg);
+    }
+    50% {
+        transform: translateY(-15px) rotate(180deg);
+    }
+    75% {
+        transform: translateY(-40px) rotate(270deg);
+    }
+}
+
+body[data-theme="quynh"] .net-pattern {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    opacity: 0.03;
+    background-image: 
+        repeating-linear-gradient(0deg, var(--primary-quynh), var(--primary-quynh) 2px, transparent 2px, transparent 20px),
+        repeating-linear-gradient(90deg, var(--primary-quynh), var(--primary-quynh) 2px, transparent 2px, transparent 20px);
+    pointer-events: none;
+    z-index: 0;
+    display: block;
+}
+
+/* Floating hearts for interactions */
+body[data-theme="quynh"] .heart-decoration {
+    position: fixed;
+    font-size: 28px; /* bigger, clearer */
+    opacity: 0;
+    pointer-events: none;
+    animation: float-heart 2.8s ease-out forwards; /* slightly faster */
+    z-index: 1100;
+    text-shadow: 0 6px 18px rgba(194, 24, 91, 0.35); /* glow */
+}
+
+@keyframes float-heart {
+    0% { opacity: 1; transform: translateY(0) translateX(0) scale(1); }
+    60% { opacity: 0.9; }
+    100% { opacity: 0; transform: translateY(-140px) translateX(10px) scale(1.8); }
 }
 
 .empty-state {

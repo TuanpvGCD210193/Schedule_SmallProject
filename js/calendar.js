@@ -54,6 +54,13 @@ document.addEventListener('DOMContentLoaded', () => {
     let editingEventId = null;
     let searchQuery = '';
     let filterCategory = 'all';
+    // Visible day range configuration (05:00 to 23:00)
+    const DAY_START_HOUR = 5; // 05:00
+    const DAY_END_HOUR = 23;  // 23:00
+    const MINUTES_PER_HOUR = 60;
+    const DAY_START_MINUTES = DAY_START_HOUR * MINUTES_PER_HOUR;
+    const DAY_END_MINUTES = DAY_END_HOUR * MINUTES_PER_HOUR;
+    const VISIBLE_RANGE_MINUTES = DAY_END_MINUTES - DAY_START_MINUTES; // 1080 minutes
 
     // ============================================
     // MODAL MANAGEMENT
@@ -155,7 +162,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // ============================================
     function createTimeAxisLabels() {
         timeAxis.innerHTML = '';
-        for (let hour = 0; hour < 24; hour++) {
+        for (let hour = DAY_START_HOUR; hour < DAY_END_HOUR; hour++) {
             const hourString = hour.toString().padStart(2, '0') + ':00';
             timeAxis.innerHTML += `<div class="time-label-line">${hourString}</div>`;
         }
@@ -199,10 +206,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const totalStartMinutes = startHour * 60 + startMinute;
         const totalEndMinutes = endHour * 60 + endMinute;
-        const durationMinutes = totalEndMinutes - totalStartMinutes;
+        // Clamp to visible range 05:00-23:00 and offset top from 05:00
+        const visibleStart = Math.max(totalStartMinutes, DAY_START_MINUTES);
+        const visibleEnd = Math.min(totalEndMinutes, DAY_END_MINUTES);
+        const visibleDuration = visibleEnd - visibleStart;
+        if (visibleDuration <= 0) return null;
         
-        element.style.top = `${totalStartMinutes}px`;
-        element.style.height = `${Math.max(durationMinutes, 30)}px`;
+        const hourHeight = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--hour-height')) || 60;
+        const pxPerMinute = hourHeight / 60;
+        element.style.top = `${(visibleStart - DAY_START_MINUTES) * pxPerMinute}px`;
+        element.style.height = `${Math.max(visibleDuration * pxPerMinute, 30)}px`;
 
         // Add content
         const title = event.subjectName || event.title || 'Không có tiêu đề';
@@ -273,7 +286,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
             filteredEvents.forEach(([eventId, event]) => {
                 if (event.type === 'single' && event.date === dateString) {
-                    dayColumn.appendChild(createEventElement(event, eventId));
+                    const el = createEventElement(event, eventId);
+                    if (el) dayColumn.appendChild(el);
                 }
 
                 if (event.type === 'recurring' && event.daysOfWeek) {
@@ -289,12 +303,14 @@ document.addEventListener('DOMContentLoaded', () => {
                     
                     const inRange = (!startDate || day >= startDate) && (!endDate || day <= endDate);
                     if (inRange && normalizedDaysOfWeek.includes(day.getDay())) {
-                        dayColumn.appendChild(createEventElement(event, eventId));
+                        const el = createEventElement(event, eventId);
+                        if (el) dayColumn.appendChild(el);
                     }
 
                     if (exceptions[dateKey]?.status === 'added') {
                         const addedEvent = { ...event, ...exceptions[dateKey], subjectName: event.subjectName + ' (Bù)' };
-                        dayColumn.appendChild(createEventElement(addedEvent, eventId));
+                        const el2 = createEventElement(addedEvent, eventId);
+                        if (el2) dayColumn.appendChild(el2);
                     }
                 }
             });
@@ -338,6 +354,13 @@ document.addEventListener('DOMContentLoaded', () => {
         
         renderEventsForWeek(weekDays);
         setupDragToCreate(weekDays);
+        syncTimeAxisPadding();
+    }
+
+    function syncTimeAxisPadding() {
+        const header = weekGrid.querySelector('.day-header');
+        if (!header) return;
+        timeAxis.style.paddingTop = header.offsetHeight + 'px';
     }
 
     // ============================================
@@ -358,8 +381,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 isDragging = true;
                 startY = e.offsetY;
-                const hour = Math.floor(startY / 60);
-                const minute = Math.floor((startY % 60));
+                const hourHeight = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--hour-height')) || 60;
+                const minutesPerPixel = 60 / hourHeight;
+                const clampedStartOffset = Math.max(0, Math.min(VISIBLE_RANGE_MINUTES, Math.floor(startY * minutesPerPixel)));
+                const startTotalMinutes = DAY_START_MINUTES + clampedStartOffset;
+                const hour = Math.floor(startTotalMinutes / 60);
+                const minute = Math.floor(startTotalMinutes % 60);
                 startTime = `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
             });
             
@@ -368,8 +395,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 isDragging = false;
                 
                 const endY = e.offsetY;
-                const endHour = Math.floor(endY / 60);
-                const endMinute = Math.floor((endY % 60));
+                const hourHeight = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--hour-height')) || 60;
+                const minutesPerPixel = 60 / hourHeight;
+                const clampedEndOffset = Math.max(0, Math.min(VISIBLE_RANGE_MINUTES, Math.floor(endY * minutesPerPixel)));
+                const endTotalMinutes = DAY_START_MINUTES + clampedEndOffset;
+                const endHour = Math.floor(endTotalMinutes / 60);
+                const endMinute = Math.floor(endTotalMinutes % 60);
                 const endTime = `${endHour.toString().padStart(2, '0')}:${endMinute.toString().padStart(2, '0')}`;
                 
                 // Only create if drag is significant (at least 15 minutes)
@@ -380,8 +411,17 @@ document.addEventListener('DOMContentLoaded', () => {
                     // Open modal with pre-filled data
                     openModal();
                     document.getElementById('single-date').value = dateString;
-                    document.getElementById('start-time').value = startTime;
-                    document.getElementById('end-time').value = endTime;
+                    // Ensure chronological order
+                    const startParts = startTime.split(':').map(n => parseInt(n, 10));
+                    const endParts = endTime.split(':').map(n => parseInt(n, 10));
+                    const startTotal = startParts[0] * 60 + startParts[1];
+                    const endTotal = endParts[0] * 60 + endParts[1];
+                    const first = Math.min(startTotal, endTotal);
+                    const second = Math.max(startTotal, endTotal);
+                    const firstStr = `${Math.floor(first / 60).toString().padStart(2, '0')}:${(first % 60).toString().padStart(2, '0')}`;
+                    const secondStr = `${Math.floor(second / 60).toString().padStart(2, '0')}:${(second % 60).toString().padStart(2, '0')}`;
+                    document.getElementById('start-time').value = firstStr;
+                    document.getElementById('end-time').value = secondStr;
                 }
             });
         });
@@ -426,6 +466,7 @@ document.addEventListener('DOMContentLoaded', () => {
         } else if (mode === 'week') {
             viewWeekBtn.classList.add('active');
             renderWeek(currentDate);
+            attachHoverHearts();
         } else if (mode === 'month') {
             viewMonthBtn.classList.add('active');
             // TODO: Implement month view
@@ -478,7 +519,16 @@ document.addEventListener('DOMContentLoaded', () => {
     // ============================================
     // MODAL CONTROLS
     // ============================================
-    addEventFab.addEventListener('click', () => openModal());
+    addEventFab.addEventListener('click', (e) => {
+        openModal();
+        // Quynh-themed heart on FAB click
+        if (document.body.getAttribute('data-theme') === 'quynh') {
+            const rect = addEventFab.getBoundingClientRect();
+            const x = rect.left + rect.width / 2;
+            const y = rect.top + rect.height / 2;
+            spawnHearts(x, y, 3);
+        }
+    });
     cancelBtn.addEventListener('click', closeModal);
     eventModal.addEventListener('click', (e) => {
         if (e.target === eventModal) closeModal();
@@ -555,6 +605,7 @@ document.addEventListener('DOMContentLoaded', () => {
             closeModal();
             userEvents = await getUserEvents(currentUser) || {};
             renderWeek(currentDate);
+            attachHoverHearts();
         } catch (error) {
             console.error('Lỗi khi lưu:', error);
             showNotification('Có lỗi xảy ra, vui lòng thử lại!', 'error');
@@ -697,6 +748,8 @@ document.addEventListener('DOMContentLoaded', () => {
             
             // Initial render
             renderWeek(currentDate);
+            syncTimeAxisPadding();
+            window.addEventListener('resize', syncTimeAxisPadding);
             
             // Show welcome notification
             setTimeout(() => {
@@ -724,6 +777,44 @@ document.addEventListener('DOMContentLoaded', () => {
         // - "Good luck studying" during class time
         // - 1 hour before events
         console.log('Email notification scheduler initialized');
+    }
+
+    // ============================================
+    // HEART ANIMATION (Quỳnh theme only)
+    // ============================================
+    function createHeartAnimation(x, y) {
+        if (document.body.getAttribute('data-theme') !== 'quynh') return;
+        const heart = document.createElement('div');
+        heart.className = 'heart-decoration';
+        heart.textContent = '💖';
+        heart.style.left = x + 'px';
+        heart.style.top = y + 'px';
+        document.body.appendChild(heart);
+        setTimeout(() => heart.remove(), 3000);
+    }
+
+    function spawnHearts(x, y, count) {
+        if (document.body.getAttribute('data-theme') !== 'quynh') return;
+        const num = Math.max(1, count || 1);
+        for (let i = 0; i < num; i++) {
+            const dx = (Math.random() - 0.5) * 40; // spread
+            const dy = (Math.random() - 0.5) * 20;
+            setTimeout(() => createHeartAnimation(x + dx, y + dy), i * 80);
+        }
+    }
+
+    function attachHoverHearts() {
+        if (document.body.getAttribute('data-theme') !== 'quynh') return;
+        const dayColumns = document.querySelectorAll('.day-column');
+        dayColumns.forEach(column => {
+            // more frequent on hover movement
+            const handler = (e) => {
+                if (Math.random() > 0.6) {
+                    spawnHearts(e.clientX, e.clientY, 2);
+                }
+            };
+            column.addEventListener('mousemove', handler);
+        });
     }
 
     // Start the app
