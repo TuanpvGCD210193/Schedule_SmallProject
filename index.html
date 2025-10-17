@@ -2,31 +2,769 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>UniSchedule | Chọn User</title>
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    <link rel="stylesheet" href="css/base/reset.css">
-    <link rel="stylesheet" href="css/layout/main.css">
+        :root {
+            --primary-quynh: #c2185b;
+            --primary-tuan: #007aff;
+            --bg-gradient-start: #fff5f8;
+            --bg-gradient-end: #ffd4e5;
+            --shadow-soft: 0 8px 32px rgba(255, 107, 157, 0.15);
+            --shadow-hover: 0 16px 48px rgba(255, 107, 157, 0.25);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, var(--bg-gradient-start) 0%, #ffe5ec 50%, var(--bg-gradient-end) 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        /* Animated Background Elements */
+        .bg-decoration {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        /* Floating Volleyballs */
+        .volleyball {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            background: radial-gradient(circle at 35% 35%, #fff, #ffd4e5);
+            border-radius: 50%;
+            opacity: 0.15;
+            box-shadow: inset 0 -8px 20px rgba(194, 24, 91, 0.2);
+        }
+
+        .volleyball::before,
+        .volleyball::after {
+            content: '';
+            position: absolute;
+            background: var(--primary-quynh);
+            opacity: 0.4;
+        }
+
+        .volleyball::before {
+            width: 3px;
+            height: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .volleyball::after {
+            width: 100%;
+            height: 3px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        @keyframes float-volleyball {
+            0%, 100% { 
+                transform: translate(0, 0) rotate(0deg);
+            }
+            25% { 
+                transform: translate(30px, -40px) rotate(90deg);
+            }
+            50% { 
+                transform: translate(-20px, -70px) rotate(180deg);
+            }
+            75% { 
+                transform: translate(-40px, -30px) rotate(270deg);
+            }
+        }
+
+        .volleyball:nth-child(1) { 
+            left: 5%; 
+            top: 10%; 
+            animation: float-volleyball 25s infinite ease-in-out;
+        }
+        .volleyball:nth-child(2) { 
+            right: 10%; 
+            top: 70%; 
+            animation: float-volleyball 30s infinite ease-in-out 3s;
+            width: 80px;
+            height: 80px;
+        }
+        .volleyball:nth-child(3) { 
+            left: 70%; 
+            top: 15%; 
+            animation: float-volleyball 28s infinite ease-in-out 6s;
+            width: 120px;
+            height: 120px;
+        }
+        .volleyball:nth-child(4) { 
+            left: 15%; 
+            bottom: 15%; 
+            animation: float-volleyball 32s infinite ease-in-out 9s;
+            width: 90px;
+            height: 90px;
+        }
+        .volleyball:nth-child(5) { 
+            right: 5%; 
+            top: 30%; 
+            animation: float-volleyball 27s infinite ease-in-out 12s;
+            width: 110px;
+            height: 110px;
+        }
+
+        /* Floating Hearts */
+        .floating-hearts {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+        }
+
+        .heart {
+            position: absolute;
+            font-size: 20px;
+            opacity: 0;
+            animation: float-heart-up 8s infinite ease-in-out;
+        }
+
+        @keyframes float-heart-up {
+            0% {
+                opacity: 0;
+                transform: translateY(0) scale(0.5) rotate(0deg);
+            }
+            10% {
+                opacity: 0.6;
+            }
+            90% {
+                opacity: 0.3;
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-100vh) scale(1.2) rotate(360deg);
+            }
+        }
+
+        .heart:nth-child(1) { left: 10%; animation-delay: 0s; }
+        .heart:nth-child(2) { left: 25%; animation-delay: 2s; }
+        .heart:nth-child(3) { left: 40%; animation-delay: 4s; }
+        .heart:nth-child(4) { left: 55%; animation-delay: 1s; }
+        .heart:nth-child(5) { left: 70%; animation-delay: 3s; }
+        .heart:nth-child(6) { left: 85%; animation-delay: 5s; }
+
+        /* Main Container */
+        .user-selection-screen {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            max-width: 900px;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Logo/Title Area */
+        .logo-container {
+            text-align: center;
+            margin-bottom: 60px;
+            animation: scaleIn 0.6s ease-out 0.2s both;
+        }
+
+        @keyframes scaleIn {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .logo-icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+            animation: bounce 2s infinite ease-in-out;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .user-selection__title {
+            font-size: clamp(2rem, 5vw, 3rem);
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--primary-quynh) 0%, #e91e63 50%, #ff6b9d 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+            letter-spacing: -1px;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: #666;
+            font-weight: 500;
+            opacity: 0;
+            animation: fadeIn 0.8s ease-out 0.4s forwards;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        /* Profile Cards Container */
+        .profile-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 40px;
+            padding: 0 20px;
+        }
+
+        /* Profile Card */
+        .profile-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 32px;
+            padding: 50px 40px;
+            text-align: center;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: var(--shadow-soft);
+            border: 3px solid transparent;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            animation: slideInProfile 0.6s ease-out both;
+        }
+
+        .profile-card:nth-child(1) { animation-delay: 0.3s; }
+        .profile-card:nth-child(2) { animation-delay: 0.5s; }
+
+        @keyframes slideInProfile {
+            from {
+                opacity: 0;
+                transform: translateY(30px) scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .profile-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 107, 157, 0.1) 0%, transparent 70%);
+            transition: all 0.6s ease;
+            opacity: 0;
+            transform: scale(0);
+        }
+
+        .profile-card:hover::before {
+            opacity: 1;
+            transform: scale(1) rotate(180deg);
+        }
+
+        .profile-card:hover {
+            transform: translateY(-15px) scale(1.03);
+            box-shadow: var(--shadow-hover);
+            border-color: var(--primary-quynh);
+        }
+
+        .profile-card[data-user="tuan"]:hover {
+            border-color: var(--primary-tuan);
+        }
+
+        /* Avatar */
+        .profile-card__avatar-wrapper {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 25px;
+        }
+
+        .profile-card__avatar {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid var(--primary-quynh);
+            box-shadow: 0 12px 32px rgba(194, 24, 91, 0.3);
+            transition: all 0.4s ease;
+            position: relative;
+            z-index: 1;
+        }
+
+        .profile-card[data-user="tuan"] .profile-card__avatar {
+            border-color: var(--primary-tuan);
+            box-shadow: 0 12px 32px rgba(0, 122, 255, 0.3);
+        }
+
+        .profile-card:hover .profile-card__avatar {
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 0 16px 48px rgba(194, 24, 91, 0.4);
+        }
+
+        .profile-card[data-user="tuan"]:hover .profile-card__avatar {
+            box-shadow: 0 16px 48px rgba(0, 122, 255, 0.4);
+        }
+
+        /* Avatar Ring Animation */
+        .avatar-ring {
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            right: -5px;
+            bottom: -5px;
+            border: 3px solid var(--primary-quynh);
+            border-radius: 50%;
+            opacity: 0;
+            animation: ringPulse 2s infinite ease-out;
+        }
+
+        .profile-card[data-user="tuan"] .avatar-ring {
+            border-color: var(--primary-tuan);
+        }
+
+        @keyframes ringPulse {
+            0% {
+                opacity: 0.6;
+                transform: scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: scale(1.3);
+            }
+        }
+
+        /* Profile Name */
+        .profile-card__name {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: var(--primary-quynh);
+            margin-bottom: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .profile-card[data-user="tuan"] .profile-card__name {
+            color: var(--primary-tuan);
+        }
+
+        .profile-card:hover .profile-card__name {
+            transform: scale(1.1);
+            text-shadow: 0 4px 16px rgba(194, 24, 91, 0.3);
+        }
+
+        .profile-card[data-user="tuan"]:hover .profile-card__name {
+            text-shadow: 0 4px 16px rgba(0, 122, 255, 0.3);
+        }
+
+        .profile-card__role {
+            font-size: 0.95rem;
+            color: #888;
+            font-weight: 600;
+            opacity: 0.8;
+        }
+
+        /* Decorative Elements on Card */
+        .card-deco {
+            position: absolute;
+            font-size: 40px;
+            opacity: 0.1;
+            transition: all 0.4s ease;
+        }
+
+        .card-deco-1 {
+            top: 15px;
+            right: 15px;
+            animation: rotate 10s infinite linear;
+        }
+
+        .card-deco-2 {
+            bottom: 15px;
+            left: 15px;
+            animation: rotate 8s infinite linear reverse;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .profile-card:hover .card-deco {
+            opacity: 0.3;
+            transform: scale(1.3);
+        }
+
+        /* Click Effect */
+        .ripple {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.6);
+            transform: scale(0);
+            animation: rippleEffect 0.6s ease-out;
+            pointer-events: none;
+        }
+
+        @keyframes rippleEffect {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+
+        /* Loading Animation */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .loading-overlay.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .loading-spinner {
+            width: 80px;
+            height: 80px;
+            border: 6px solid rgba(194, 24, 91, 0.1);
+            border-top-color: var(--primary-quynh);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            margin-top: 20px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--primary-quynh);
+            animation: pulse 1.5s infinite ease-in-out;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .user-selection__title {
+                font-size: 2rem;
+            }
+
+            .subtitle {
+                font-size: 1rem;
+            }
+
+            .profile-list {
+                grid-template-columns: 1fr;
+                gap: 30px;
+                padding: 0;
+            }
+
+            .profile-card {
+                padding: 40px 30px;
+            }
+
+            .profile-card__avatar {
+                width: 120px;
+                height: 120px;
+            }
+
+            .volleyball {
+                width: 60px !important;
+                height: 60px !important;
+            }
+
+            .logo-icon {
+                font-size: 60px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .logo-container {
+                margin-bottom: 40px;
+            }
+
+            .profile-card {
+                padding: 35px 25px;
+            }
+        }
+
+        /* Hover Sparkles */
+        .sparkle {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: radial-gradient(circle, #fff, var(--primary-quynh));
+            border-radius: 50%;
+            pointer-events: none;
+            opacity: 0;
+            animation: sparkleFloat 1s ease-out forwards;
+        }
+
+        @keyframes sparkleFloat {
+            0% {
+                opacity: 1;
+                transform: translate(0, 0) scale(0);
+            }
+            100% {
+                opacity: 0;
+                transform: translate(var(--tx), var(--ty)) scale(1);
+            }
+        }
+    </style>
 </head>
 <body>
-    <div id="user-selection-screen" class="user-selection-screen">
-        <h1 class="user-selection__title">Bạn là ai?</h1>
+    <!-- Background Decorations -->
+    <div class="bg-decoration">
+        <div class="volleyball"></div>
+        <div class="volleyball"></div>
+        <div class="volleyball"></div>
+        <div class="volleyball"></div>
+        <div class="volleyball"></div>
+        
+        <div class="floating-hearts">
+            <div class="heart">💖</div>
+            <div class="heart">💕</div>
+            <div class="heart">💗</div>
+            <div class="heart">💖</div>
+            <div class="heart">💕</div>
+            <div class="heart">💗</div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="user-selection-screen">
+        <div class="logo-container">
+            <div class="logo-icon">📅✨</div>
+            <h1 class="user-selection__title">UniSchedule</h1>
+            <p class="subtitle">Chọn tài khoản của bạn để tiếp tục</p>
+        </div>
+
         <div class="profile-list">
             <button class="profile-card" data-user="tuan">
-                <img src="assets/man-business-man-icon-illustration-eps-free-vector.jpg" alt="Avatar của Tuân" class="profile-card__avatar">
-                <p class="profile-card__name">taunus_03 </p>
+                <span class="card-deco card-deco-1">⚽</span>
+                <span class="card-deco card-deco-2">📚</span>
+                <div class="profile-card__avatar-wrapper">
+                    <div class="avatar-ring"></div>
+                    <img src="assets/man-business-man-icon-illustration-eps-free-vector.jpg" 
+                         alt="Avatar của Tuân" 
+                         class="profile-card__avatar"
+                         onerror="this.src='https://ui-avatars.com/api/?name=Tuan&background=007aff&color=fff&size=200'">
+                </div>
+                <p class="profile-card__name">taunus_03</p>
+                <p class="profile-card__role">Sinh viên</p>
             </button>
+
             <button class="profile-card" data-user="quynh">
-                <img src="assets/quynh-avatar.jpg" alt="Avatar của Quỳnh" class="profile-card__avatar">
+                <span class="card-deco card-deco-1">🏐</span>
+                <span class="card-deco card-deco-2">💖</span>
+                <div class="profile-card__avatar-wrapper">
+                    <div class="avatar-ring"></div>
+                    <img src="assets/quynh-avatar.jpg" 
+                         alt="Avatar của Quỳnh" 
+                         class="profile-card__avatar"
+                         onerror="this.src='https://ui-avatars.com/api/?name=Quynh&background=c2185b&color=fff&size=200'">
+                </div>
                 <p class="profile-card__name">_uyqhn</p>
+                <p class="profile-card__role">Sinh viên</p>
             </button>
         </div>
     </div>
 
-    <script type="module" src="js/app.js"></script>
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loading-overlay">
+        <div class="loading-spinner"></div>
+        <p class="loading-text">Đang tải...</p>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const profileCards = document.querySelectorAll('.profile-card');
+            const loadingOverlay = document.getElementById('loading-overlay');
+
+            profileCards.forEach(card => {
+                // Ripple effect on click
+                card.addEventListener('click', function(e) {
+                    const user = this.dataset.user;
+                    
+                    // Create ripple
+                    const ripple = document.createElement('span');
+                    ripple.className = 'ripple';
+                    const rect = this.getBoundingClientRect();
+                    const size = Math.max(rect.width, rect.height);
+                    ripple.style.width = ripple.style.height = size + 'px';
+                    ripple.style.left = e.clientX - rect.left - size/2 + 'px';
+                    ripple.style.top = e.clientY - rect.top - size/2 + 'px';
+                    this.appendChild(ripple);
+                    
+                    setTimeout(() => ripple.remove(), 600);
+
+                    // Create hearts explosion
+                    createHeartsExplosion(e.clientX, e.clientY);
+
+                    // Show loading and navigate
+                    setTimeout(() => {
+                        loadingOverlay.classList.add('active');
+                        
+                        setTimeout(() => {
+                            if (user === 'quynh') {
+                                window.location.href = `quynh-functions.html?user=${user}`;
+                            } else if (user === 'tuan') {
+                                alert('Chức năng cho Tuân sẽ được phát triển sau! 🚀');
+                                loadingOverlay.classList.remove('active');
+                            }
+                        }, 800);
+                    }, 400);
+                });
+
+                // Sparkle effect on hover
+                card.addEventListener('mouseenter', function(e) {
+                    createSparkles(this);
+                });
+
+                // Continuous sparkles while hovering
+                card.addEventListener('mousemove', function(e) {
+                    if (Math.random() > 0.9) {
+                        createMouseSparkle(e.clientX, e.clientY);
+                    }
+                });
+            });
+
+            // Create hearts explosion
+            function createHeartsExplosion(x, y) {
+                const hearts = ['💖', '💕', '💗', '💝'];
+                for (let i = 0; i < 8; i++) {
+                    setTimeout(() => {
+                        const heart = document.createElement('div');
+                        heart.textContent = hearts[Math.floor(Math.random() * hearts.length)];
+                        heart.style.position = 'fixed';
+                        heart.style.left = x + 'px';
+                        heart.style.top = y + 'px';
+                        heart.style.fontSize = '30px';
+                        heart.style.pointerEvents = 'none';
+                        heart.style.zIndex = '10000';
+                        heart.style.animation = 'heartExplode 1s ease-out forwards';
+                        
+                        const angle = (Math.PI * 2 * i) / 8;
+                        const distance = 80 + Math.random() * 40;
+                        heart.style.setProperty('--tx', Math.cos(angle) * distance + 'px');
+                        heart.style.setProperty('--ty', Math.sin(angle) * distance + 'px');
+                        
+                        document.body.appendChild(heart);
+                        setTimeout(() => heart.remove(), 1000);
+                    }, i * 50);
+                }
+            }
+
+            // Create sparkles on card
+            function createSparkles(card) {
+                const rect = card.getBoundingClientRect();
+                for (let i = 0; i < 5; i++) {
+                    setTimeout(() => {
+                        const sparkle = document.createElement('div');
+                        sparkle.className = 'sparkle';
+                        sparkle.style.left = Math.random() * rect.width + 'px';
+                        sparkle.style.top = Math.random() * rect.height + 'px';
+                        sparkle.style.setProperty('--tx', (Math.random() - 0.5) * 100 + 'px');
+                        sparkle.style.setProperty('--ty', -50 - Math.random() * 50 + 'px');
+                        card.appendChild(sparkle);
+                        setTimeout(() => sparkle.remove(), 1000);
+                    }, i * 100);
+                }
+            }
+
+            // Create sparkle at mouse position
+            function createMouseSparkle(x, y) {
+                const sparkle = document.createElement('div');
+                sparkle.style.position = 'fixed';
+                sparkle.style.left = x + 'px';
+                sparkle.style.top = y + 'px';
+                sparkle.style.width = '6px';
+                sparkle.style.height = '6px';
+                sparkle.style.background = 'radial-gradient(circle, #fff, #ff6b9d)';
+                sparkle.style.borderRadius = '50%';
+                sparkle.style.pointerEvents = 'none';
+                sparkle.style.zIndex = '9999';
+                sparkle.style.animation = 'sparkleFloat 0.8s ease-out forwards';
+                sparkle.style.setProperty('--tx', (Math.random() - 0.5) * 40 + 'px');
+                sparkle.style.setProperty('--ty', -30 - Math.random() * 30 + 'px');
+                document.body.appendChild(sparkle);
+                setTimeout(() => sparkle.remove(), 800);
+            }
+
+            // Add heart explode animation
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes heartExplode {
+                    0% {
+                        opacity: 1;
+                        transform: translate(0, 0) scale(0.5) rotate(0deg);
+                    }
+                    100% {
+                        opacity: 0;
+                        transform: translate(var(--tx), var(--ty)) scale(1.5) rotate(360deg);
+                    }
+                }
+            `;
+            document.head.appendChild(style);
+
+            // Keyboard navigation
+            document.addEventListener('keydown', (e) => {
+                if (e.key === '1') {
+                    profileCards[0].click();
+                } else if (e.key === '2') {
+                    profileCards[1].click();
+                }
+            });
+        });
+    </script>
 </body>
 </html>

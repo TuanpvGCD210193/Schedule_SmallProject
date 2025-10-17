@@ -472,19 +472,22 @@ body[data-theme="tuan"] .search-box input:focus {
 
 .time-axis {
     flex-shrink: 0;
-    width: 60px;
+    width: 70px;
     background: var(--bg-light);
-    border-right: 2px solid var(--border-light);
+    border-right: 3px solid var(--border-light);
+    padding-bottom: 0;
 }
 
 .time-label-line {
-    height: var(--hour-height);
-    text-align: right;
-    padding-right: 12px;
-    margin-top: -10px;
-    font-size: 0.75rem;
-    font-weight: 500;
-    color: var(--text-light);
+     height: var(--hour-height);
+    flex-shrink: 0;              /* Thêm dòng này */
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 8px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-medium);
 }
 
 /*=====================================
@@ -530,13 +533,14 @@ body[data-theme="tuan"] .search-box input:focus {
 
 .date-label {
     font-size: 1.5rem;
-    font-weight: 700;
-    width: 40px;
-    height: 40px;
+    font-weight: 1000;
+    width: 35px;
+    height: 50px;
     line-height: 40px;
     border-radius: 50%;
     margin-top: 4px;
     transition: var(--transition);
+    color:rgba(194, 24, 91, 0.4);
 }
 
 .date-label.today {
@@ -1005,7 +1009,12 @@ body[data-theme="tuan"] .button--primary:hover {
     }
 
     .time-axis {
-        width: 50px;
+        flex-shrink: 0;
+        width: 70px;
+        background: var(--bg-light);
+        border-right: 3px solid var(--border-light);
+        display: flex;              /* Thêm dòng này */
+        flex-direction: column;     /* Thêm dòng này */
     }
 
     .week-view-grid {

@@ -2,216 +2,1662 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Lịch | UniSchedule</title>
-    
-    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js" type="module"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database.js" type="module"></script>
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    <link rel="stylesheet" href="css/base/reset.css">
-    <link rel="stylesheet" href="css/layout/main.css">
+        :root {
+            --primary-quynh: #c2185b;
+            --primary-light: #e91e63;
+            --bg-light: #fff5f8;
+            --bg-white: #ffffff;
+            --text-dark: #333;
+            --text-medium: #555;
+            --text-light: #888;
+            --border-light: #ffd4e5;
+            --shadow-sm: 0 2px 8px rgba(194, 24, 91, 0.08);
+            --shadow-md: 0 4px 20px rgba(194, 24, 91, 0.12);
+            --shadow-lg: 0 8px 32px rgba(194, 24, 91, 0.2);
+            --hour-height: 80px;
+            --safe-area-top: env(safe-area-inset-top, 0px);
+            --safe-area-bottom: env(safe-area-inset-bottom, 0px);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #fff5f8 0%, #ffe5ec 50%, #ffd4e5 100%);
+            color: var(--text-dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+            padding-top: var(--safe-area-top);
+            padding-bottom: var(--safe-area-bottom);
+        }
+
+        .hidden { display: none !important; }
+
+        /* Volleyball Background */
+        .volleyball-bg {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .volleyball {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            background: radial-gradient(circle at 35% 35%, #fff, #ffd4e5);
+            border-radius: 50%;
+            opacity: 0.2;
+            box-shadow: inset 0 -5px 15px rgba(194, 24, 91, 0.2);
+        }
+
+        .volleyball::before,
+        .volleyball::after {
+            content: '';
+            position: absolute;
+            background: var(--primary-quynh);
+            opacity: 0.4;
+        }
+
+        .volleyball::before {
+            width: 3px;
+            height: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .volleyball::after {
+            width: 100%;
+            height: 3px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        /* Floating Animation */
+        @keyframes float-volleyball {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            25% { transform: translate(20px, -30px) rotate(90deg); }
+            50% { transform: translate(-10px, -50px) rotate(180deg); }
+            75% { transform: translate(-30px, -20px) rotate(270deg); }
+        }
+
+        .volleyball:nth-child(1) { 
+            left: 5%; 
+            top: 15%; 
+            animation: float-volleyball 20s infinite ease-in-out;
+        }
+        .volleyball:nth-child(2) { 
+            left: 85%; 
+            top: 70%; 
+            animation: float-volleyball 25s infinite ease-in-out 3s;
+        }
+        .volleyball:nth-child(3) { 
+            left: 70%; 
+            top: 20%; 
+            animation: float-volleyball 22s infinite ease-in-out 6s;
+        }
+        .volleyball:nth-child(4) { 
+            left: 15%; 
+            top: 80%; 
+            animation: float-volleyball 28s infinite ease-in-out 9s;
+        }
+
+        /* App Container */
+        #app-container {
+            position: relative;
+            z-index: 1;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .app-header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 16px 20px;
+            box-shadow: var(--shadow-sm);
+            position: sticky;
+            top: var(--safe-area-top);
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 3px solid var(--border-light);
+        }
+
+        .back-button {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 16px;
+            background: transparent;
+            border: 2px solid var(--primary-quynh);
+            border-radius: 12px;
+            color: var(--primary-quynh);
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .back-button:hover {
+            background: var(--primary-quynh);
+            color: white;
+            transform: translateX(-3px);
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .icon-button {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: var(--bg-light);
+            border: 2px solid var(--border-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: var(--primary-quynh);
+        }
+
+        .icon-button:hover {
+            background: var(--primary-quynh);
+            color: white;
+            transform: scale(1.1);
+            box-shadow: var(--shadow-md);
+        }
+
+        /* Calendar Container */
+        .calendar-container {
+            padding: 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Calendar Header */
+        .calendar-header {
+            background: white;
+            padding: 20px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow-sm);
+            border: 2px solid var(--border-light);
+        }
+
+        .calendar-nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        .nav-controls {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .nav-button {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--bg-light);
+            border: 2px solid var(--border-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: var(--primary-quynh);
+        }
+
+        .nav-button:hover {
+            background: var(--primary-quynh);
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .month-year-header {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: var(--primary-quynh);
+            text-align: center;
+        }
+
+        .today-button {
+            padding: 10px 24px;
+            background: linear-gradient(135deg, var(--primary-quynh), var(--primary-light));
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .today-button:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .view-toggle-nav {
+            display: flex;
+            background: var(--bg-light);
+            border-radius: 16px;
+            padding: 4px;
+            gap: 4px;
+        }
+
+        .view-toggle-btn {
+            padding: 10px 20px;
+            border-radius: 12px;
+            background: transparent;
+            border: none;
+            font-weight: 700;
+            color: var(--text-medium);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .view-toggle-btn.active {
+            background: white;
+            color: var(--primary-quynh);
+            box-shadow: var(--shadow-sm);
+        }
+
+        /* Schedule Wrapper */
+        .schedule-wrapper {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            border: 3px solid var(--border-light);
+            display: flex;
+            max-height: calc(100vh - 300px);
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .schedule-wrapper::-webkit-scrollbar {
+            width: 10px;
+            height: 10px;
+        }
+
+        .schedule-wrapper::-webkit-scrollbar-track {
+            background: var(--bg-light);
+        }
+
+        .schedule-wrapper::-webkit-scrollbar-thumb {
+            background: var(--primary-quynh);
+            border-radius: 5px;
+        }
+
+        /* Time Axis */
+        .time-axis {
+            flex-shrink: 0;
+            width: 70px;
+            background: var(--bg-light);
+            border-right: 3px solid var(--border-light);
+        }
+
+        .time-label-line {
+            height: var(--hour-height);
+            display: flex;
+            align-items: flex-start;
+            ustify-content: center;
+            padding-top: 0px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-medium);
+        }
+
+        /* Week/Day View Grid */
+        .week-view-grid {
+            flex-grow: 1;
+            display: grid;
+            position: relative;
+        }
+
+        .day-header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 16px 8px;
+            background: var(--bg-light);
+            border-bottom: 3px solid var(--border-light);
+            border-right: 2px solid var(--border-light);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .day-header:last-child {
+            border-right: none;
+        }
+
+        .day-label {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--text-medium);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 4px;
+        }
+
+        .date-label {
+            font-size: 1.8rem;
+            font-weight: 800;
+            width: 50px;
+            height: 50px;
+            line-height: 50px;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            color: var(--text-dark);
+        }
+
+        .date-label.today {
+            background: linear-gradient(135deg, var(--primary-quynh), var(--primary-light));
+            color: white;
+            box-shadow: 0 4px 16px rgba(194, 24, 91, 0.4);
+            animation: pulse-today 2s infinite;
+        }
+
+        @keyframes pulse-today {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        /* Day Column */
+        .day-column {
+            border-right: 2px solid var(--border-light);
+            position: relative;
+            height: calc(var(--hour-height) * 18);
+            background: linear-gradient(to bottom, 
+                transparent calc(var(--hour-height) - 1px), 
+                var(--border-light) calc(var(--hour-height) - 1px), 
+                var(--border-light) var(--hour-height), 
+                transparent var(--hour-height)
+            );
+            background-size: 100% var(--hour-height);
+            cursor: crosshair;
+            transition: background-color 0.2s ease;
+        }
+
+        .day-column:last-child {
+            border-right: none;
+        }
+
+        .day-column:hover {
+            background-color: rgba(194, 24, 91, 0.02);
+        }
+
+        /* Current Time Line */
+        .current-time-line {
+            position: absolute;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: #ff1744;
+            z-index: 20;
+            pointer-events: none;
+        }
+
+        .current-time-line::before {
+            content: '';
+            position: absolute;
+            left: -6px;
+            top: -4px;
+            width: 10px;
+            height: 10px;
+            background: #ff1744;
+            border-radius: 50%;
+            box-shadow: 0 0 10px rgba(255, 23, 68, 0.5);
+        }
+
+        /* Event Box */
+        .event-box {
+            position: absolute;
+            left: 4px;
+            right: 4px;
+            border-radius: 12px;
+            padding: 10px;
+            overflow: hidden;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-left: 5px solid;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .event-box:hover {
+            transform: translateX(3px) scale(1.02);
+            box-shadow: 0 8px 24px rgba(194, 24, 91, 0.2);
+            z-index: 15;
+        }
+
+        /* Category Colors */
+        .event-box.category-study {
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+            border-left-color: #1976d2;
+        }
+
+        .event-box.category-personal {
+            background: linear-gradient(135deg, #fce4ec 0%, #f8bbd0 100%);
+            border-left-color: #c2185b;
+        }
+
+        .event-box.category-work {
+            background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+            border-left-color: #f57c00;
+        }
+
+        .event-subject {
+            font-weight: 700;
+            font-size: 0.95rem;
+            margin-bottom: 6px;
+            color: inherit;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .event-info {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            font-size: 0.75rem;
+            opacity: 0.85;
+        }
+
+        .event-info-row {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .event-info-row svg {
+            width: 14px;
+            height: 14px;
+            flex-shrink: 0;
+        }
+
+        /* FAB */
+        .fab {
+            position: fixed;
+            bottom: calc(32px + var(--safe-area-bottom));
+            right: 32px;
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-quynh), var(--primary-light));
+            color: white;
+            font-size: 2.5rem;
+            border: 4px solid white;
+            box-shadow: 0 8px 32px rgba(194, 24, 91, 0.4);
+            z-index: 200;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .fab:hover {
+            transform: scale(1.1) rotate(90deg);
+            box-shadow: 0 12px 48px rgba(194, 24, 91, 0.6);
+        }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(8px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            padding: 20px;
+            opacity: 0;
+            animation: fadeIn 0.3s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            background: white;
+            padding: 32px;
+            border-radius: 24px;
+            width: 100%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            border: 3px solid var(--border-light);
+            transform: scale(0.9);
+            animation: scaleIn 0.3s ease forwards;
+        }
+
+        @keyframes scaleIn {
+            to { transform: scale(1); }
+        }
+
+        /* View Detail Modal */
+        .detail-section {
+            margin-bottom: 24px;
+        }
+
+        .detail-section h3 {
+            font-size: 1.1rem;
+            color: var(--primary-quynh);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .detail-content {
+            background: var(--bg-light);
+            padding: 16px;
+            border-radius: 12px;
+            border: 2px solid var(--border-light);
+        }
+
+        .detail-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+
+        .detail-label {
+            font-weight: 600;
+            color: var(--text-medium);
+            min-width: 100px;
+        }
+
+        .detail-value {
+            flex: 1;
+            color: var(--text-dark);
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 24px;
+        }
+
+        .button {
+            flex: 1;
+            padding: 14px 24px;
+            border-radius: 12px;
+            border: none;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .button--primary {
+            background: linear-gradient(135deg, var(--primary-quynh), var(--primary-light));
+            color: white;
+        }
+
+        .button--primary:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .button--secondary {
+            background: var(--bg-light);
+            color: var(--text-dark);
+            border: 2px solid var(--border-light);
+        }
+
+        .button--danger {
+            background: #ff3b30;
+            color: white;
+        }
+
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--text-medium);
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid var(--border-light);
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary-quynh);
+            box-shadow: 0 0 0 4px rgba(194, 24, 91, 0.1);
+        }
+
+        /* Hover Effects */
+        .volleyball-hover {
+            position: fixed;
+            width: 40px;
+            height: 40px;
+            background: radial-gradient(circle at 35% 35%, #fff, #ffd4e5);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 1000;
+            opacity: 0;
+            animation: float-hover-volleyball 1.5s ease-out forwards;
+            box-shadow: 0 4px 12px rgba(194, 24, 91, 0.3);
+        }
+
+        .volleyball-hover::before,
+        .volleyball-hover::after {
+            content: '';
+            position: absolute;
+            background: var(--primary-quynh);
+            opacity: 0.5;
+        }
+
+        .volleyball-hover::before {
+            width: 2px;
+            height: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .volleyball-hover::after {
+            width: 100%;
+            height: 2px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        @keyframes float-hover-volleyball {
+            0% {
+                opacity: 1;
+                transform: translate(0, 0) scale(0.5) rotate(0deg);
+            }
+            100% {
+                opacity: 0;
+                transform: translate(var(--dx, 0), var(--dy, -80px)) scale(1.2) rotate(360deg);
+            }
+        }
+
+        .heart-click {
+            position: fixed;
+            font-size: 32px;
+            pointer-events: none;
+            z-index: 1100;
+            opacity: 0;
+            animation: float-heart 2s ease-out forwards;
+            filter: drop-shadow(0 4px 8px rgba(194, 24, 91, 0.5));
+        }
+
+        @keyframes float-heart {
+            0% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-120px) scale(1.8);
+            }
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            :root {
+                --hour-height: 100px;
+            }
+
+            .calendar-header {
+                padding: 16px;
+            }
+
+            .calendar-nav {
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .nav-controls {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .month-year-header {
+                font-size: 1.2rem;
+            }
+
+            .view-toggle-nav {
+                display: none; /* Hide on mobile, auto-switch based on screen */
+            }
+
+            .schedule-wrapper {
+                max-height: calc(100vh - 250px);
+            }
+
+            .time-axis {
+                width: 60px;
+            }
+
+            .time-label-line {
+                font-size: 0.75rem;
+            }
+
+            .week-view-grid {
+                grid-template-columns: 1fr !important;
+            }
+
+            .day-header {
+                padding: 12px;
+            }
+
+            .date-label {
+                font-size: 1.5rem;
+                width: 45px;
+                height: 45px;
+                line-height: 45px;
+            }
+
+            .event-box {
+                padding: 12px;
+            }
+
+            .event-subject {
+                font-size: 1rem;
+            }
+
+            .fab {
+                bottom: calc(20px + var(--safe-area-bottom));
+                right: 20px;
+                width: 60px;
+                height: 60px;
+                font-size: 2rem;
+            }
+
+            .modal-content {
+                padding: 24px;
+                max-height: 85vh;
+            }
+        }
+
+        /* iPhone 14 Pro Max specific */
+        @media (max-width: 430px) and (max-height: 932px) {
+            .app-header {
+                padding: 12px 16px;
+            }
+
+            .calendar-container {
+                padding: 12px;
+            }
+
+            .event-info {
+                font-size: 0.7rem;
+            }
+        }
+
+        /* Notification */
+        .notification {
+            position: fixed;
+            top: calc(20px + var(--safe-area-top));
+            right: 20px;
+            padding: 16px 24px;
+            border-radius: 12px;
+            color: white;
+            font-weight: 600;
+            z-index: 10000;
+            box-shadow: var(--shadow-lg);
+            animation: slideInFromRight 0.3s ease;
+        }
+
+        .notification--success { background: #4caf50; }
+        .notification--error { background: #f44336; }
+        .notification--info { background: #2196f3; }
+
+        @keyframes slideInFromRight {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+    </style>
 </head>
 <body>
-    <!-- Themed Background Decorations (shown only for Quỳnh via CSS) -->
-    <div class="volleyball-bg" aria-hidden="true">
-        <div class="volleyball"></div>
+    <!-- Volleyball Background -->
+    <div class="volleyball-bg">
         <div class="volleyball"></div>
         <div class="volleyball"></div>
         <div class="volleyball"></div>
         <div class="volleyball"></div>
     </div>
-    <div class="net-pattern" aria-hidden="true"></div>
-    <main id="app-container">
+
+    <div id="app-container">
+        <!-- Header -->
         <header class="app-header">
-            <button id="back-to-functions-btn" class="back-button">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+            <button class="back-button" onclick="window.history.back()">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
                 </svg>
-                <span>Chức năng</span>
+                <span>Quay lại</span>
             </button>
 
             <div class="header-actions">
                 <button class="icon-button" id="search-toggle-btn" title="Tìm kiếm">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <circle cx="11" cy="11" r="8"></circle>
                         <path d="m21 21-4.35-4.35"></path>
-                    </svg>
-                </button>
-                <button class="icon-button" id="filter-toggle-btn" title="Lọc">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
                     </svg>
                 </button>
             </div>
         </header>
 
-        <div id="calendar-container" class="calendar-container">
-            <!-- Search & Filter Bar (Hidden by default) -->
-            <div id="search-filter-bar" class="search-filter-bar hidden">
-                <div class="search-box">
-                    <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <circle cx="11" cy="11" r="8"></circle>
-                        <path d="m21 21-4.35-4.35"></path>
-                    </svg>
-                    <input type="text" id="search-input" placeholder="Tìm kiếm sự kiện...">
-                </div>
-                <select id="category-filter" class="filter-dropdown">
-                    <option value="all">Tất cả</option>
-                    <option value="study">Học tập</option>
-                    <option value="personal">Cá nhân</option>
-                    <option value="work">Công việc</option>
-                </select>
-            </div>
-
-            <!-- Calendar Header with Navigation -->
+        <!-- Calendar Container -->
+        <div class="calendar-container">
+            <!-- Calendar Header -->
             <div class="calendar-header">
                 <div class="calendar-nav">
-                    <button id="prev-week-btn" class="nav-button" title="Tuần trước">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
-                        </svg>
-                    </button>
-                    <h2 id="month-year-header" class="month-year-header">Tháng 10 2025</h2>
-                    <button id="next-week-btn" class="nav-button" title="Tuần sau">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M8.59 16.59L10 18l6-6-6-6-1.41 1.41L13.17 12z"/>
-                        </svg>
-                    </button>
+                    <div class="nav-controls">
+                        <button class="nav-button" id="prev-nav-btn">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+                            </svg>
+                        </button>
+                        <h2 class="month-year-header" id="month-year-header">Tháng 10 2025</h2>
+                        <button class="nav-button" id="next-nav-btn">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M8.59 16.59L10 18l6-6-6-6-1.41 1.41L13.17 12z"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <button class="today-button" id="today-btn">Hôm nay</button>
                 </div>
 
-                <button id="today-btn" class="today-button">Hôm nay</button>
-
                 <nav class="view-toggle-nav">
-                    <button id="view-day-btn" class="view-toggle-btn">Ngày</button>
-                    <button id="view-week-btn" class="view-toggle-btn active">Tuần</button>
-                    <button id="view-month-btn" class="view-toggle-btn">Tháng</button>
+                    <button class="view-toggle-btn" id="view-day-btn">Ngày</button>
+                    <button class="view-toggle-btn active" id="view-week-btn">Tuần</button>
+                    <button class="view-toggle-btn" id="view-month-btn">Tháng</button>
                 </nav>
             </div>
 
             <!-- Schedule Display -->
-            <div class="schedule-wrapper">
-                <div id="time-axis" class="time-axis"></div>
-                <div id="week-view-grid" class="week-view-grid"></div>
+            <div class="schedule-wrapper" id="schedule-wrapper">
+                <div class="time-axis" id="time-axis"></div>
+                <div class="week-view-grid" id="week-view-grid"></div>
             </div>
         </div>
 
-        <!-- Floating Action Button -->
-        <button id="add-event-fab" class="fab" title="Thêm sự kiện mới">+</button>
-    </main>
+        <!-- FAB -->
+        <button class="fab" id="add-event-fab">+</button>
+    </div>
 
-    <!-- Event Modal -->
+    <!-- Event Detail Modal -->
+    <div id="event-detail-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <h2 style="font-size: 1.8rem; font-weight: 800; color: var(--primary-quynh); margin-bottom: 24px; text-align: center;">
+                Chi tiết sự kiện
+            </h2>
+            
+            <div id="event-detail-content"></div>
+            
+            <div class="modal-actions">
+                <button class="button button--secondary" id="detail-close-btn">Đóng</button>
+                <button class="button button--primary" id="detail-edit-btn">Chỉnh sửa</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Event Form Modal -->
     <div id="event-modal" class="modal-overlay hidden">
         <div class="modal-content">
-            <!-- Mode Toggle -->
-            <div class="modal-toggle">
-                <button id="event-mode-btn" class="modal-toggle-btn active">Sự kiện</button>
-                <button id="schedule-mode-btn" class="modal-toggle-btn">Lịch học</button>
-            </div>
-
-            <h2 id="modal-title" class="modal-title">Tạo Sự Kiện Mới</h2>
+            <h2 id="modal-title" style="font-size: 1.8rem; font-weight: 800; color: var(--primary-quynh); margin-bottom: 24px; text-align: center;">
+                Tạo Sự Kiện Mới
+            </h2>
             
             <form id="event-form">
-                <!-- Common Fields -->
                 <div class="form-group">
-                    <label for="event-title">Tiêu đề <span style="color: red;">*</span></label>
+                    <label>Tiêu đề <span style="color: red;">*</span></label>
                     <input type="text" id="event-title" required placeholder="VD: Họp nhóm dự án">
                 </div>
 
-                <!-- Category Selection -->
                 <div class="form-group">
                     <label>Danh mục</label>
-                    <div class="category-selector">
-                        <button type="button" class="category-btn active" data-category="personal">
-                            <span>📌</span>
-                            <span>Cá nhân</span>
-                        </button>
-                        <button type="button" class="category-btn" data-category="study">
-                            <span>📚</span>
-                            <span>Học tập</span>
-                        </button>
-                        <button type="button" class="category-btn" data-category="work">
-                            <span>💼</span>
-                            <span>Công việc</span>
-                        </button>
-                    </div>
+                    <select id="event-category">
+                        <option value="personal">📌 Cá nhân</option>
+                        <option value="study">📚 Học tập</option>
+                        <option value="work">💼 Công việc</option>
+                    </select>
                 </div>
 
-                <!-- Single Event Fields -->
-                <div id="single-event-fields">
-                    <div class="form-group">
-                        <label for="single-date">Ngày <span style="color: red;">*</span></label>
-                        <input type="date" id="single-date">
-                    </div>
-                </div>
-
-                <!-- Time Fields -->
-                <div class="form-group-inline">
-                    <div class="form-group">
-                        <label for="start-time">Bắt đầu <span style="color: red;">*</span></label>
-                        <input type="time" id="start-time" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="end-time">Kết thúc <span style="color: red;">*</span></label>
-                        <input type="time" id="end-time" required>
-                    </div>
-                </div>
-
-                <!-- Recurring Fields (Hidden by default) -->
-                <div id="recurring-fields" class="hidden">
-                    <div class="form-group">
-                        <label for="event-campus">Cơ sở</label>
-                        <input type="text" id="event-campus" placeholder="VD: FPT Polytechnic Đà Nẵng">
-                    </div>
-                    <div class="form-group">
-                        <label for="event-classroom">Phòng học</label>
-                        <input type="text" id="event-classroom" placeholder="VD: P301">
-                    </div>
-
-                    <div class="form-group">
-                        <label>Lặp lại vào các ngày</label>
-                        <div id="weekdays-selector" class="weekdays-selector">
-                            <button type="button" class="weekday-btn" data-day="1">T2</button>
-                            <button type="button" class="weekday-btn" data-day="2">T3</button>
-                            <button type="button" class="weekday-btn" data-day="3">T4</button>
-                            <button type="button" class="weekday-btn" data-day="4">T5</button>
-                            <button type="button" class="weekday-btn" data-day="5">T6</button>
-                            <button type="button" class="weekday-btn" data-day="6">T7</button>
-                            <button type="button" class="weekday-btn" data-day="0">CN</button>
-                        </div>
-                    </div>
-
-                    <div class="form-group-inline">
-                        <div class="form-group">
-                            <label for="start-date">Từ ngày</label>
-                            <input type="date" id="start-date">
-                        </div>
-                        <div class="form-group">
-                            <label for="end-date">Đến ngày</label>
-                            <input type="date" id="end-date">
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Description (Optional) -->
                 <div class="form-group">
-                    <label for="event-description">Mô tả (tùy chọn)</label>
+                    <label>Ngày <span style="color: red;">*</span></label>
+                    <input type="date" id="event-date" required>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                    <div class="form-group">
+                        <label>Bắt đầu <span style="color: red;">*</span></label>
+                        <input type="time" id="start-time" required min="05:00" max="23:00">
+                    </div>
+                    <div class="form-group">
+                        <label>Kết thúc <span style="color: red;">*</span></label>
+                        <input type="time" id="end-time" required min="05:00" max="23:00">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Địa điểm</label>
+                    <input type="text" id="event-location" placeholder="VD: P301 - FPT Polytechnic">
+                </div>
+
+                <div class="form-group">
+                    <label>Mô tả</label>
                     <textarea id="event-description" rows="3" placeholder="Thêm chi tiết về sự kiện..."></textarea>
                 </div>
                 
-                <!-- Action Buttons -->
-                <div class="form-actions">
-                    <button type="button" id="delete-btn" class="button button--danger hidden">Xóa</button>
-                    <button type="button" id="cancel-btn" class="button button--secondary">Hủy</button>
-                    <button type="submit" id="save-btn" class="button button--primary">Lưu</button>
+                <div class="modal-actions">
+                    <button type="button" class="button button--danger hidden" id="delete-btn">Xóa</button>
+                    <button type="button" class="button button--secondary" id="cancel-btn">Hủy</button>
+                    <button type="submit" class="button button--primary">Lưu</button>
                 </div>
             </form>
         </div>
     </div>
 
-    <script type="module" src="js/calendar.js"></script>
+    <script>
+        // Sample data for demonstration
+        const sampleEvents = {
+            'event1': {
+                type: 'single',
+                title: 'Phát triển ứng dụng Web',
+                category: 'study',
+                date: '2025-10-20',
+                startTime: '07:00',
+                endTime: '09:30',
+                classroom: 'P301',
+                campus: 'FPT Polytechnic Đà Nẵng',
+                description: 'Lớp học lập trình web với giáo viên Nguyễn Văn A'
+            },
+            'event2': {
+                type: 'single',
+                title: 'Tập bóng chuyền 🏐',
+                category: 'personal',
+                date: '2025-10-20',
+                startTime: '16:00',
+                endTime: '18:00',
+                classroom: 'Sân thể thao',
+                description: 'Tập luyện cùng đội'
+            },
+            'event3': {
+                type: 'single',
+                title: 'Họp nhóm dự án',
+                category: 'work',
+                date: '2025-10-21',
+                startTime: '14:00',
+                endTime: '16:00',
+                classroom: 'Phòng họp A',
+                description: 'Review tiến độ dự án'
+            }
+        };
+
+        // Configuration
+        const DAY_START_HOUR = 5;
+        const DAY_END_HOUR = 23;
+        const HOUR_HEIGHT = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--hour-height')) || 80;
+
+        // State
+        let currentDate = new Date();
+        let currentView = window.innerWidth <= 768 ? 'day' : 'week';
+        let userEvents = { ...sampleEvents };
+        let editingEventId = null;
+
+        // DOM Elements
+        const monthYearHeader = document.getElementById('month-year-header');
+        const weekGrid = document.getElementById('week-view-grid');
+        const timeAxis = document.getElementById('time-axis');
+        const scheduleWrapper = document.getElementById('schedule-wrapper');
+        const prevNavBtn = document.getElementById('prev-nav-btn');
+        const nextNavBtn = document.getElementById('next-nav-btn');
+        const todayBtn = document.getElementById('today-btn');
+        const viewDayBtn = document.getElementById('view-day-btn');
+        const viewWeekBtn = document.getElementById('view-week-btn');
+        const viewMonthBtn = document.getElementById('view-month-btn');
+        const addEventFab = document.getElementById('add-event-fab');
+        const eventDetailModal = document.getElementById('event-detail-modal');
+        const eventModal = document.getElementById('event-modal');
+        const eventForm = document.getElementById('event-form');
+        const deleteBtn = document.getElementById('delete-btn');
+
+        // Initialize
+        function init() {
+            createTimeAxis();
+            updateView();
+            attachEventListeners();
+            updateCurrentTimeLine();
+            setInterval(updateCurrentTimeLine, 60000); // Update every minute
+            
+            // Auto-scroll to current time on mobile
+            if (window.innerWidth <= 768) {
+                setTimeout(scrollToCurrentTime, 500);
+            }
+
+            showNotification('Chào mừng! _uyqhn 🏐💖', 'success');
+        }
+
+        // Create Time Axis
+        function createTimeAxis() {
+        timeAxis.innerHTML = '';
+        
+        // Tạo spacer để align với day header
+        const headerSpacer = document.createElement('div');
+        headerSpacer.style.height = '97px';  // Chiều cao của .day-header
+        headerSpacer.style.flexShrink = '0';
+        timeAxis.appendChild(headerSpacer);
+        
+        // Tạo các time labels
+        for (let hour = DAY_START_HOUR; hour < DAY_END_HOUR; hour++) {
+            const hourString = hour.toString().padStart(2, '0') + ':00';
+            const div = document.createElement('div');
+            div.className = 'time-label-line';
+            div.textContent = hourString;
+            timeAxis.appendChild(div);
+        }
+    }
+
+        // Get week days
+        function getWeekDays(date) {
+            const startOfWeek = new Date(date);
+            const dayOfWeek = startOfWeek.getDay();
+            startOfWeek.setDate(date.getDate() - dayOfWeek);
+            
+            const week = [];
+            for (let i = 0; i < 7; i++) {
+                const day = new Date(startOfWeek);
+                day.setDate(startOfWeek.getDate() + i);
+                week.push(day);
+            }
+            return week;
+        }
+
+        // Update View
+        function updateView() {
+            if (currentView === 'day') {
+                renderDayView(currentDate);
+            } else if (currentView === 'week') {
+                renderWeekView(currentDate);
+            }
+            updateHeader();
+        }
+
+        // Update Header
+        function updateHeader() {
+            if (currentView === 'day') {
+                const dayName = ['Chủ nhật', 'Thứ hai', 'Thứ ba', 'Thứ tư', 'Thứ năm', 'Thứ sáu', 'Thứ bảy'];
+                monthYearHeader.textContent = `${dayName[currentDate.getDay()]}, ${currentDate.getDate()}/${currentDate.getMonth() + 1}/${currentDate.getFullYear()}`;
+            } else {
+                const weekDays = getWeekDays(currentDate);
+                const firstDay = weekDays[0];
+                const lastDay = weekDays[6];
+                
+                if (firstDay.getMonth() !== lastDay.getMonth()) {
+                    monthYearHeader.textContent = `Thg ${firstDay.getMonth() + 1} - Thg ${lastDay.getMonth() + 1}, ${lastDay.getFullYear()}`;
+                } else {
+                    monthYearHeader.textContent = `Tháng ${firstDay.getMonth() + 1}, ${firstDay.getFullYear()}`;
+                }
+            }
+        }
+
+        // Render Day View
+        function renderDayView(date) {
+            weekGrid.style.gridTemplateColumns = '1fr';
+            weekGrid.innerHTML = '';
+            
+            const today = new Date();
+            const isToday = date.toDateString() === today.toDateString();
+            const dayLabels = ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'];
+            
+            weekGrid.innerHTML = `
+                <div class="day-header">
+                    <div class="day-label">${dayLabels[date.getDay()]}</div>
+                    <div class="date-label ${isToday ? 'today' : ''}">${date.getDate()}</div>
+                </div>
+            `;
+            
+            const dayColumn = document.createElement('div');
+            dayColumn.className = 'day-column';
+            dayColumn.dataset.date = date.toISOString().split('T')[0];
+            weekGrid.appendChild(dayColumn);
+            
+            renderEventsForDay(dayColumn, date);
+            attachHoverEffects();
+        }
+
+        // Render Week View
+        function renderWeekView(dateInWeek) {
+            const weekDays = getWeekDays(dateInWeek);
+            weekGrid.style.gridTemplateColumns = 'repeat(7, 1fr)';
+            weekGrid.innerHTML = '';
+            
+            const today = new Date();
+            const dayLabels = ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'];
+            
+            // Render headers
+            weekDays.forEach(day => {
+                const isToday = day.toDateString() === today.toDateString();
+                weekGrid.innerHTML += `
+                    <div class="day-header">
+                        <div class="day-label">${dayLabels[day.getDay()]}</div>
+                        <div class="date-label ${isToday ? 'today' : ''}">${day.getDate()}</div>
+                    </div>
+                `;
+            });
+            
+            // Render columns
+            weekDays.forEach(day => {
+                const dayColumn = document.createElement('div');
+                dayColumn.className = 'day-column';
+                dayColumn.dataset.date = day.toISOString().split('T')[0];
+                weekGrid.appendChild(dayColumn);
+                renderEventsForDay(dayColumn, day);
+            });
+            
+            attachHoverEffects();
+        }
+
+        // Render Events for a Day
+        function renderEventsForDay(dayColumn, date) {
+            const dateString = date.toISOString().split('T')[0];
+            
+            Object.entries(userEvents).forEach(([eventId, event]) => {
+                if (event.date === dateString) {
+                    const eventEl = createEventElement(event, eventId);
+                    if (eventEl) dayColumn.appendChild(eventEl);
+                }
+            });
+        }
+
+        // Create Event Element
+        function createEventElement(event, eventId) {
+            const startHour = parseInt(event.startTime.split(':')[0]);
+            const startMinute = parseInt(event.startTime.split(':')[1]);
+            const endHour = parseInt(event.endTime.split(':')[0]);
+            const endMinute = parseInt(event.endTime.split(':')[1]);
+
+            const startMinutes = startHour * 60 + startMinute;
+            const endMinutes = endHour * 60 + endMinute;
+            const dayStartMinutes = DAY_START_HOUR * 60;
+            const dayEndMinutes = DAY_END_HOUR * 60;
+
+            const visibleStart = Math.max(startMinutes, dayStartMinutes);
+            const visibleEnd = Math.min(endMinutes, dayEndMinutes);
+            const duration = visibleEnd - visibleStart;
+
+            if (duration <= 0) return null;
+
+            const pxPerMinute = HOUR_HEIGHT / 60;
+            const top = (visibleStart - dayStartMinutes) * pxPerMinute;
+            const height = Math.max(duration * pxPerMinute, 50);
+
+            const eventEl = document.createElement('div');
+            eventEl.className = `event-box category-${event.category || 'personal'}`;
+            eventEl.dataset.eventId = eventId;
+            eventEl.style.top = `${top}px`;
+            eventEl.style.height = `${height}px`;
+
+            const title = event.title || 'Không có tiêu đề';
+            const timeStr = `${event.startTime} - ${event.endTime}`;
+            
+            eventEl.innerHTML = `
+                <div class="event-subject">${title}</div>
+                <div class="event-info">
+                    <div class="event-info-row">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <polyline points="12 6 12 12 16 14"></polyline>
+                        </svg>
+                        <span>${timeStr}</span>
+                    </div>
+                    ${event.classroom ? `
+                    <div class="event-info-row">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                            <circle cx="12" cy="10" r="3"></circle>
+                        </svg>
+                        <span>${event.classroom}</span>
+                    </div>
+                    ` : ''}
+                    ${event.campus ? `
+                    <div class="event-info-row">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                        </svg>
+                        <span>${event.campus}</span>
+                    </div>
+                    ` : ''}
+                </div>
+            `;
+
+            eventEl.addEventListener('click', (e) => {
+                createHeartEffect(e.clientX, e.clientY);
+                setTimeout(() => showEventDetail(eventId), 200);
+            });
+
+            return eventEl;
+        }
+
+        // Show Event Detail
+        function showEventDetail(eventId) {
+            const event = userEvents[eventId];
+            if (!event) return;
+
+            const detailContent = document.getElementById('event-detail-content');
+            const categoryEmojis = {
+                'personal': '📌',
+                'study': '📚',
+                'work': '💼'
+            };
+
+            detailContent.innerHTML = `
+                <div class="detail-section">
+                    <h3>${categoryEmojis[event.category] || '📌'} Thông tin cơ bản</h3>
+                    <div class="detail-content">
+                        <div class="detail-row">
+                            <div class="detail-label">Tiêu đề:</div>
+                            <div class="detail-value" style="font-weight: 700; font-size: 1.1rem;">${event.title}</div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-label">Ngày:</div>
+                            <div class="detail-value">${formatDate(event.date)}</div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-label">Thời gian:</div>
+                            <div class="detail-value">${event.startTime} - ${event.endTime}</div>
+                        </div>
+                        <div class="detail-row">
+                            <div class="detail-label">Danh mục:</div>
+                            <div class="detail-value">${getCategoryName(event.category)}</div>
+                        </div>
+                    </div>
+                </div>
+
+                ${event.classroom || event.campus ? `
+                <div class="detail-section">
+                    <h3>📍 Địa điểm</h3>
+                    <div class="detail-content">
+                        ${event.classroom ? `
+                        <div class="detail-row">
+                            <div class="detail-label">Phòng:</div>
+                            <div class="detail-value">${event.classroom}</div>
+                        </div>
+                        ` : ''}
+                        ${event.campus ? `
+                        <div class="detail-row">
+                            <div class="detail-label">Cơ sở:</div>
+                            <div class="detail-value">${event.campus}</div>
+                        </div>
+                        ` : ''}
+                    </div>
+                </div>
+                ` : ''}
+
+                ${event.description ? `
+                <div class="detail-section">
+                    <h3>📝 Mô tả</h3>
+                    <div class="detail-content">
+                        <p style="line-height: 1.6;">${event.description}</p>
+                    </div>
+                </div>
+                ` : ''}
+            `;
+
+            editingEventId = eventId;
+            eventDetailModal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Edit Event
+        document.getElementById('detail-edit-btn').addEventListener('click', () => {
+            eventDetailModal.classList.add('hidden');
+            openEditModal(editingEventId);
+        });
+
+        document.getElementById('detail-close-btn').addEventListener('click', () => {
+            eventDetailModal.classList.add('hidden');
+            document.body.style.overflow = '';
+            editingEventId = null;
+        });
+
+        // Open Edit Modal
+        function openEditModal(eventId) {
+            const event = userEvents[eventId];
+            if (!event) return;
+
+            document.getElementById('modal-title').textContent = 'Chỉnh sửa Sự kiện';
+            document.getElementById('event-title').value = event.title || '';
+            document.getElementById('event-category').value = event.category || 'personal';
+            document.getElementById('event-date').value = event.date || '';
+            document.getElementById('start-time').value = event.startTime || '';
+            document.getElementById('end-time').value = event.endTime || '';
+            document.getElementById('event-location').value = event.classroom || '';
+            document.getElementById('event-description').value = event.description || '';
+
+            deleteBtn.classList.remove('hidden');
+            editingEventId = eventId;
+            eventModal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Open Create Modal
+        addEventFab.addEventListener('click', (e) => {
+            createHeartEffect(e.clientX, e.clientY, 3);
+            
+            document.getElementById('modal-title').textContent = 'Tạo Sự Kiện Mới';
+            eventForm.reset();
+            document.getElementById('event-date').value = currentDate.toISOString().split('T')[0];
+            deleteBtn.classList.add('hidden');
+            editingEventId = null;
+            eventModal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        });
+
+        // Close Modal
+        document.getElementById('cancel-btn').addEventListener('click', () => {
+            eventModal.classList.add('hidden');
+            document.body.style.overflow = '';
+            editingEventId = null;
+        });
+
+        // Form Submit
+        eventForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const eventData = {
+                type: 'single',
+                title: document.getElementById('event-title').value,
+                category: document.getElementById('event-category').value,
+                date: document.getElementById('event-date').value,
+                startTime: document.getElementById('start-time').value,
+                endTime: document.getElementById('end-time').value,
+                classroom: document.getElementById('event-location').value,
+                description: document.getElementById('event-description').value
+            };
+
+            if (editingEventId) {
+                userEvents[editingEventId] = { ...userEvents[editingEventId], ...eventData };
+                showNotification('Cập nhật thành công! ✨', 'success');
+            } else {
+                const newId = 'event' + Date.now();
+                userEvents[newId] = eventData;
+                showNotification('Thêm sự kiện thành công! 🎉', 'success');
+            }
+
+            eventModal.classList.add('hidden');
+            document.body.style.overflow = '';
+            updateView();
+            editingEventId = null;
+        });
+
+        // Delete Event
+        deleteBtn.addEventListener('click', () => {
+            if (!editingEventId) return;
+            
+            if (confirm('Bạn có chắc chắn muốn xóa sự kiện này?')) {
+                delete userEvents[editingEventId];
+                eventModal.classList.add('hidden');
+                document.body.style.overflow = '';
+                updateView();
+                showNotification('Đã xóa sự kiện! 🗑️', 'success');
+                editingEventId = null;
+            }
+        });
+
+        // Navigation
+        prevNavBtn.addEventListener('click', () => {
+            if (currentView === 'day') {
+                currentDate.setDate(currentDate.getDate() - 1);
+            } else {
+                currentDate.setDate(currentDate.getDate() - 7);
+            }
+            updateView();
+        });
+
+        nextNavBtn.addEventListener('click', () => {
+            if (currentView === 'day') {
+                currentDate.setDate(currentDate.getDate() + 1);
+            } else {
+                currentDate.setDate(currentDate.getDate() + 7);
+            }
+            updateView();
+        });
+
+        todayBtn.addEventListener('click', () => {
+            currentDate = new Date();
+            updateView();
+            if (window.innerWidth <= 768) {
+                setTimeout(scrollToCurrentTime, 300);
+            }
+        });
+
+        // View Toggle
+        viewDayBtn?.addEventListener('click', () => {
+            currentView = 'day';
+            document.querySelectorAll('.view-toggle-btn').forEach(b => b.classList.remove('active'));
+            viewDayBtn.classList.add('active');
+            updateView();
+        });
+
+        viewWeekBtn?.addEventListener('click', () => {
+            currentView = 'week';
+            document.querySelectorAll('.view-toggle-btn').forEach(b => b.classList.remove('active'));
+            viewWeekBtn.classList.add('active');
+            updateView();
+        });
+
+        // Current Time Line
+        function updateCurrentTimeLine() {
+            document.querySelectorAll('.current-time-line').forEach(el => el.remove());
+            
+            const now = new Date();
+            const dayColumns = document.querySelectorAll('.day-column');
+            
+            dayColumns.forEach(column => {
+                const columnDate = column.dataset.date;
+                const today = now.toISOString().split('T')[0];
+                
+                if (columnDate === today) {
+                    const hours = now.getHours();
+                    const minutes = now.getMinutes();
+                    const totalMinutes = hours * 60 + minutes;
+                    const dayStartMinutes = DAY_START_HOUR * 60;
+                    
+                    if (totalMinutes >= dayStartMinutes && totalMinutes <= DAY_END_HOUR * 60) {
+                        const pxPerMinute = HOUR_HEIGHT / 60;
+                        const top = (totalMinutes - dayStartMinutes) * pxPerMinute;
+                        
+                        const line = document.createElement('div');
+                        line.className = 'current-time-line';
+                        line.style.top = `${top}px`;
+                        column.appendChild(line);
+                    }
+                }
+            });
+        }
+
+        // Scroll to Current Time
+        function scrollToCurrentTime() {
+            const now = new Date();
+            const hours = now.getHours();
+            
+            if (hours >= DAY_START_HOUR && hours <= DAY_END_HOUR) {
+                const scrollPosition = (hours - DAY_START_HOUR - 1) * HOUR_HEIGHT;
+                scheduleWrapper.scrollTop = Math.max(0, scrollPosition);
+            }
+        }
+
+        // Hover Effects
+        function attachHoverEffects() {
+            const dayColumns = document.querySelectorAll('.day-column');
+            
+            dayColumns.forEach(column => {
+                let hoverTimeout;
+                
+                column.addEventListener('mousemove', (e) => {
+                    clearTimeout(hoverTimeout);
+                    hoverTimeout = setTimeout(() => {
+                        if (Math.random() > 0.7) {
+                            createVolleyballHover(e.clientX, e.clientY);
+                        }
+                    }, 100);
+                });
+            });
+        }
+
+        // Create Volleyball Hover Effect
+        function createVolleyballHover(x, y) {
+            const volleyball = document.createElement('div');
+            volleyball.className = 'volleyball-hover';
+            volleyball.style.left = x + 'px';
+            volleyball.style.top = y + 'px';
+            volleyball.style.setProperty('--dx', `${(Math.random() - 0.5) * 60}px`);
+            volleyball.style.setProperty('--dy', `${-60 - Math.random() * 40}px`);
+            document.body.appendChild(volleyball);
+            
+            setTimeout(() => volleyball.remove(), 1500);
+        }
+
+        // Create Heart Click Effect
+        function createHeartEffect(x, y, count = 1) {
+            for (let i = 0; i < count; i++) {
+                setTimeout(() => {
+                    const heart = document.createElement('div');
+                    heart.className = 'heart-click';
+                    heart.textContent = ['💖', '💕', '💗'][Math.floor(Math.random() * 3)];
+                    heart.style.left = (x + (Math.random() - 0.5) * 30) + 'px';
+                    heart.style.top = (y + (Math.random() - 0.5) * 20) + 'px';
+                    document.body.appendChild(heart);
+                    
+                    setTimeout(() => heart.remove(), 2000);
+                }, i * 100);
+            }
+        }
+
+        // Utility Functions
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            const dayNames = ['Chủ nhật', 'Thứ hai', 'Thứ ba', 'Thứ tư', 'Thứ năm', 'Thứ sáu', 'Thứ bảy'];
+            return `${dayNames[date.getDay()]}, ${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
+        }
+
+        function getCategoryName(category) {
+            const names = {
+                'personal': '📌 Cá nhân',
+                'study': '📚 Học tập',
+                'work': '💼 Công việc'
+            };
+            return names[category] || '📌 Cá nhân';
+        }
+
+        // Notification
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `notification notification--${type}`;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = 'slideInFromRight 0.3s ease reverse';
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
+
+        // Event Listeners
+        function attachEventListeners() {
+            // Close modals on click outside
+            eventModal.addEventListener('click', (e) => {
+                if (e.target === eventModal) {
+                    eventModal.classList.add('hidden');
+                    document.body.style.overflow = '';
+                }
+            });
+
+            eventDetailModal.addEventListener('click', (e) => {
+                if (e.target === eventDetailModal) {
+                    eventDetailModal.classList.add('hidden');
+                    document.body.style.overflow = '';
+                }
+            });
+
+            // Keyboard shortcuts
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    if (!eventModal.classList.contains('hidden')) {
+                        eventModal.classList.add('hidden');
+                        document.body.style.overflow = '';
+                    }
+                    if (!eventDetailModal.classList.contains('hidden')) {
+                        eventDetailModal.classList.add('hidden');
+                        document.body.style.overflow = '';
+                    }
+                }
+            });
+
+            // Responsive view change
+            window.addEventListener('resize', () => {
+                const newView = window.innerWidth <= 768 ? 'day' : 'week';
+                if (newView !== currentView) {
+                    currentView = newView;
+                    updateView();
+                }
+            });
+        }
+
+        // Initialize on load
+        init();
+    </script>
 </body>
-</html> 
+</html>

@@ -162,9 +162,16 @@ document.addEventListener('DOMContentLoaded', () => {
     // ============================================
     function createTimeAxisLabels() {
         timeAxis.innerHTML = '';
+        const paddingDiv = document.createElement('div');
+        paddingDiv.style.height = '82px'; // Chiều cao của day header
+        timeAxis.appendChild(paddingDiv);
+        
         for (let hour = DAY_START_HOUR; hour < DAY_END_HOUR; hour++) {
             const hourString = hour.toString().padStart(2, '0') + ':00';
-            timeAxis.innerHTML += `<div class="time-label-line">${hourString}</div>`;
+            const div = document.createElement('div');
+            div.className = 'time-label-line';
+            div.textContent = hourString;
+            timeAxis.appendChild(div);
         }
     }
 
@@ -354,14 +361,14 @@ document.addEventListener('DOMContentLoaded', () => {
         
         renderEventsForWeek(weekDays);
         setupDragToCreate(weekDays);
-        syncTimeAxisPadding();
+        // syncTimeAxisPadding();
     }
 
-    function syncTimeAxisPadding() {
-        const header = weekGrid.querySelector('.day-header');
-        if (!header) return;
-        timeAxis.style.paddingTop = header.offsetHeight + 'px';
-    }
+    // function syncTimeAxisPadding() {
+    //     const header = weekGrid.querySelector('.day-header');
+    //     if (!header) return;
+    //     timeAxis.style.paddingTop = header.offsetHeight + 'px';
+    // }
 
     // ============================================
     // DRAG TO CREATE EVENT
@@ -548,12 +555,26 @@ document.addEventListener('DOMContentLoaded', () => {
         const startTime = document.getElementById('start-time').value;
         const endTime = document.getElementById('end-time').value;
         const description = document.getElementById('event-description').value;
+        
 
-        // Validate times
-        if (startTime >= endTime) {
-            alert('Thời gian kết thúc phải sau thời gian bắt đầu!');
-            return;
-        }
+        const startHour = parseInt(startTime.split(':')[0]);
+    if (startHour < 5 || startHour >= 23) {
+        showNotification('Giờ bắt đầu phải từ 05:00 đến 23:00! ⏰', 'error');
+        return;
+    }
+    
+    // Kiểm tra giờ kết thúc
+    const endHour = parseInt(endTime.split(':')[0]);
+    const endMinute = parseInt(endTime.split(':')[1]);
+    if (endHour > 23 || (endHour === 23 && endMinute > 0)) {
+        showNotification('Giờ kết thúc không được quá 23:00! ⏰', 'error');
+        return;
+    }
+    
+    if (startTime >= endTime) {
+        showNotification('Thời gian kết thúc phải sau thời gian bắt đầu! ⏰', 'error');
+        return;
+    }
 
         if (currentModalMode === 'event') {
             eventData = {
