@@ -1,128 +1,208 @@
-    <!DOCTYPE html>
-    <html lang="vi">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Lịch | UniSchedule</title>
-        
-        <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js" type="module"></script>
-        <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database.js" type="module"></script>
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lịch | UniSchedule</title>
+    
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js" type="module"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database.js" type="module"></script>
 
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-        <link rel="stylesheet" href="css/base/reset.css">
-        <link rel="stylesheet" href="css/layout/main.css">
-    </head>
-    <body>
-        <main id="app-container">
-            <header class="app-header">
-                <button id="back-to-functions-btn" class="back-button">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+    <link rel="stylesheet" href="css/base/reset.css">
+    <link rel="stylesheet" href="css/layout/main.css">
+</head>
+<body>
+    <main id="app-container">
+        <header class="app-header">
+            <button id="back-to-functions-btn" class="back-button">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+                </svg>
+                <span>Chức năng</span>
+            </button>
+
+            <div class="header-actions">
+                <button class="icon-button" id="search-toggle-btn" title="Tìm kiếm">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <path d="m21 21-4.35-4.35"></path>
                     </svg>
-                    <span>Chức năng</span>
                 </button>
-            </header>
+                <button class="icon-button" id="filter-toggle-btn" title="Lọc">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
+                    </svg>
+                </button>
+            </div>
+        </header>
 
-            <div id="calendar-container" class="calendar-container">
-                <div class="calendar-header">
-                    <button id="prev-week-btn" class="nav-button">&lt;</button>
+        <div id="calendar-container" class="calendar-container">
+            <!-- Search & Filter Bar (Hidden by default) -->
+            <div id="search-filter-bar" class="search-filter-bar hidden">
+                <div class="search-box">
+                    <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <path d="m21 21-4.35-4.35"></path>
+                    </svg>
+                    <input type="text" id="search-input" placeholder="Tìm kiếm sự kiện...">
+                </div>
+                <select id="category-filter" class="filter-dropdown">
+                    <option value="all">Tất cả</option>
+                    <option value="study">Học tập</option>
+                    <option value="personal">Cá nhân</option>
+                    <option value="work">Công việc</option>
+                </select>
+            </div>
+
+            <!-- Calendar Header with Navigation -->
+            <div class="calendar-header">
+                <div class="calendar-nav">
+                    <button id="prev-week-btn" class="nav-button" title="Tuần trước">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+                        </svg>
+                    </button>
                     <h2 id="month-year-header" class="month-year-header">Tháng 10 2025</h2>
-                    <button id="next-week-btn" class="nav-button">&gt;</button>
+                    <button id="next-week-btn" class="nav-button" title="Tuần sau">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M8.59 16.59L10 18l6-6-6-6-1.41 1.41L13.17 12z"/>
+                        </svg>
+                    </button>
                 </div>
 
-                <div class="schedule-wrapper">
-                    <div id="time-axis" class="time-axis"></div>
-                    <div id="week-view-grid" class="week-view-grid"></div>
-                </div>
+                <button id="today-btn" class="today-button">Hôm nay</button>
+
+                <nav class="view-toggle-nav">
+                    <button id="view-day-btn" class="view-toggle-btn">Ngày</button>
+                    <button id="view-week-btn" class="view-toggle-btn active">Tuần</button>
+                    <button id="view-month-btn" class="view-toggle-btn">Tháng</button>
+                </nav>
             </div>
 
-            <button id="add-event-fab" class="fab">+</button>
-        </main>
-
-        <div id="event-modal" class="modal-overlay hidden">
-    <div class="modal-content">
-        <!-- BỘ NÚT CHUYỂN ĐỔI CHẾ ĐỘ -->
-        <div class="modal-toggle">
-            <button id="event-mode-btn" class="modal-toggle-btn active">Sự kiện</button>
-            <button id="schedule-mode-btn" class="modal-toggle-btn">Lịch học</button>
+            <!-- Schedule Display -->
+            <div class="schedule-wrapper">
+                <div id="time-axis" class="time-axis"></div>
+                <div id="week-view-grid" class="week-view-grid"></div>
+            </div>
         </div>
 
-        <h2 id="modal-title" class="modal-title">Tạo Sự Kiện Mới</h2>
-        <form id="event-form">
-            <!-- CÁC TRƯỜNG CHUNG -->
-            <div class="form-group">
-                <label for="event-title">Tiêu đề</label>
-                <input type="text" id="event-title" required placeholder="VD: Họp nhóm dự án">
+        <!-- Floating Action Button -->
+        <button id="add-event-fab" class="fab" title="Thêm sự kiện mới">+</button>
+    </main>
+
+    <!-- Event Modal -->
+    <div id="event-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <!-- Mode Toggle -->
+            <div class="modal-toggle">
+                <button id="event-mode-btn" class="modal-toggle-btn active">Sự kiện</button>
+                <button id="schedule-mode-btn" class="modal-toggle-btn">Lịch học</button>
             </div>
 
-            <!-- TRƯỜNG DÀNH RIÊNG CHO SỰ KIỆN ĐƠN (SINGLE EVENT) -->
-            <div id="single-event-fields">
-                <div class="form-group">
-                    <label for="single-date">Ngày</label>
-                    <input type="date" id="single-date">
-                </div>
-            </div>
-
-            <div class="form-group-inline">
-                <div class="form-group">
-                    <label for="start-time">Bắt đầu</label>
-                    <input type="time" id="start-time" required>
-                </div>
-                <div class="form-group">
-                    <label for="end-time">Kết thúc</label>
-                    <input type="time" id="end-time" required>
-                </div>
-            </div>
-
-            <!-- CÁC TRƯỜNG DÀNH RIÊNG CHO LỊCH HỌC (RECURRING) - ẨN MẶC ĐỊNH -->
-            <div id="recurring-fields" class="hidden">
-    <div class="form-group">
-        <label for="event-campus">Cơ sở</label>
-        <input type="text" id="event-campus" placeholder="VD: FPT Polytechnic Đà Nẵng">
-    </div>
-    <div class="form-group">
-        <label for="event-classroom">Phòng học</label>
-        <input type="text" id="event-classroom" placeholder="VD: P301">
-    </div>
-
-    <div class="form-group">
-            <label>Lặp lại vào các ngày</label>
-            <div id="weekdays-selector" class="weekdays-selector">
-                <button type="button" class="weekday-btn" data-day="1">T2</button>
-                <button type="button" class="weekday-btn" data-day="2">T3</button>
-                <button type="button" class="weekday-btn" data-day="3">T4</button>
-                <button type="button" class="weekday-btn" data-day="4">T5</button>
-                <button type="button" class="weekday-btn" data-day="5">T6</button>
-                <button type="button" class="weekday-btn" data-day="6">T7</button>
-                <button type="button" class="weekday-btn" data-day="0">CN</button>
-            </div>
-        </div>
-        <div class="form-group-inline">
-            <div class="form-group">
-                <label for="start-date">Từ ngày</label>
-                <input type="date" id="start-date">
-            </div>
-            <div class="form-group">
-                <label for="end-date">Đến ngày</label>
-                <input type="date" id="end-date">
-            </div>
-        </div>
-    </div>
+            <h2 id="modal-title" class="modal-title">Tạo Sự Kiện Mới</h2>
             
-            <!-- Nút bấm -->
-            <div class="form-actions">
-                <button type="button" id="delete-btn" class="button button--danger hidden">Xóa</button>
-                
-                <button type="button" id="cancel-btn" class="button button--secondary">Hủy</button>
-                <button type="submit" id="save-btn" class="button">Lưu</button>
-            </div>
-        </form>
-    </div>
-</div>
+            <form id="event-form">
+                <!-- Common Fields -->
+                <div class="form-group">
+                    <label for="event-title">Tiêu đề <span style="color: red;">*</span></label>
+                    <input type="text" id="event-title" required placeholder="VD: Họp nhóm dự án">
+                </div>
 
-        <script type="module" src="js/calendar.js"></script>
-    </body>
-    </html>     
+                <!-- Category Selection -->
+                <div class="form-group">
+                    <label>Danh mục</label>
+                    <div class="category-selector">
+                        <button type="button" class="category-btn active" data-category="personal">
+                            <span>📌</span>
+                            <span>Cá nhân</span>
+                        </button>
+                        <button type="button" class="category-btn" data-category="study">
+                            <span>📚</span>
+                            <span>Học tập</span>
+                        </button>
+                        <button type="button" class="category-btn" data-category="work">
+                            <span>💼</span>
+                            <span>Công việc</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Single Event Fields -->
+                <div id="single-event-fields">
+                    <div class="form-group">
+                        <label for="single-date">Ngày <span style="color: red;">*</span></label>
+                        <input type="date" id="single-date">
+                    </div>
+                </div>
+
+                <!-- Time Fields -->
+                <div class="form-group-inline">
+                    <div class="form-group">
+                        <label for="start-time">Bắt đầu <span style="color: red;">*</span></label>
+                        <input type="time" id="start-time" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="end-time">Kết thúc <span style="color: red;">*</span></label>
+                        <input type="time" id="end-time" required>
+                    </div>
+                </div>
+
+                <!-- Recurring Fields (Hidden by default) -->
+                <div id="recurring-fields" class="hidden">
+                    <div class="form-group">
+                        <label for="event-campus">Cơ sở</label>
+                        <input type="text" id="event-campus" placeholder="VD: FPT Polytechnic Đà Nẵng">
+                    </div>
+                    <div class="form-group">
+                        <label for="event-classroom">Phòng học</label>
+                        <input type="text" id="event-classroom" placeholder="VD: P301">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Lặp lại vào các ngày</label>
+                        <div id="weekdays-selector" class="weekdays-selector">
+                            <button type="button" class="weekday-btn" data-day="1">T2</button>
+                            <button type="button" class="weekday-btn" data-day="2">T3</button>
+                            <button type="button" class="weekday-btn" data-day="3">T4</button>
+                            <button type="button" class="weekday-btn" data-day="4">T5</button>
+                            <button type="button" class="weekday-btn" data-day="5">T6</button>
+                            <button type="button" class="weekday-btn" data-day="6">T7</button>
+                            <button type="button" class="weekday-btn" data-day="0">CN</button>
+                        </div>
+                    </div>
+
+                    <div class="form-group-inline">
+                        <div class="form-group">
+                            <label for="start-date">Từ ngày</label>
+                            <input type="date" id="start-date">
+                        </div>
+                        <div class="form-group">
+                            <label for="end-date">Đến ngày</label>
+                            <input type="date" id="end-date">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Description (Optional) -->
+                <div class="form-group">
+                    <label for="event-description">Mô tả (tùy chọn)</label>
+                    <textarea id="event-description" rows="3" placeholder="Thêm chi tiết về sự kiện..."></textarea>
+                </div>
+                
+                <!-- Action Buttons -->
+                <div class="form-actions">
+                    <button type="button" id="delete-btn" class="button button--danger hidden">Xóa</button>
+                    <button type="button" id="cancel-btn" class="button button--secondary">Hủy</button>
+                    <button type="submit" id="save-btn" class="button button--primary">Lưu</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script type="module" src="js/calendar.js"></script>
+</body>
+</html> 
