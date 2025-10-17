@@ -1,0 +1,481 @@
+/*=====================================
+  UTILITY & GENERAL STYLES
+=====================================*/
+.hidden {
+    display: none !important;
+}
+
+/*=====================================
+  SCREEN 1: USER SELECTION
+=====================================*/
+.user-selection-screen {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #fce4ec; /* Nền hồng nhạt */
+    padding: 20px;
+}
+
+.user-selection__title {
+    font-size: 2rem;
+    font-weight: 800;
+    color: #c2185b; /* Màu hồng đậm */
+    margin-bottom: 40px;
+}
+
+.profile-list {
+    display: flex;
+    gap: 30px;
+}
+
+.profile-card {
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-align: center;
+    transition: transform 0.2s ease;
+}
+
+.profile-card:hover {
+    transform: scale(1.05);
+}
+
+.profile-card__avatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid white;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.profile-card__name {
+    margin-top: 12px;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #333;
+}
+
+/*=====================================
+  SCREEN 2: FUNCTION SELECTION (CUTE PINK STYLE)
+=====================================*/
+.function-selection-screen {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 40px 20px;
+    background: linear-gradient(135deg, #fff1f5 0%, #ffdbe9 100%);
+}
+
+.selection-box {
+    width: 100%;
+    max-width: 400px;
+    background-color: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 40px 30px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    text-align: center;
+}
+
+.current-user-profile .profile-card__avatar {
+    width: 80px;
+    height: 80px;
+    border-color: white;
+}
+
+.current-user-profile .profile-card__name {
+    font-size: 1.5rem;
+    color: #444;
+    margin-top: 10px;
+}
+
+.function-selection__title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #c2185b;
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+.function-list {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.function-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100px;
+    height: 100px;
+    background-color: #ffffff;
+    border-radius: 16px;
+    border: 2px solid transparent;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.function-card__icon {
+    width: 40px;
+    height: 40px;
+    margin-bottom: 8px;
+}
+
+.function-card__name {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #555;
+}
+
+.function-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(224, 153, 181, 0.4);
+    border-color: #ff85b3;
+}
+
+/*=====================================
+  FUNCTION PAGE LAYOUT (e.g., Calendar)
+=====================================*/
+#app-container {
+    max-width: 430px;
+    margin: 0 auto;
+    min-height: 100vh;
+    background-color: #f9f9f9;
+}
+
+.app-header {
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    height: 60px;
+    background-color: #fff;
+    color: #333;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.back-button {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 1rem;
+    font-weight: 600;
+    padding: 8px;
+    margin-left: -8px;
+}
+
+body[data-theme="quynh"] .back-button {
+    color: #c2185b;
+}
+
+body[data-theme="tuan"] .back-button {
+    color: #007aff;
+}
+
+.app-header__title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.page-content {
+    padding: 20px;
+}
+
+/*=====================================
+  CALENDAR PAGE STYLES
+=====================================*/
+.calendar-container {
+    padding: 20px;
+}
+
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.month-year-header {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #333;
+}
+
+.nav-button {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #555;
+    padding: 4px 12px;
+    border-radius: 8px;
+    transition: background-color 0.2s;
+}
+
+.nav-button:hover {
+    background-color: #e9e9e9;
+}
+
+/* Grid hiển thị lịch tuần */
+.week-view-grid {
+    display: grid;
+    /* 8 cột: 1 cột cho giờ, 7 cột cho các ngày */
+    grid-template-columns: 50px repeat(7, 1fr); 
+    grid-template-rows: auto; /* Chiều cao hàng tự động */
+}
+
+/* Tên các thứ trong tuần (T2, T3,...) */
+.day-header {
+    text-align: center;
+    padding-bottom: 10px;
+}
+
+.day-label {
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: #666;
+    text-transform: uppercase;
+}
+
+.date-label {
+    font-size: 1.5rem;
+    font-weight: 600;
+    width: 36px;
+    height: 36px;
+    line-height: 36px;
+    border-radius: 50%;
+    margin: 4px auto 0;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+/* Style cho ngày hôm nay */
+.date-label.today {
+    background-color: #c2185b; /* Màu hồng đậm */
+    color: white;
+}
+body[data-theme="tuan"] .date-label.today {
+    background-color: #007aff; /* Màu xanh */
+}
+
+/* Cột hiển thị giờ */
+.time-slot-labels {
+    grid-column: 1 / 2; /* Chiếm cột đầu tiên */
+}
+
+/* Ô hiển thị các sự kiện */
+.day-column {
+    border-left: 1px solid #e0e0e0;
+    position: relative; /* Quan trọng để định vị sự kiện */
+}
+
+/* Cột đầu tiên không cần đường kẻ bên trái */
+.day-column:first-of-type {
+    border-left: none;
+}
+
+/*=====================================
+  EVENT BOX STYLES
+=====================================*/
+.event-box {
+    position: absolute;
+    left: 4px;
+    right: 4px;
+    background-color: #fce4ec; /* Màu hồng nhạt mặc định */
+    border-left: 4px solid #c2185b; /* Viền hồng đậm */
+    border-radius: 4px;
+    padding: 8px;
+    overflow: hidden;
+    font-size: 0.8rem;
+    color: #444;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Áp dụng theme cho sự kiện của Tuân */
+body[data-theme="tuan"] .event-box {
+    background-color: #eaf5ff;
+    border-left-color: #007aff;
+}
+
+.event-subject {
+    font-weight: 600;
+    margin-bottom: 4px;
+    color: #333;
+}
+
+.event-time, .event-classroom {
+    font-size: 0.75rem;
+    opacity: 0.8;
+}
+
+/*=====================================
+  MODAL & FORM STYLES
+=====================================*/
+.fab {
+    position: fixed;
+    bottom: 24px;
+    /* Căn lề fab vào trong #app-container */
+    right: calc(50% - 430px / 2 + 24px); 
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background-color: #c2185b; /* Màu hồng */
+    color: white;
+    font-size: 2rem;
+    line-height: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s;
+    z-index: 200;
+}
+body[data-theme="tuan"] .fab {
+    background-color: #007aff; /* Màu xanh */
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background-color: white;
+    padding: 24px;
+    border-radius: 16px;
+    width: 90%;
+    max-width: 400px;
+}
+
+.modal-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.form-group {
+    margin-bottom: 16px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 0.9rem;
+    font-weight: 500;
+    margin-bottom: 6px;
+    color: #555;
+}
+
+.form-group input[type="text"],
+.form-group input[type="time"],
+.form-group input[type="date"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 1rem;
+}
+
+.form-group-inline {
+    display: flex;
+    gap: 16px;
+}
+
+.form-group-inline .form-group {
+    flex: 1;
+}
+
+.weekdays-selector {
+    display: flex;
+    justify-content: space-between;
+}
+
+.weekday-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 1px solid #ccc;
+    font-weight: 600;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.weekday-btn.active {
+    background-color: #c2185b;
+    color: white;
+    border-color: #c2185b;
+}
+body[data-theme="tuan"] .weekday-btn.active {
+    background-color: #007aff;
+    border-color: #007aff;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 24px;
+}
+
+.button {
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+.button--secondary {
+    background-color: #e0e0e0;
+    color: #333;
+}
+
+/* VIEW TOGGLE NAVIGATION */
+.view-toggle-nav {
+    position: absolute; /* Quan trọng để căn giữa */
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.view-toggle-btn {
+    padding: 6px 14px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #555;
+    background-color: white;
+    transition: background-color 0.2s, color 0.2s;
+    border: none;
+}
+
+.view-toggle-btn.active {
+    background-color: #ff85b3; /* Màu hồng */
+    color: white;
+}
+body[data-theme="tuan"] .view-toggle-btn.active {
+    background-color: #007aff; /* Màu xanh */
+}
+
+/* Ẩn tiêu đề Tháng/Năm khi ở chế độ xem Ngày */
+#month-year-header {
+    display: none; 
+}

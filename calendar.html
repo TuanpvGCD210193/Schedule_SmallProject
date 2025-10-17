@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lịch | UniSchedule</title>
+    
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js" type="module"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database.js" type="module"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="css/base/reset.css">
+    <link rel="stylesheet" href="css/layout/main.css">
+</head>
+<body>
+    <main id="app-container">
+        <header class="app-header">
+            <button id="back-to-functions-btn" class="back-button">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+                </svg>
+                <span>Chức năng</span>
+            </button>
+            <nav class="view-toggle-nav">
+                <button id="view-week-btn" class="view-toggle-btn active">Tuần</button>
+                <button id="view-day-btn" class="view-toggle-btn">Ngày</button>
+            </nav>
+        </header>
+
+        <div id="calendar-container" class="calendar-container">
+            <div class="calendar-header">
+                <button id="prev-week-btn" class="nav-button">&lt;</button>
+                <h2 id="month-year-header" class="month-year-header">Tháng 10 2025</h2>
+                <button id="next-week-btn" class="nav-button">&gt;</button>
+            </div>
+
+            <div id="week-view-grid" class="week-view-grid">
+                </div>
+        </div>
+
+        <button id="add-event-fab" class="fab">+</button>
+    </main>
+
+    <div id="event-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <h2 class="modal-title">Tạo Sự Kiện Mới</h2>
+            <form id="event-form">
+                <div class="form-group">
+                    <label for="event-title">Tên sự kiện</label>
+                    <input type="text" id="event-title" required placeholder="VD: Môn học của em">
+                </div>
+
+                <div class="form-group-inline">
+                    <div class="form-group">
+                        <label for="start-time">Quỳnh học từ mấy giờ nè?</label>
+                        <input type="time" id="start-time" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="end-time">Khi nào Quỳnh học xong!</label>
+                        <input type="time" id="end-time" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Em học môn đó vào thứ nào trong </label>
+                    <div id="weekdays-selector" class="weekdays-selector">
+                        <button type="button" class="weekday-btn" data-day="1">T2</button>
+                        <button type="button" class="weekday-btn" data-day="2">T3</button>
+                        <button type="button" class="weekday-btn" data-day="3">T4</button>
+                        <button type="button" class="weekday-btn" data-day="4">T5</button>
+                        <button type="button" class="weekday-btn" data-day="5">T6</button>
+                        <button type="button" class="weekday-btn" data-day="6">T7</button>
+                        <button type="button" class="weekday-btn" data-day="7">CN</button>
+                    </div>
+                </div>
+
+                <div class="form-group-inline">
+                    <div class="form-group">
+                        <label for="start-date">Từ ngày</label>
+                        <input type="date" id="start-date">
+                    </div>
+                    <div class="form-group">
+                        <label for="end-date">Đến ngày</label>
+                        <input type="date" id="end-date">
+                    </div>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="button" id="cancel-btn" class="button button--secondary">Hủy</button>
+                    <button type="submit" id="save-btn" class="button">Lưu</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script type="module" src="js/calendar.js"></script>
+</body>
+</html>
