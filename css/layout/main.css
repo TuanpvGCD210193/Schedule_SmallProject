@@ -37,6 +37,7 @@ button {
     background: none;
     border: none;
     cursor: pointer;
+    cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="black" d="M12 2L12 22M2 12L22 12"/></svg>') 12 12, crosshair;
     font-family: inherit;
     transition: var(--transition);
 }
@@ -554,19 +555,23 @@ body[data-theme="tuan"] .date-label.today {
     box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3);
 }
 
-.day-column {
-    border-right: 1px solid var(--border-light);
-    position: relative;
-    height: calc(var(--hour-height) * 18);
-    background: linear-gradient(to bottom, 
-        transparent calc(var(--hour-height) - 1px), 
-        var(--border-light) calc(var(--hour-height) - 1px), 
-        var(--border-light) var(--hour-height), 
-        transparent var(--hour-height)
+/* Fix background position */
+.day-column::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: repeating-linear-gradient(
+        to bottom,
+        transparent 0px,
+        transparent calc(var(--hour-height) - 1px),
+        var(--border-light) calc(var(--hour-height) - 1px),
+        var(--border-light) var(--hour-height)
     );
-    background-size: 100% var(--hour-height);
-    cursor: crosshair;
-    transition: background-color 0.2s ease;
+    pointer-events: none;
+    z-index: 0;
 }
 
 .day-column:last-child {
@@ -593,6 +598,7 @@ body[data-theme="tuan"] .date-label.today {
     cursor: pointer;
     transition: var(--transition);
     border-left: 4px solid;
+    z-index: 1;
 }
 
 .event-box:hover {
@@ -681,6 +687,30 @@ body[data-theme="tuan"] .event-box.category-personal {
     transform: scale(1.1);
 }
 
+.floating-heart {
+    position: fixed;
+    font-size: 24px;
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0;
+    animation: floatHeart 1.5s ease-out forwards;
+    text-shadow: 0 2px 8px rgba(194, 24, 91, 0.3);
+}
+
+@keyframes floatHeart {
+    0% {
+        opacity: 1;
+        transform: translate(0, 0) scale(0.5) rotate(0deg);
+    }
+    50% {
+        opacity: 0.8;
+        transform: translate(var(--drift, 0), -40px) scale(1) rotate(10deg);
+    }
+    100% {
+        opacity: 0;
+        transform: translate(calc(var(--drift, 0) * 1.5), -80px) scale(1.2) rotate(15deg);
+    }
+}
 /*=====================================
   FAB (Floating Action Button)
 =====================================*/

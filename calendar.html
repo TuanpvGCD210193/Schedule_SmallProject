@@ -85,7 +85,6 @@
             transform: translateY(-50%);
         }
 
-        /* Floating Animation */
         @keyframes float-volleyball {
             0%, 100% { transform: translate(0, 0) rotate(0deg); }
             25% { transform: translate(20px, -30px) rotate(90deg); }
@@ -133,7 +132,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            border-bottom: 3px solid var(--border-light);
+            border-bottom: 1px solid var(--border-light);
         }
 
         .back-button {
@@ -311,7 +310,7 @@
         /* Time Axis */
         .time-axis {
             flex-shrink: 0;
-            width: 70px;
+            width: 50px;
             background: var(--bg-light);
             border-right: 3px solid var(--border-light);
         }
@@ -320,7 +319,7 @@
             height: var(--hour-height);
             display: flex;
             align-items: flex-start;
-            ustify-content: center;
+            justify-content: center;
             padding-top: 0px;
             font-size: 0.85rem;
             font-weight: 600;
@@ -363,10 +362,10 @@
         .date-label {
             font-size: 1.8rem;
             font-weight: 800;
-            width: 50px;
+            /* width: 35px; */
             height: 50px;
             line-height: 50px;
-            border-radius: 50%;
+            border-radius: 10%;
             transition: all 0.3s ease;
             color: var(--text-dark);
         }
@@ -405,29 +404,6 @@
 
         .day-column:hover {
             background-color: rgba(194, 24, 91, 0.02);
-        }
-
-        /* Current Time Line */
-        .current-time-line {
-            position: absolute;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: #ff1744;
-            z-index: 20;
-            pointer-events: none;
-        }
-
-        .current-time-line::before {
-            content: '';
-            position: absolute;
-            left: -6px;
-            top: -4px;
-            width: 10px;
-            height: 10px;
-            background: #ff1744;
-            border-radius: 50%;
-            box-shadow: 0 0 10px rgba(255, 23, 68, 0.5);
         }
 
         /* Event Box */
@@ -564,50 +540,161 @@
             to { transform: scale(1); }
         }
 
-        /* View Detail Modal */
-        .detail-section {
-            margin-bottom: 24px;
+        .modal-content::-webkit-scrollbar {
+            width: 8px;
         }
 
-        .detail-section h3 {
-            font-size: 1.1rem;
+        .modal-content::-webkit-scrollbar-thumb {
+            background: var(--primary-quynh);
+            border-radius: 4px;
+        }
+
+        .modal-title {
+            font-size: 1.8rem;
+            font-weight: 800;
             color: var(--primary-quynh);
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            margin-bottom: 24px;
+            text-align: center;
         }
 
-        .detail-content {
+        /* Modal Toggle */
+        .modal-toggle {
+            display: flex;
+            justify-content: center;
             background: var(--bg-light);
-            padding: 16px;
-            border-radius: 12px;
-            border: 2px solid var(--border-light);
+            border-radius: 28px;
+            padding: 6px;
+            margin-bottom: 24px;
+            gap: 6px;
         }
 
-        .detail-row {
-            display: flex;
-            align-items: flex-start;
-            gap: 12px;
-            padding: 10px 0;
-            border-bottom: 1px solid var(--border-light);
-        }
-
-        .detail-row:last-child {
-            border-bottom: none;
-        }
-
-        .detail-label {
+        .modal-toggle-btn {
+            flex: 1;
+            padding: 10px 16px;
+            border-radius: 22px;
+            font-size: 0.95rem;
             font-weight: 600;
             color: var(--text-medium);
-            min-width: 100px;
+            transition: var(--transition);
+            background: transparent;
+            border: none;
+            cursor: pointer;
         }
 
-        .detail-value {
-            flex: 1;
-            color: var(--text-dark);
+        .modal-toggle-btn.active {
+            background: white;
+            color: var(--primary-quynh);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
 
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--text-medium);
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid var(--border-light);
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary-quynh);
+            box-shadow: 0 0 0 4px rgba(194, 24, 91, 0.1);
+        }
+
+        .form-group-inline {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        /* Category Selector */
+        .category-selector {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-top: 8px;
+        }
+
+        .category-btn {
+            padding: 12px;
+            border: 2px solid var(--border-light);
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--text-medium);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            background: transparent;
+            cursor: pointer;
+        }
+
+        .category-btn:hover {
+            border-color: var(--primary-quynh);
+            background: rgba(194, 24, 91, 0.05);
+        }
+
+        .category-btn.active {
+            border-color: var(--primary-quynh);
+            background: rgba(194, 24, 91, 0.1);
+            color: var(--primary-quynh);
+        }
+
+        /* Weekday Selector */
+        .weekdays-selector {
+            display: flex;
+            justify-content: space-between;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .weekday-btn {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            border: 2px solid var(--border-light);
+            font-weight: 700;
+            font-size: 0.85rem;
+            color: var(--text-medium);
+            transition: all 0.3s ease;
+            background: transparent;
+            cursor: pointer;
+        }
+
+        .weekday-btn:hover {
+            border-color: var(--primary-quynh);
+            background: rgba(194, 24, 91, 0.05);
+        }
+
+        .weekday-btn.active {
+            background: var(--primary-quynh);
+            border-color: var(--primary-quynh);
+            color: white;
+            transform: scale(1.1);
+        }
+
+        /* Form Actions */
         .modal-actions {
             display: flex;
             gap: 12px;
@@ -645,197 +732,10 @@
             color: white;
         }
 
-        /* Form Styles */
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
-            display: block;
-            font-size: 0.9rem;
-            font-weight: 600;
-            margin-bottom: 8px;
-            color: var(--text-medium);
-        }
-
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
-            width: 100%;
-            padding: 14px 16px;
-            border: 2px solid var(--border-light);
-            border-radius: 12px;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-            background: white;
-        }
-
-        .form-group input:focus,
-        .form-group select:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: var(--primary-quynh);
-            box-shadow: 0 0 0 4px rgba(194, 24, 91, 0.1);
-        }
-
-        /* Hover Effects */
-        .volleyball-hover {
-            position: fixed;
-            width: 40px;
-            height: 40px;
-            background: radial-gradient(circle at 35% 35%, #fff, #ffd4e5);
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 1000;
-            opacity: 0;
-            animation: float-hover-volleyball 1.5s ease-out forwards;
-            box-shadow: 0 4px 12px rgba(194, 24, 91, 0.3);
-        }
-
-        .volleyball-hover::before,
-        .volleyball-hover::after {
-            content: '';
-            position: absolute;
-            background: var(--primary-quynh);
-            opacity: 0.5;
-        }
-
-        .volleyball-hover::before {
-            width: 2px;
-            height: 100%;
-            left: 50%;
-            transform: translateX(-50%);
-        }
-
-        .volleyball-hover::after {
-            width: 100%;
-            height: 2px;
-            top: 50%;
-            transform: translateY(-50%);
-        }
-
-        @keyframes float-hover-volleyball {
-            0% {
-                opacity: 1;
-                transform: translate(0, 0) scale(0.5) rotate(0deg);
-            }
-            100% {
-                opacity: 0;
-                transform: translate(var(--dx, 0), var(--dy, -80px)) scale(1.2) rotate(360deg);
-            }
-        }
-
-        .heart-click {
-            position: fixed;
-            font-size: 32px;
-            pointer-events: none;
-            z-index: 1100;
-            opacity: 0;
-            animation: float-heart 2s ease-out forwards;
-            filter: drop-shadow(0 4px 8px rgba(194, 24, 91, 0.5));
-        }
-
-        @keyframes float-heart {
-            0% {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
-            100% {
-                opacity: 0;
-                transform: translateY(-120px) scale(1.8);
-            }
-        }
-
-        /* Mobile Responsive */
-        @media (max-width: 768px) {
-            :root {
-                --hour-height: 100px;
-            }
-
-            .calendar-header {
-                padding: 16px;
-            }
-
-            .calendar-nav {
-                flex-direction: column;
-                gap: 12px;
-            }
-
-            .nav-controls {
-                width: 100%;
-                justify-content: space-between;
-            }
-
-            .month-year-header {
-                font-size: 1.2rem;
-            }
-
-            .view-toggle-nav {
-                display: none; /* Hide on mobile, auto-switch based on screen */
-            }
-
-            .schedule-wrapper {
-                max-height: calc(100vh - 250px);
-            }
-
-            .time-axis {
-                width: 60px;
-            }
-
-            .time-label-line {
-                font-size: 0.75rem;
-            }
-
-            .week-view-grid {
-                grid-template-columns: 1fr !important;
-            }
-
-            .day-header {
-                padding: 12px;
-            }
-
-            .date-label {
-                font-size: 1.5rem;
-                width: 45px;
-                height: 45px;
-                line-height: 45px;
-            }
-
-            .event-box {
-                padding: 12px;
-            }
-
-            .event-subject {
-                font-size: 1rem;
-            }
-
-            .fab {
-                bottom: calc(20px + var(--safe-area-bottom));
-                right: 20px;
-                width: 60px;
-                height: 60px;
-                font-size: 2rem;
-            }
-
-            .modal-content {
-                padding: 24px;
-                max-height: 85vh;
-            }
-        }
-
-        /* iPhone 14 Pro Max specific */
-        @media (max-width: 430px) and (max-height: 932px) {
-            .app-header {
-                padding: 12px 16px;
-            }
-
-            .calendar-container {
-                padding: 12px;
-            }
-
-            .event-info {
-                font-size: 0.7rem;
-            }
+        /* Required field indicator */
+        .required {
+            color: #ff3b30;
+            margin-left: 4px;
         }
 
         /* Notification */
@@ -864,6 +764,38 @@
             to {
                 transform: translateX(0);
                 opacity: 1;
+            }
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            :root {
+                --hour-height: 100px;
+            }
+
+            .calendar-header {
+                padding: 16px;
+            }
+
+            .calendar-nav {
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .view-toggle-nav {
+                display: none;
+            }
+
+            .modal-content {
+                padding: 24px;
+            }
+
+            .form-group-inline {
+                grid-template-columns: 1fr;
+            }
+
+            .category-selector {
+                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -936,68 +868,123 @@
         <button class="fab" id="add-event-fab">+</button>
     </div>
 
-    <!-- Event Detail Modal -->
-    <div id="event-detail-modal" class="modal-overlay hidden">
-        <div class="modal-content">
-            <h2 style="font-size: 1.8rem; font-weight: 800; color: var(--primary-quynh); margin-bottom: 24px; text-align: center;">
-                Chi tiết sự kiện
-            </h2>
-            
-            <div id="event-detail-content"></div>
-            
-            <div class="modal-actions">
-                <button class="button button--secondary" id="detail-close-btn">Đóng</button>
-                <button class="button button--primary" id="detail-edit-btn">Chỉnh sửa</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Event Form Modal -->
+    <!-- Event Modal -->
     <div id="event-modal" class="modal-overlay hidden">
         <div class="modal-content">
-            <h2 id="modal-title" style="font-size: 1.8rem; font-weight: 800; color: var(--primary-quynh); margin-bottom: 24px; text-align: center;">
-                Tạo Sự Kiện Mới
-            </h2>
+            <h2 id="modal-title" class="modal-title">Tạo Sự Kiện Mới</h2>
             
+            <!-- Mode Toggle -->
+            <div class="modal-toggle">
+                <button class="modal-toggle-btn active" id="event-mode-btn">📅 Sự kiện</button>
+                <button class="modal-toggle-btn" id="schedule-mode-btn">📚 Lịch học</button>
+            </div>
+
             <form id="event-form">
+                <!-- Common Fields -->
                 <div class="form-group">
-                    <label>Tiêu đề <span style="color: red;">*</span></label>
+                    <label id="title-label">Tiêu đề <span class="required">*</span></label>
                     <input type="text" id="event-title" required placeholder="VD: Họp nhóm dự án">
                 </div>
 
                 <div class="form-group">
                     <label>Danh mục</label>
-                    <select id="event-category">
-                        <option value="personal">📌 Cá nhân</option>
-                        <option value="study">📚 Học tập</option>
-                        <option value="work">💼 Công việc</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label>Ngày <span style="color: red;">*</span></label>
-                    <input type="date" id="event-date" required>
-                </div>
-
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
-                    <div class="form-group">
-                        <label>Bắt đầu <span style="color: red;">*</span></label>
-                        <input type="time" id="start-time" required min="05:00" max="23:00">
-                    </div>
-                    <div class="form-group">
-                        <label>Kết thúc <span style="color: red;">*</span></label>
-                        <input type="time" id="end-time" required min="05:00" max="23:00">
+                    <div class="category-selector">
+                        <button type="button" class="category-btn active" data-category="personal">
+                            <span style="font-size: 1.5rem;">📌</span>
+                            <span>Cá nhân</span>
+                        </button>
+                        <button type="button" class="category-btn" data-category="study">
+                            <span style="font-size: 1.5rem;">📚</span>
+                            <span>Học tập</span>
+                        </button>
+                        <button type="button" class="category-btn" data-category="work">
+                            <span style="font-size: 1.5rem;">💼</span>
+                            <span>Công việc</span>
+                        </button>
                     </div>
                 </div>
 
-                <div class="form-group">
-                    <label>Địa điểm</label>
-                    <input type="text" id="event-location" placeholder="VD: P301 - FPT Polytechnic">
+                <!-- Single Event Fields -->
+                <div id="single-event-fields">
+                    <div class="form-group">
+                        <label>Ngày <span class="required">*</span></label>
+                        <input type="date" id="single-date" required>
+                    </div>
+
+                    <div class="form-group-inline">
+                        <div class="form-group">
+                            <label>Bắt đầu <span class="required">*</span></label>
+                            <input type="time" id="start-time" required min="05:00" max="23:00">
+                        </div>
+                        <div class="form-group">
+                            <label>Kết thúc <span class="required">*</span></label>
+                            <input type="time" id="end-time" required min="05:00" max="23:00">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Địa điểm</label>
+                        <input type="text" id="event-location" placeholder="VD: P301 - FPT Polytechnic">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Mô tả</label>
+                        <textarea id="event-description" rows="3" placeholder="Thêm chi tiết về sự kiện..."></textarea>
+                    </div>
                 </div>
 
-                <div class="form-group">
-                    <label>Mô tả</label>
-                    <textarea id="event-description" rows="3" placeholder="Thêm chi tiết về sự kiện..."></textarea>
+                <!-- Recurring Schedule Fields -->
+                <div id="recurring-fields" class="hidden">
+                    <div class="form-group-inline">
+                        <div class="form-group">
+                            <label>Lớp học</label>
+                            <input type="text" id="event-classroom" placeholder="VD: P301, A103">
+                        </div>
+                        <div class="form-group">
+                            <label>Cơ sở</label>
+                            <input type="text" id="event-campus" placeholder="VD: FPT Polytechnic HN">
+                        </div>
+                    </div>
+
+                    <div class="form-group-inline">
+                        <div class="form-group">
+                            <label>Bắt đầu <span class="required">*</span></label>
+                            <input type="time" id="recurring-start-time" required min="05:00" max="23:00">
+                        </div>
+                        <div class="form-group">
+                            <label>Kết thúc <span class="required">*</span></label>
+                            <input type="time" id="recurring-end-time" required min="05:00" max="23:00">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Chọn các thứ trong tuần <span class="required">*</span></label>
+                        <div class="weekdays-selector">
+                            <button type="button" class="weekday-btn" data-day="0">CN</button>
+                            <button type="button" class="weekday-btn" data-day="1">T2</button>
+                            <button type="button" class="weekday-btn" data-day="2">T3</button>
+                            <button type="button" class="weekday-btn" data-day="3">T4</button>
+                            <button type="button" class="weekday-btn" data-day="4">T5</button>
+                            <button type="button" class="weekday-btn" data-day="5">T6</button>
+                            <button type="button" class="weekday-btn" data-day="6">T7</button>
+                        </div>
+                    </div>
+
+                    <div class="form-group-inline">
+                        <div class="form-group">
+                            <label>Ngày bắt đầu <span class="required">*</span></label>
+                            <input type="date" id="start-date" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Ngày kết thúc <span class="required">*</span></label>
+                            <input type="date" id="end-date" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Ghi chú</label>
+                        <textarea id="recurring-description" rows="3" placeholder="Thêm ghi chú về môn học..."></textarea>
+                    </div>
                 </div>
                 
                 <div class="modal-actions">
@@ -1009,40 +996,13 @@
         </div>
     </div>
 
-    <script>
-        // Sample data for demonstration
+    <script type="module">
+
+        // Import Firebase functions
+        import { getUserEvents, addEvent, updateEvent, deleteEvent } from './js/data/database.js';
+        // Sample data
         const sampleEvents = {
-            'event1': {
-                type: 'single',
-                title: 'Phát triển ứng dụng Web',
-                category: 'study',
-                date: '2025-10-20',
-                startTime: '07:00',
-                endTime: '09:30',
-                classroom: 'P301',
-                campus: 'FPT Polytechnic Đà Nẵng',
-                description: 'Lớp học lập trình web với giáo viên Nguyễn Văn A'
-            },
-            'event2': {
-                type: 'single',
-                title: 'Tập bóng chuyền 🏐',
-                category: 'personal',
-                date: '2025-10-20',
-                startTime: '16:00',
-                endTime: '18:00',
-                classroom: 'Sân thể thao',
-                description: 'Tập luyện cùng đội'
-            },
-            'event3': {
-                type: 'single',
-                title: 'Họp nhóm dự án',
-                category: 'work',
-                date: '2025-10-21',
-                startTime: '14:00',
-                endTime: '16:00',
-                classroom: 'Phòng họp A',
-                description: 'Review tiến độ dự án'
-            }
+            
         };
 
         // Configuration
@@ -1055,6 +1015,8 @@
         let currentView = window.innerWidth <= 768 ? 'day' : 'week';
         let userEvents = { ...sampleEvents };
         let editingEventId = null;
+        let currentModalMode = 'event';
+        let selectedCategory = 'personal';
 
         // DOM Elements
         const monthYearHeader = document.getElementById('month-year-header');
@@ -1064,50 +1026,89 @@
         const prevNavBtn = document.getElementById('prev-nav-btn');
         const nextNavBtn = document.getElementById('next-nav-btn');
         const todayBtn = document.getElementById('today-btn');
-        const viewDayBtn = document.getElementById('view-day-btn');
-        const viewWeekBtn = document.getElementById('view-week-btn');
-        const viewMonthBtn = document.getElementById('view-month-btn');
         const addEventFab = document.getElementById('add-event-fab');
-        const eventDetailModal = document.getElementById('event-detail-modal');
         const eventModal = document.getElementById('event-modal');
         const eventForm = document.getElementById('event-form');
         const deleteBtn = document.getElementById('delete-btn');
+        const eventModeBtn = document.getElementById('event-mode-btn');
+        const scheduleModeBtn = document.getElementById('schedule-mode-btn');
+        const singleEventFields = document.getElementById('single-event-fields');
+        const recurringFields = document.getElementById('recurring-fields');
+        const categoryButtons = document.querySelectorAll('.category-btn');
+        const weekdayButtons = document.querySelectorAll('.weekday-btn');
 
         // Initialize
-        function init() {
-            createTimeAxis();
-            updateView();
-            attachEventListeners();
-            updateCurrentTimeLine();
-            setInterval(updateCurrentTimeLine, 60000); // Update every minute
-            
-            // Auto-scroll to current time on mobile
-            if (window.innerWidth <= 768) {
-                setTimeout(scrollToCurrentTime, 500);
+       async function init() {
+        // Lấy user từ URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const currentUser = urlParams.get('user') || 'quynh';
+        
+        // Load dữ liệu từ Firebase
+        try {
+            const firebaseEvents = await getUserEvents(currentUser);
+            if (firebaseEvents) {
+                userEvents = firebaseEvents;
+            } else {
+                userEvents = sampleEvents; // Fallback
             }
-
-            showNotification('Chào mừng! _uyqhn 🏐💖', 'success');
+        } catch (error) {
+            console.error('Lỗi load dữ liệu:', error);
+            userEvents = sampleEvents;
         }
+        
+        createTimeAxis();
+        updateView();
+        attachEventListeners();
+        
+        if (window.innerWidth <= 768) {
+            setTimeout(scrollToCurrentTime, 500);
+        }
+
+        showNotification('Chào mừng _uyqhn! 🏐💖', 'success');
+    }
 
         // Create Time Axis
         function createTimeAxis() {
-        timeAxis.innerHTML = '';
-        
-        // Tạo spacer để align với day header
-        const headerSpacer = document.createElement('div');
-        headerSpacer.style.height = '97px';  // Chiều cao của .day-header
-        headerSpacer.style.flexShrink = '0';
-        timeAxis.appendChild(headerSpacer);
-        
-        // Tạo các time labels
-        for (let hour = DAY_START_HOUR; hour < DAY_END_HOUR; hour++) {
-            const hourString = hour.toString().padStart(2, '0') + ':00';
-            const div = document.createElement('div');
-            div.className = 'time-label-line';
-            div.textContent = hourString;
-            timeAxis.appendChild(div);
+            timeAxis.innerHTML = '';
+            
+            const headerSpacer = document.createElement('div');
+            headerSpacer.style.height = '97px';
+            headerSpacer.style.flexShrink = '0';
+            timeAxis.appendChild(headerSpacer);
+            
+            for (let hour = DAY_START_HOUR; hour < DAY_END_HOUR; hour++) {
+                const hourString = hour.toString().padStart(2, '0') + ':00';
+                const div = document.createElement('div');
+                div.className = 'time-label-line';
+                div.textContent = hourString;
+                timeAxis.appendChild(div);
+            }
         }
-    }
+
+        // Modal Mode Management
+        function setModalMode(mode) {
+            currentModalMode = mode;
+            const modalTitle = document.getElementById('modal-title');
+            const titleLabel = document.getElementById('title-label');
+            
+            if (mode === 'event') {
+                modalTitle.textContent = editingEventId ? 'Chỉnh sửa Sự kiện' : 'Tạo Sự Kiện Mới';
+                titleLabel.innerHTML = 'Tiêu đề <span class="required">*</span>';
+                document.getElementById('event-title').placeholder = "VD: Họp nhóm dự án";
+                eventModeBtn.classList.add('active');
+                scheduleModeBtn.classList.remove('active');
+                singleEventFields.classList.remove('hidden');
+                recurringFields.classList.add('hidden');
+            } else {
+                modalTitle.textContent = editingEventId ? 'Chỉnh sửa Lịch Học' : 'Tạo Lịch Học Mới';
+                titleLabel.innerHTML = 'Tên môn học <span class="required">*</span>';
+                document.getElementById('event-title').placeholder = "VD: Phát triển ứng dụng Web";
+                scheduleModeBtn.classList.add('active');
+                eventModeBtn.classList.remove('active');
+                recurringFields.classList.remove('hidden');
+                singleEventFields.classList.add('hidden');
+            }
+        }
 
         // Get week days
         function getWeekDays(date) {
@@ -1126,55 +1127,21 @@
 
         // Update View
         function updateView() {
-            if (currentView === 'day') {
-                renderDayView(currentDate);
-            } else if (currentView === 'week') {
-                renderWeekView(currentDate);
-            }
+            renderWeekView(currentDate);
             updateHeader();
         }
 
         // Update Header
         function updateHeader() {
-            if (currentView === 'day') {
-                const dayName = ['Chủ nhật', 'Thứ hai', 'Thứ ba', 'Thứ tư', 'Thứ năm', 'Thứ sáu', 'Thứ bảy'];
-                monthYearHeader.textContent = `${dayName[currentDate.getDay()]}, ${currentDate.getDate()}/${currentDate.getMonth() + 1}/${currentDate.getFullYear()}`;
+            const weekDays = getWeekDays(currentDate);
+            const firstDay = weekDays[0];
+            const lastDay = weekDays[6];
+            
+            if (firstDay.getMonth() !== lastDay.getMonth()) {
+                monthYearHeader.textContent = `Thg ${firstDay.getMonth() + 1} - Thg ${lastDay.getMonth() + 1}, ${lastDay.getFullYear()}`;
             } else {
-                const weekDays = getWeekDays(currentDate);
-                const firstDay = weekDays[0];
-                const lastDay = weekDays[6];
-                
-                if (firstDay.getMonth() !== lastDay.getMonth()) {
-                    monthYearHeader.textContent = `Thg ${firstDay.getMonth() + 1} - Thg ${lastDay.getMonth() + 1}, ${lastDay.getFullYear()}`;
-                } else {
-                    monthYearHeader.textContent = `Tháng ${firstDay.getMonth() + 1}, ${firstDay.getFullYear()}`;
-                }
+                monthYearHeader.textContent = `Tháng ${firstDay.getMonth() + 1}, ${firstDay.getFullYear()}`;
             }
-        }
-
-        // Render Day View
-        function renderDayView(date) {
-            weekGrid.style.gridTemplateColumns = '1fr';
-            weekGrid.innerHTML = '';
-            
-            const today = new Date();
-            const isToday = date.toDateString() === today.toDateString();
-            const dayLabels = ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'];
-            
-            weekGrid.innerHTML = `
-                <div class="day-header">
-                    <div class="day-label">${dayLabels[date.getDay()]}</div>
-                    <div class="date-label ${isToday ? 'today' : ''}">${date.getDate()}</div>
-                </div>
-            `;
-            
-            const dayColumn = document.createElement('div');
-            dayColumn.className = 'day-column';
-            dayColumn.dataset.date = date.toISOString().split('T')[0];
-            weekGrid.appendChild(dayColumn);
-            
-            renderEventsForDay(dayColumn, date);
-            attachHoverEffects();
         }
 
         // Render Week View
@@ -1205,18 +1172,27 @@
                 weekGrid.appendChild(dayColumn);
                 renderEventsForDay(dayColumn, day);
             });
-            
-            attachHoverEffects();
         }
 
-        // Render Events for a Day
+        // Render Events for Day
         function renderEventsForDay(dayColumn, date) {
             const dateString = date.toISOString().split('T')[0];
             
             Object.entries(userEvents).forEach(([eventId, event]) => {
-                if (event.date === dateString) {
+                if (event.type === 'single' && event.date === dateString) {
                     const eventEl = createEventElement(event, eventId);
                     if (eventEl) dayColumn.appendChild(eventEl);
+                }
+                
+                if (event.type === 'recurring' && event.daysOfWeek) {
+                    const startDate = event.startDate ? new Date(event.startDate) : null;
+                    const endDate = event.endDate ? new Date(event.endDate) : null;
+                    const inRange = (!startDate || date >= startDate) && (!endDate || date <= endDate);
+                    
+                    if (inRange && event.daysOfWeek.includes(date.getDay())) {
+                        const eventEl = createEventElement(event, eventId);
+                        if (eventEl) dayColumn.appendChild(eventEl);
+                    }
                 }
             });
         }
@@ -1249,8 +1225,9 @@
             eventEl.style.top = `${top}px`;
             eventEl.style.height = `${height}px`;
 
-            const title = event.title || 'Không có tiêu đề';
+            const title = event.subjectName || event.title || 'Không có tiêu đề';
             const timeStr = `${event.startTime} - ${event.endTime}`;
+            const location = event.classroom || event.campus || '';
             
             eventEl.innerHTML = `
                 <div class="event-subject">${title}</div>
@@ -1262,270 +1239,247 @@
                         </svg>
                         <span>${timeStr}</span>
                     </div>
-                    ${event.classroom ? `
+                    ${location ? `
                     <div class="event-info-row">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
                             <circle cx="12" cy="10" r="3"></circle>
                         </svg>
-                        <span>${event.classroom}</span>
-                    </div>
-                    ` : ''}
-                    ${event.campus ? `
-                    <div class="event-info-row">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-                        </svg>
-                        <span>${event.campus}</span>
+                        <span>${location}</span>
                     </div>
                     ` : ''}
                 </div>
             `;
 
-            eventEl.addEventListener('click', (e) => {
-                createHeartEffect(e.clientX, e.clientY);
-                setTimeout(() => showEventDetail(eventId), 200);
-            });
+            eventEl.addEventListener('click', () => openModal(eventId));
 
             return eventEl;
         }
 
-        // Show Event Detail
-        function showEventDetail(eventId) {
-            const event = userEvents[eventId];
-            if (!event) return;
-
-            const detailContent = document.getElementById('event-detail-content');
-            const categoryEmojis = {
-                'personal': '📌',
-                'study': '📚',
-                'work': '💼'
-            };
-
-            detailContent.innerHTML = `
-                <div class="detail-section">
-                    <h3>${categoryEmojis[event.category] || '📌'} Thông tin cơ bản</h3>
-                    <div class="detail-content">
-                        <div class="detail-row">
-                            <div class="detail-label">Tiêu đề:</div>
-                            <div class="detail-value" style="font-weight: 700; font-size: 1.1rem;">${event.title}</div>
-                        </div>
-                        <div class="detail-row">
-                            <div class="detail-label">Ngày:</div>
-                            <div class="detail-value">${formatDate(event.date)}</div>
-                        </div>
-                        <div class="detail-row">
-                            <div class="detail-label">Thời gian:</div>
-                            <div class="detail-value">${event.startTime} - ${event.endTime}</div>
-                        </div>
-                        <div class="detail-row">
-                            <div class="detail-label">Danh mục:</div>
-                            <div class="detail-value">${getCategoryName(event.category)}</div>
-                        </div>
-                    </div>
-                </div>
-
-                ${event.classroom || event.campus ? `
-                <div class="detail-section">
-                    <h3>📍 Địa điểm</h3>
-                    <div class="detail-content">
-                        ${event.classroom ? `
-                        <div class="detail-row">
-                            <div class="detail-label">Phòng:</div>
-                            <div class="detail-value">${event.classroom}</div>
-                        </div>
-                        ` : ''}
-                        ${event.campus ? `
-                        <div class="detail-row">
-                            <div class="detail-label">Cơ sở:</div>
-                            <div class="detail-value">${event.campus}</div>
-                        </div>
-                        ` : ''}
-                    </div>
-                </div>
-                ` : ''}
-
-                ${event.description ? `
-                <div class="detail-section">
-                    <h3>📝 Mô tả</h3>
-                    <div class="detail-content">
-                        <p style="line-height: 1.6;">${event.description}</p>
-                    </div>
-                </div>
-                ` : ''}
-            `;
-
+        // Open Modal
+        function openModal(eventId = null) {
             editingEventId = eventId;
-            eventDetailModal.classList.remove('hidden');
-            document.body.style.overflow = 'hidden';
-        }
-
-        // Edit Event
-        document.getElementById('detail-edit-btn').addEventListener('click', () => {
-            eventDetailModal.classList.add('hidden');
-            openEditModal(editingEventId);
-        });
-
-        document.getElementById('detail-close-btn').addEventListener('click', () => {
-            eventDetailModal.classList.add('hidden');
-            document.body.style.overflow = '';
-            editingEventId = null;
-        });
-
-        // Open Edit Modal
-        function openEditModal(eventId) {
-            const event = userEvents[eventId];
-            if (!event) return;
-
-            document.getElementById('modal-title').textContent = 'Chỉnh sửa Sự kiện';
-            document.getElementById('event-title').value = event.title || '';
-            document.getElementById('event-category').value = event.category || 'personal';
-            document.getElementById('event-date').value = event.date || '';
-            document.getElementById('start-time').value = event.startTime || '';
-            document.getElementById('end-time').value = event.endTime || '';
-            document.getElementById('event-location').value = event.classroom || '';
-            document.getElementById('event-description').value = event.description || '';
-
-            deleteBtn.classList.remove('hidden');
-            editingEventId = eventId;
-            eventModal.classList.remove('hidden');
-            document.body.style.overflow = 'hidden';
-        }
-
-        // Open Create Modal
-        addEventFab.addEventListener('click', (e) => {
-            createHeartEffect(e.clientX, e.clientY, 3);
             
-            document.getElementById('modal-title').textContent = 'Tạo Sự Kiện Mới';
-            eventForm.reset();
-            document.getElementById('event-date').value = currentDate.toISOString().split('T')[0];
-            deleteBtn.classList.add('hidden');
-            editingEventId = null;
+            if (eventId && userEvents[eventId]) {
+                const event = userEvents[eventId];
+                setModalMode(event.type === 'single' ? 'event' : 'schedule');
+                populateForm(event);
+                deleteBtn.classList.remove('hidden');
+            } else {
+                setModalMode('event');
+                eventForm.reset();
+                setDefaultDates();
+                deleteBtn.classList.add('hidden');
+            }
+            
             eventModal.classList.remove('hidden');
             document.body.style.overflow = 'hidden';
-        });
+        }
+
+        // Populate Form
+        function populateForm(event) {
+            document.getElementById('event-title').value = event.title || event.subjectName || '';
+            
+            selectedCategory = event.category || 'personal';
+            categoryButtons.forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.category === selectedCategory);
+            });
+            
+            if (event.type === 'single') {
+                document.getElementById('single-date').value = event.date || '';
+                document.getElementById('start-time').value = event.startTime || '';
+                document.getElementById('end-time').value = event.endTime || '';
+                document.getElementById('event-location').value = event.classroom || '';
+                document.getElementById('event-description').value = event.description || '';
+            } else {
+                document.getElementById('event-classroom').value = event.classroom || '';
+                document.getElementById('event-campus').value = event.campus || '';
+                document.getElementById('recurring-start-time').value = event.startTime || '';
+                document.getElementById('recurring-end-time').value = event.endTime || '';
+                document.getElementById('start-date').value = event.startDate || '';
+                document.getElementById('end-date').value = event.endDate || '';
+                document.getElementById('recurring-description').value = event.description || '';
+                
+                if (event.daysOfWeek) {
+                    weekdayButtons.forEach(btn => {
+                        const day = parseInt(btn.dataset.day);
+                        btn.classList.toggle('active', event.daysOfWeek.includes(day));
+                    });
+                }
+            }
+        }
+
+        // Set Default Dates
+        function setDefaultDates() {
+            const today = new Date();
+            const dateString = today.toISOString().split('T')[0];
+            document.getElementById('single-date').value = dateString;
+            document.getElementById('start-date').value = dateString;
+            
+            const nextMonth = new Date(today);
+            nextMonth.setMonth(nextMonth.getMonth() + 1);
+            document.getElementById('end-date').value = nextMonth.toISOString().split('T')[0];
+        }
 
         // Close Modal
-        document.getElementById('cancel-btn').addEventListener('click', () => {
+        function closeModal() {
             eventModal.classList.add('hidden');
             document.body.style.overflow = '';
+            eventForm.reset();
             editingEventId = null;
-        });
+            weekdayButtons.forEach(btn => btn.classList.remove('active'));
+        }
 
         // Form Submit
-        eventForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-
-            const eventData = {
-                type: 'single',
-                title: document.getElementById('event-title').value,
-                category: document.getElementById('event-category').value,
-                date: document.getElementById('event-date').value,
-                startTime: document.getElementById('start-time').value,
-                endTime: document.getElementById('end-time').value,
-                classroom: document.getElementById('event-location').value,
-                description: document.getElementById('event-description').value
-            };
-
-            if (editingEventId) {
-                userEvents[editingEventId] = { ...userEvents[editingEventId], ...eventData };
-                showNotification('Cập nhật thành công! ✨', 'success');
+        eventForm.addEventListener('submit', async (e) => {  // ← Thêm async ở đây
+    e.preventDefault();
+    
+    const title = document.getElementById('event-title').value;
+    let eventData = {};
+            
+            if (currentModalMode === 'event') {
+                const startTime = document.getElementById('start-time').value;
+                const endTime = document.getElementById('end-time').value;
+                
+                if (startTime >= endTime) {
+                    showNotification('Thời gian kết thúc phải sau thời gian bắt đầu!', 'error');
+                    return;
+                }
+                
+                eventData = {
+                    type: 'single',
+                    title: title,
+                    date: document.getElementById('single-date').value,
+                    startTime: startTime,
+                    endTime: endTime,
+                    category: selectedCategory,
+                    classroom: document.getElementById('event-location').value,
+                    description: document.getElementById('event-description').value
+                };
             } else {
-                const newId = 'event' + Date.now();
-                userEvents[newId] = eventData;
-                showNotification('Thêm sự kiện thành công! 🎉', 'success');
+                const selectedDays = Array.from(weekdayButtons)
+                    .filter(btn => btn.classList.contains('active'))
+                    .map(btn => parseInt(btn.dataset.day));
+                
+                if (selectedDays.length === 0) {
+                    showNotification('Vui lòng chọn ít nhất một ngày trong tuần!', 'error');
+                    return;
+                }
+                
+                const startTime = document.getElementById('recurring-start-time').value;
+                const endTime = document.getElementById('recurring-end-time').value;
+                
+                if (startTime >= endTime) {
+                    showNotification('Thời gian kết thúc phải sau thời gian bắt đầu!', 'error');
+                    return;
+                }
+                
+                eventData = {
+                    type: 'recurring',
+                    subjectName: title,
+                    classroom: document.getElementById('event-classroom').value,
+                    campus: document.getElementById('event-campus').value,
+                    startTime: startTime,
+                    endTime: endTime,
+                    startDate: document.getElementById('start-date').value,
+                    endDate: document.getElementById('end-date').value,
+                    daysOfWeek: selectedDays,
+                    category: selectedCategory,
+                    description: document.getElementById('recurring-description').value
+                };
+            }
+            
+            const urlParams = new URLSearchParams(window.location.search);
+const currentUser = urlParams.get('user') || 'quynh';
+
+            try {
+                if (editingEventId) {
+                    await updateEvent(currentUser, editingEventId, eventData);
+                    userEvents[editingEventId] = eventData;
+                    showNotification('Cập nhật thành công! ✨', 'success');
+                } else {
+                    const newEventRef = await addEvent(currentUser, eventData);
+                    const newId = newEventRef.key;
+                    userEvents[newId] = eventData;
+                    showNotification('Thêm thành công! 🎉', 'success');
+                }
+                
+                closeModal();
+                updateView();
+            } catch (error) {
+                console.error('Lỗi lưu dữ liệu:', error);
+                showNotification('Có lỗi xảy ra! 😢', 'error');
             }
 
-            eventModal.classList.add('hidden');
-            document.body.style.overflow = '';
-            updateView();
-            editingEventId = null;
         });
 
         // Delete Event
-        deleteBtn.addEventListener('click', () => {
-            if (!editingEventId) return;
-            
-            if (confirm('Bạn có chắc chắn muốn xóa sự kiện này?')) {
-                delete userEvents[editingEventId];
-                eventModal.classList.add('hidden');
-                document.body.style.overflow = '';
-                updateView();
-                showNotification('Đã xóa sự kiện! 🗑️', 'success');
-                editingEventId = null;
-            }
-        });
+       deleteBtn.addEventListener('click', async () => {
+    if (!editingEventId) return;
+    
+    if (confirm('Bạn có chắc chắn muốn xóa?')) {
+        const urlParams = new URLSearchParams(window.location.search);
+        const currentUser = urlParams.get('user') || 'quynh';
+        
+        try {
+            await deleteEvent(currentUser, editingEventId);
+            delete userEvents[editingEventId];
+            closeModal();
+            updateView();
+            showNotification('Đã xóa! 🗑️', 'success');
+        } catch (error) {
+            console.error('Lỗi xóa:', error);
+            showNotification('Không thể xóa! 😢', 'error');
+        }
+    }
+});
 
-        // Navigation
-        prevNavBtn.addEventListener('click', () => {
-            if (currentView === 'day') {
-                currentDate.setDate(currentDate.getDate() - 1);
-            } else {
+        // Attach Event Listeners
+        function attachEventListeners() {
+            prevNavBtn.addEventListener('click', () => {
                 currentDate.setDate(currentDate.getDate() - 7);
-            }
-            updateView();
-        });
+                updateView();
+            });
 
-        nextNavBtn.addEventListener('click', () => {
-            if (currentView === 'day') {
-                currentDate.setDate(currentDate.getDate() + 1);
-            } else {
+            nextNavBtn.addEventListener('click', () => {
                 currentDate.setDate(currentDate.getDate() + 7);
-            }
-            updateView();
-        });
+                updateView();
+            });
 
-        todayBtn.addEventListener('click', () => {
-            currentDate = new Date();
-            updateView();
-            if (window.innerWidth <= 768) {
-                setTimeout(scrollToCurrentTime, 300);
-            }
-        });
+            todayBtn.addEventListener('click', () => {
+                currentDate = new Date();
+                updateView();
+            });
 
-        // View Toggle
-        viewDayBtn?.addEventListener('click', () => {
-            currentView = 'day';
-            document.querySelectorAll('.view-toggle-btn').forEach(b => b.classList.remove('active'));
-            viewDayBtn.classList.add('active');
-            updateView();
-        });
-
-        viewWeekBtn?.addEventListener('click', () => {
-            currentView = 'week';
-            document.querySelectorAll('.view-toggle-btn').forEach(b => b.classList.remove('active'));
-            viewWeekBtn.classList.add('active');
-            updateView();
-        });
-
-        // Current Time Line
-        function updateCurrentTimeLine() {
-            document.querySelectorAll('.current-time-line').forEach(el => el.remove());
+            addEventFab.addEventListener('click', () => openModal());
+            document.getElementById('cancel-btn').addEventListener('click', closeModal);
             
-            const now = new Date();
-            const dayColumns = document.querySelectorAll('.day-column');
-            
-            dayColumns.forEach(column => {
-                const columnDate = column.dataset.date;
-                const today = now.toISOString().split('T')[0];
-                
-                if (columnDate === today) {
-                    const hours = now.getHours();
-                    const minutes = now.getMinutes();
-                    const totalMinutes = hours * 60 + minutes;
-                    const dayStartMinutes = DAY_START_HOUR * 60;
-                    
-                    if (totalMinutes >= dayStartMinutes && totalMinutes <= DAY_END_HOUR * 60) {
-                        const pxPerMinute = HOUR_HEIGHT / 60;
-                        const top = (totalMinutes - dayStartMinutes) * pxPerMinute;
-                        
-                        const line = document.createElement('div');
-                        line.className = 'current-time-line';
-                        line.style.top = `${top}px`;
-                        column.appendChild(line);
-                    }
+            eventModeBtn.addEventListener('click', () => setModalMode('event'));
+            scheduleModeBtn.addEventListener('click', () => setModalMode('schedule'));
+
+            categoryButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    categoryButtons.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    selectedCategory = btn.dataset.category;
+                });
+            });
+
+            weekdayButtons.forEach(btn => {
+                btn.addEventListener('click', () => btn.classList.toggle('active'));
+            });
+
+            eventModal.addEventListener('click', (e) => {
+                if (e.target === eventModal) closeModal();
+            });
+
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && !eventModal.classList.contains('hidden')) {
+                    closeModal();
                 }
             });
+
+            setupHeartEffect();
         }
 
         // Scroll to Current Time
@@ -1537,69 +1491,6 @@
                 const scrollPosition = (hours - DAY_START_HOUR - 1) * HOUR_HEIGHT;
                 scheduleWrapper.scrollTop = Math.max(0, scrollPosition);
             }
-        }
-
-        // Hover Effects
-        function attachHoverEffects() {
-            const dayColumns = document.querySelectorAll('.day-column');
-            
-            dayColumns.forEach(column => {
-                let hoverTimeout;
-                
-                column.addEventListener('mousemove', (e) => {
-                    clearTimeout(hoverTimeout);
-                    hoverTimeout = setTimeout(() => {
-                        if (Math.random() > 0.7) {
-                            createVolleyballHover(e.clientX, e.clientY);
-                        }
-                    }, 100);
-                });
-            });
-        }
-
-        // Create Volleyball Hover Effect
-        function createVolleyballHover(x, y) {
-            const volleyball = document.createElement('div');
-            volleyball.className = 'volleyball-hover';
-            volleyball.style.left = x + 'px';
-            volleyball.style.top = y + 'px';
-            volleyball.style.setProperty('--dx', `${(Math.random() - 0.5) * 60}px`);
-            volleyball.style.setProperty('--dy', `${-60 - Math.random() * 40}px`);
-            document.body.appendChild(volleyball);
-            
-            setTimeout(() => volleyball.remove(), 1500);
-        }
-
-        // Create Heart Click Effect
-        function createHeartEffect(x, y, count = 1) {
-            for (let i = 0; i < count; i++) {
-                setTimeout(() => {
-                    const heart = document.createElement('div');
-                    heart.className = 'heart-click';
-                    heart.textContent = ['💖', '💕', '💗'][Math.floor(Math.random() * 3)];
-                    heart.style.left = (x + (Math.random() - 0.5) * 30) + 'px';
-                    heart.style.top = (y + (Math.random() - 0.5) * 20) + 'px';
-                    document.body.appendChild(heart);
-                    
-                    setTimeout(() => heart.remove(), 2000);
-                }, i * 100);
-            }
-        }
-
-        // Utility Functions
-        function formatDate(dateString) {
-            const date = new Date(dateString);
-            const dayNames = ['Chủ nhật', 'Thứ hai', 'Thứ ba', 'Thứ tư', 'Thứ năm', 'Thứ sáu', 'Thứ bảy'];
-            return `${dayNames[date.getDay()]}, ${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
-        }
-
-        function getCategoryName(category) {
-            const names = {
-                'personal': '📌 Cá nhân',
-                'study': '📚 Học tập',
-                'work': '💼 Công việc'
-            };
-            return names[category] || '📌 Cá nhân';
         }
 
         // Notification
@@ -1615,48 +1506,42 @@
             }, 3000);
         }
 
-        // Event Listeners
-        function attachEventListeners() {
-            // Close modals on click outside
-            eventModal.addEventListener('click', (e) => {
-                if (e.target === eventModal) {
-                    eventModal.classList.add('hidden');
-                    document.body.style.overflow = '';
-                }
-            });
+        function setupHeartEffect() {
+        let lastHeartTime = 0;
+        const heartDelay = 150; // Milliseconds giữa mỗi trái tim
+        
+        document.addEventListener('mousemove', (e) => {
+            const target = e.target.closest('.day-column');
+            if (!target) return;
+            
+            const now = Date.now();
+            if (now - lastHeartTime < heartDelay) return;
+            
+            // Random spawn (30% chance)
+            if (Math.random() > 0.7) {
+                createFloatingHeart(e.clientX, e.clientY);
+                lastHeartTime = now;
+            }
+        });
+    }
 
-            eventDetailModal.addEventListener('click', (e) => {
-                if (e.target === eventDetailModal) {
-                    eventDetailModal.classList.add('hidden');
-                    document.body.style.overflow = '';
-                }
-            });
+    function createFloatingHeart(x, y) {
+        const heart = document.createElement('div');
+        heart.className = 'floating-heart';
+        heart.textContent = ['💖', '💕', '💗', '💝'][Math.floor(Math.random() * 4)];
+        heart.style.left = x + 'px';
+        heart.style.top = y + 'px';
+        
+        // Random horizontal drift
+        const drift = (Math.random() - 0.5) * 40;
+        heart.style.setProperty('--drift', drift + 'px');
+        
+        document.body.appendChild(heart);
+        
+        setTimeout(() => heart.remove(), 1500);
+    }
 
-            // Keyboard shortcuts
-            document.addEventListener('keydown', (e) => {
-                if (e.key === 'Escape') {
-                    if (!eventModal.classList.contains('hidden')) {
-                        eventModal.classList.add('hidden');
-                        document.body.style.overflow = '';
-                    }
-                    if (!eventDetailModal.classList.contains('hidden')) {
-                        eventDetailModal.classList.add('hidden');
-                        document.body.style.overflow = '';
-                    }
-                }
-            });
-
-            // Responsive view change
-            window.addEventListener('resize', () => {
-                const newView = window.innerWidth <= 768 ? 'day' : 'week';
-                if (newView !== currentView) {
-                    currentView = newView;
-                    updateView();
-                }
-            });
-        }
-
-        // Initialize on load
+        // Initialize
         init();
     </script>
 </body>
