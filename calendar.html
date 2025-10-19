@@ -16,7 +16,6 @@
             --primary-quynh: #c2185b;
             --primary-light: #e91e63;
             --bg-light: #fff5f8;
-            --bg-white: #ffffff;
             --text-dark: #333;
             --text-medium: #555;
             --text-light: #888;
@@ -30,10 +29,9 @@
         }
 
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: 'Inter', sans-serif;
             background: linear-gradient(135deg, #fff5f8 0%, #ffe5ec 50%, #ffd4e5 100%);
             color: var(--text-dark);
-            line-height: 1.6;
             overflow-x: hidden;
             padding-top: var(--safe-area-top);
             padding-bottom: var(--safe-area-bottom);
@@ -92,28 +90,11 @@
             75% { transform: translate(-30px, -20px) rotate(270deg); }
         }
 
-        .volleyball:nth-child(1) { 
-            left: 5%; 
-            top: 15%; 
-            animation: float-volleyball 20s infinite ease-in-out;
-        }
-        .volleyball:nth-child(2) { 
-            left: 85%; 
-            top: 70%; 
-            animation: float-volleyball 25s infinite ease-in-out 3s;
-        }
-        .volleyball:nth-child(3) { 
-            left: 70%; 
-            top: 20%; 
-            animation: float-volleyball 22s infinite ease-in-out 6s;
-        }
-        .volleyball:nth-child(4) { 
-            left: 15%; 
-            top: 80%; 
-            animation: float-volleyball 28s infinite ease-in-out 9s;
-        }
+        .volleyball:nth-child(1) { left: 5%; top: 15%; animation: float-volleyball 20s infinite ease-in-out; }
+        .volleyball:nth-child(2) { left: 85%; top: 70%; animation: float-volleyball 25s infinite ease-in-out 3s; }
+        .volleyball:nth-child(3) { left: 70%; top: 20%; animation: float-volleyball 22s infinite ease-in-out 6s; }
+        .volleyball:nth-child(4) { left: 15%; top: 80%; animation: float-volleyball 28s infinite ease-in-out 9s; }
 
-        /* App Container */
         #app-container {
             position: relative;
             z-index: 1;
@@ -132,7 +113,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            border-bottom: 1px solid var(--border-light);
+            border-bottom: 3px solid var(--border-light);
         }
 
         .back-button {
@@ -178,17 +159,14 @@
             background: var(--primary-quynh);
             color: white;
             transform: scale(1.1);
-            box-shadow: var(--shadow-md);
         }
 
-        /* Calendar Container */
         .calendar-container {
             padding: 20px;
             max-width: 1400px;
             margin: 0 auto;
         }
 
-        /* Calendar Header */
         .calendar-header {
             background: white;
             padding: 20px;
@@ -203,6 +181,8 @@
             align-items: center;
             justify-content: space-between;
             margin-bottom: 16px;
+            flex-wrap: wrap;
+            gap: 12px;
         }
 
         .nav-controls {
@@ -236,6 +216,7 @@
             font-weight: 800;
             color: var(--primary-quynh);
             text-align: center;
+            min-width: 200px;
         }
 
         .today-button {
@@ -247,7 +228,6 @@
             font-weight: 700;
             cursor: pointer;
             transition: all 0.3s ease;
-            box-shadow: var(--shadow-sm);
         }
 
         .today-button:hover {
@@ -280,7 +260,7 @@
             box-shadow: var(--shadow-sm);
         }
 
-        /* Schedule Wrapper */
+        /* Schedule Wrapper - FIX */
         .schedule-wrapper {
             background: white;
             border-radius: 20px;
@@ -295,7 +275,6 @@
 
         .schedule-wrapper::-webkit-scrollbar {
             width: 10px;
-            height: 10px;
         }
 
         .schedule-wrapper::-webkit-scrollbar-track {
@@ -307,26 +286,28 @@
             border-radius: 5px;
         }
 
-        /* Time Axis */
+        /* Time Axis - FIX */
         .time-axis {
             flex-shrink: 0;
-            width: 50px;
+            width: 70px;
             background: var(--bg-light);
             border-right: 3px solid var(--border-light);
+            display: flex;
+            flex-direction: column;
         }
 
         .time-label-line {
             height: var(--hour-height);
+            flex-shrink: 0;
             display: flex;
             align-items: flex-start;
             justify-content: center;
-            padding-top: 0px;
+            padding-top: 8px;
             font-size: 0.85rem;
             font-weight: 600;
             color: var(--text-medium);
         }
 
-        /* Week/Day View Grid */
         .week-view-grid {
             flex-grow: 1;
             display: grid;
@@ -362,10 +343,10 @@
         .date-label {
             font-size: 1.8rem;
             font-weight: 800;
-            /* width: 35px; */
+            width: 50px;
             height: 50px;
             line-height: 50px;
-            border-radius: 10%;
+            border-radius: 50%;
             transition: all 0.3s ease;
             color: var(--text-dark);
         }
@@ -382,7 +363,6 @@
             50% { transform: scale(1.05); }
         }
 
-        /* Day Column */
         .day-column {
             border-right: 2px solid var(--border-light);
             position: relative;
@@ -395,7 +375,6 @@
             );
             background-size: 100% var(--hour-height);
             cursor: crosshair;
-            transition: background-color 0.2s ease;
         }
 
         .day-column:last-child {
@@ -406,7 +385,7 @@
             background-color: rgba(194, 24, 91, 0.02);
         }
 
-        /* Event Box */
+        /* Event Box - FIX */
         .event-box {
             position: absolute;
             left: 4px;
@@ -427,7 +406,6 @@
             z-index: 15;
         }
 
-        /* Category Colors */
         .event-box.category-study {
             background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
             border-left-color: #1976d2;
@@ -557,37 +535,33 @@
             text-align: center;
         }
 
-        /* Modal Toggle */
         .modal-toggle {
             display: flex;
-            justify-content: center;
             background: var(--bg-light);
-            border-radius: 28px;
+            border-radius: 16px;
             padding: 6px;
-            margin-bottom: 24px;
             gap: 6px;
+            margin-bottom: 24px;
         }
 
         .modal-toggle-btn {
             flex: 1;
             padding: 10px 16px;
-            border-radius: 22px;
-            font-size: 0.95rem;
-            font-weight: 600;
-            color: var(--text-medium);
-            transition: var(--transition);
+            border-radius: 12px;
             background: transparent;
             border: none;
+            font-weight: 700;
+            color: var(--text-medium);
             cursor: pointer;
+            transition: all 0.3s ease;
         }
 
         .modal-toggle-btn.active {
             background: white;
             color: var(--primary-quynh);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            box-shadow: var(--shadow-sm);
         }
 
-        /* Form Styles */
         .form-group {
             margin-bottom: 20px;
         }
@@ -626,7 +600,6 @@
             gap: 16px;
         }
 
-        /* Category Selector */
         .category-selector {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -639,15 +612,13 @@
             border: 2px solid var(--border-light);
             border-radius: 12px;
             font-weight: 600;
-            font-size: 0.9rem;
-            color: var(--text-medium);
+            background: transparent;
+            cursor: pointer;
             transition: all 0.3s ease;
             display: flex;
             flex-direction: column;
             align-items: center;
             gap: 6px;
-            background: transparent;
-            cursor: pointer;
         }
 
         .category-btn:hover {
@@ -661,25 +632,23 @@
             color: var(--primary-quynh);
         }
 
-        /* Weekday Selector */
         .weekdays-selector {
             display: flex;
-            justify-content: space-between;
             gap: 8px;
+            flex-wrap: wrap;
             margin-top: 8px;
         }
 
         .weekday-btn {
-            width: 44px;
+            flex: 1;
+            min-width: 44px;
             height: 44px;
             border-radius: 50%;
             border: 2px solid var(--border-light);
+            background: white;
             font-weight: 700;
-            font-size: 0.85rem;
-            color: var(--text-medium);
-            transition: all 0.3s ease;
-            background: transparent;
             cursor: pointer;
+            transition: all 0.3s ease;
         }
 
         .weekday-btn:hover {
@@ -694,7 +663,6 @@
             transform: scale(1.1);
         }
 
-        /* Form Actions */
         .modal-actions {
             display: flex;
             gap: 12px;
@@ -724,7 +692,6 @@
         .button--secondary {
             background: var(--bg-light);
             color: var(--text-dark);
-            border: 2px solid var(--border-light);
         }
 
         .button--danger {
@@ -732,10 +699,30 @@
             color: white;
         }
 
-        /* Required field indicator */
-        .required {
-            color: #ff3b30;
-            margin-left: 4px;
+        /* Heart Animation - FIX */
+        .floating-heart {
+            position: fixed;
+            font-size: 24px;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0;
+            animation: floatHeart 1.5s ease-out forwards;
+            text-shadow: 0 2px 8px rgba(194, 24, 91, 0.3);
+        }
+
+        @keyframes floatHeart {
+            0% {
+                opacity: 1;
+                transform: translate(0, 0) scale(0.5) rotate(0deg);
+            }
+            50% {
+                opacity: 0.8;
+                transform: translate(var(--drift, 0), -40px) scale(1) rotate(10deg);
+            }
+            100% {
+                opacity: 0;
+                transform: translate(calc(var(--drift, 0) * 1.5), -80px) scale(1.2) rotate(15deg);
+            }
         }
 
         /* Notification */
@@ -779,11 +766,14 @@
 
             .calendar-nav {
                 flex-direction: column;
-                gap: 12px;
             }
 
             .view-toggle-nav {
                 display: none;
+            }
+
+            .week-view-grid {
+                grid-template-columns: 1fr !important;
             }
 
             .modal-content {
@@ -801,7 +791,6 @@
     </style>
 </head>
 <body>
-    <!-- Volleyball Background -->
     <div class="volleyball-bg">
         <div class="volleyball"></div>
         <div class="volleyball"></div>
@@ -810,7 +799,6 @@
     </div>
 
     <div id="app-container">
-        <!-- Header -->
         <header class="app-header">
             <button class="back-button" onclick="window.history.back()">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
@@ -820,7 +808,7 @@
             </button>
 
             <div class="header-actions">
-                <button class="icon-button" id="search-toggle-btn" title="Tìm kiếm">
+                <button class="icon-button" title="Tìm kiếm">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <circle cx="11" cy="11" r="8"></circle>
                         <path d="m21 21-4.35-4.35"></path>
@@ -829,9 +817,7 @@
             </div>
         </header>
 
-        <!-- Calendar Container -->
         <div class="calendar-container">
-            <!-- Calendar Header -->
             <div class="calendar-header">
                 <div class="calendar-nav">
                     <div class="nav-controls">
@@ -857,32 +843,28 @@
                 </nav>
             </div>
 
-            <!-- Schedule Display -->
             <div class="schedule-wrapper" id="schedule-wrapper">
                 <div class="time-axis" id="time-axis"></div>
                 <div class="week-view-grid" id="week-view-grid"></div>
             </div>
         </div>
 
-        <!-- FAB -->
         <button class="fab" id="add-event-fab">+</button>
     </div>
 
     <!-- Event Modal -->
     <div id="event-modal" class="modal-overlay hidden">
         <div class="modal-content">
-            <h2 id="modal-title" class="modal-title">Tạo Sự Kiện Mới</h2>
+            <h2 class="modal-title" id="modal-title">Tạo Sự Kiện Mới</h2>
             
-            <!-- Mode Toggle -->
             <div class="modal-toggle">
-                <button class="modal-toggle-btn active" id="event-mode-btn">📅 Sự kiện</button>
-                <button class="modal-toggle-btn" id="schedule-mode-btn">📚 Lịch học</button>
+                <button type="button" class="modal-toggle-btn active" id="event-mode-btn">📅 Sự kiện</button>
+                <button type="button" class="modal-toggle-btn" id="schedule-mode-btn">📚 Lịch học</button>
             </div>
 
             <form id="event-form">
-                <!-- Common Fields -->
                 <div class="form-group">
-                    <label id="title-label">Tiêu đề <span class="required">*</span></label>
+                    <label>Tiêu đề <span style="color: red;">*</span></label>
                     <input type="text" id="event-title" required placeholder="VD: Họp nhóm dự án">
                 </div>
 
@@ -907,17 +889,17 @@
                 <!-- Single Event Fields -->
                 <div id="single-event-fields">
                     <div class="form-group">
-                        <label>Ngày <span class="required">*</span></label>
+                        <label>Ngày <span style="color: red;">*</span></label>
                         <input type="date" id="single-date" required>
                     </div>
 
                     <div class="form-group-inline">
                         <div class="form-group">
-                            <label>Bắt đầu <span class="required">*</span></label>
+                            <label>Bắt đầu <span style="color: red;">*</span></label>
                             <input type="time" id="start-time" required min="05:00" max="23:00">
                         </div>
                         <div class="form-group">
-                            <label>Kết thúc <span class="required">*</span></label>
+                            <label>Kết thúc <span style="color: red;">*</span></label>
                             <input type="time" id="end-time" required min="05:00" max="23:00">
                         </div>
                     </div>
@@ -929,7 +911,7 @@
 
                     <div class="form-group">
                         <label>Mô tả</label>
-                        <textarea id="event-description" rows="3" placeholder="Thêm chi tiết về sự kiện..."></textarea>
+                        <textarea id="event-description" rows="3" placeholder="Thêm chi tiết..."></textarea>
                     </div>
                 </div>
 
@@ -937,53 +919,53 @@
                 <div id="recurring-fields" class="hidden">
                     <div class="form-group-inline">
                         <div class="form-group">
-                            <label>Lớp học</label>
-                            <input type="text" id="event-classroom" placeholder="VD: P301, A103">
+                            <label>Phòng học</label>
+                            <input type="text" id="event-classroom" placeholder="VD: P301">
                         </div>
                         <div class="form-group">
                             <label>Cơ sở</label>
-                            <input type="text" id="event-campus" placeholder="VD: FPT Polytechnic HN">
+                            <input type="text" id="event-campus" placeholder="VD: FPT Polytechnic">
                         </div>
                     </div>
 
                     <div class="form-group-inline">
                         <div class="form-group">
-                            <label>Bắt đầu <span class="required">*</span></label>
+                            <label>Bắt đầu <span style="color: red;">*</span></label>
                             <input type="time" id="recurring-start-time" required min="05:00" max="23:00">
                         </div>
                         <div class="form-group">
-                            <label>Kết thúc <span class="required">*</span></label>
+                            <label>Kết thúc <span style="color: red;">*</span></label>
                             <input type="time" id="recurring-end-time" required min="05:00" max="23:00">
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label>Chọn các thứ trong tuần <span class="required">*</span></label>
+                        <label>Chọn thứ <span style="color: red;">*</span></label>
                         <div class="weekdays-selector">
-                            <button type="button" class="weekday-btn" data-day="0">CN</button>
                             <button type="button" class="weekday-btn" data-day="1">T2</button>
                             <button type="button" class="weekday-btn" data-day="2">T3</button>
                             <button type="button" class="weekday-btn" data-day="3">T4</button>
                             <button type="button" class="weekday-btn" data-day="4">T5</button>
                             <button type="button" class="weekday-btn" data-day="5">T6</button>
                             <button type="button" class="weekday-btn" data-day="6">T7</button>
+                            <button type="button" class="weekday-btn" data-day="0">CN</button>
                         </div>
                     </div>
 
                     <div class="form-group-inline">
                         <div class="form-group">
-                            <label>Ngày bắt đầu <span class="required">*</span></label>
+                            <label>Từ ngày <span style="color: red;">*</span></label>
                             <input type="date" id="start-date" required>
                         </div>
                         <div class="form-group">
-                            <label>Ngày kết thúc <span class="required">*</span></label>
+                            <label>Đến ngày <span style="color: red;">*</span></label>
                             <input type="date" id="end-date" required>
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label>Ghi chú</label>
-                        <textarea id="recurring-description" rows="3" placeholder="Thêm ghi chú về môn học..."></textarea>
+                        <textarea id="recurring-description" rows="3" placeholder="Ghi chú..."></textarea>
                     </div>
                 </div>
                 
@@ -997,13 +979,50 @@
     </div>
 
     <script type="module">
-
         // Import Firebase functions
-        import { getUserEvents, addEvent, updateEvent, deleteEvent } from './js/data/database.js';
-        // Sample data
-        const sampleEvents = {
-            
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
+        import { getDatabase, ref, get, push, update, remove } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-database.js";
+
+        // Firebase Config
+        const firebaseConfig = {
+            apiKey: "AIzaSyDh0ySHo7sOpgOQ4Ygi1fchXj0LnY6fE2o",
+            authDomain: "unisched-app-11368.firebaseapp.com",
+            databaseURL: "https://unisched-app-11368-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "unisched-app-11368",
+            storageBucket: "unisched-app-11368.firebasestorage.app",
+            messagingSenderId: "407354626561",
+            appId: "1:407354626561:web:f3624719bb9ae185a4a600"
         };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+
+        // Firebase Helper Functions
+        async function getUserEvents(userId) {
+            const eventsRef = ref(db, `users/${userId}/events`);
+            try {
+                const snapshot = await get(eventsRef);
+                return snapshot.exists() ? snapshot.val() : {};
+            } catch (error) {
+                console.error("Lỗi load events:", error);
+                return {};
+            }
+        }
+
+        function addEvent(userId, eventData) {
+            const eventsRef = ref(db, `users/${userId}/events`);
+            return push(eventsRef, eventData);
+        }
+
+        function updateEvent(userId, eventId, eventData) {
+            const eventRef = ref(db, `users/${userId}/events/${eventId}`);
+            return update(eventRef, eventData);
+        }
+
+        function deleteEvent(userId, eventId) {
+            const eventRef = ref(db, `users/${userId}/events/${eventId}`);
+            return remove(eventRef);
+        }
 
         // Configuration
         const DAY_START_HOUR = 5;
@@ -1011,9 +1030,11 @@
         const HOUR_HEIGHT = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--hour-height')) || 80;
 
         // State
+        const urlParams = new URLSearchParams(window.location.search);
+        const currentUser = urlParams.get('user') || 'quynh';
         let currentDate = new Date();
         let currentView = window.innerWidth <= 768 ? 'day' : 'week';
-        let userEvents = { ...sampleEvents };
+        let userEvents = {};
         let editingEventId = null;
         let currentModalMode = 'event';
         let selectedCategory = 'personal';
@@ -1038,41 +1059,30 @@
         const weekdayButtons = document.querySelectorAll('.weekday-btn');
 
         // Initialize
-       async function init() {
-        // Lấy user từ URL
-        const urlParams = new URLSearchParams(window.location.search);
-        const currentUser = urlParams.get('user') || 'quynh';
-        
-        // Load dữ liệu từ Firebase
-        try {
-            const firebaseEvents = await getUserEvents(currentUser);
-            if (firebaseEvents) {
-                userEvents = firebaseEvents;
-            } else {
-                userEvents = sampleEvents; // Fallback
+        async function init() {
+            try {
+                userEvents = await getUserEvents(currentUser);
+                createTimeAxis();
+                updateView();
+                attachEventListeners();
+                
+                if (window.innerWidth <= 768) {
+                    setTimeout(scrollToCurrentTime, 500);
+                }
+
+                showNotification('Chào mừng _uyqhn! 🏐💖', 'success');
+            } catch (error) {
+                console.error('Lỗi khởi tạo:', error);
+                showNotification('Không thể tải dữ liệu! 😢', 'error');
             }
-        } catch (error) {
-            console.error('Lỗi load dữ liệu:', error);
-            userEvents = sampleEvents;
-        }
-        
-        createTimeAxis();
-        updateView();
-        attachEventListeners();
-        
-        if (window.innerWidth <= 768) {
-            setTimeout(scrollToCurrentTime, 500);
         }
 
-        showNotification('Chào mừng _uyqhn! 🏐💖', 'success');
-    }
-
-        // Create Time Axis
+        // Create Time Axis - FIX
         function createTimeAxis() {
             timeAxis.innerHTML = '';
             
             const headerSpacer = document.createElement('div');
-            headerSpacer.style.height = '97px';
+            headerSpacer.style.height = '82px';
             headerSpacer.style.flexShrink = '0';
             timeAxis.appendChild(headerSpacer);
             
@@ -1087,28 +1097,46 @@
 
         // Modal Mode Management
         function setModalMode(mode) {
-            currentModalMode = mode;
-            const modalTitle = document.getElementById('modal-title');
-            const titleLabel = document.getElementById('title-label');
-            
-            if (mode === 'event') {
-                modalTitle.textContent = editingEventId ? 'Chỉnh sửa Sự kiện' : 'Tạo Sự Kiện Mới';
-                titleLabel.innerHTML = 'Tiêu đề <span class="required">*</span>';
-                document.getElementById('event-title').placeholder = "VD: Họp nhóm dự án";
-                eventModeBtn.classList.add('active');
-                scheduleModeBtn.classList.remove('active');
-                singleEventFields.classList.remove('hidden');
-                recurringFields.classList.add('hidden');
-            } else {
-                modalTitle.textContent = editingEventId ? 'Chỉnh sửa Lịch Học' : 'Tạo Lịch Học Mới';
-                titleLabel.innerHTML = 'Tên môn học <span class="required">*</span>';
-                document.getElementById('event-title').placeholder = "VD: Phát triển ứng dụng Web";
-                scheduleModeBtn.classList.add('active');
-                eventModeBtn.classList.remove('active');
-                recurringFields.classList.remove('hidden');
-                singleEventFields.classList.add('hidden');
-            }
-        }
+    currentModalMode = mode;
+    const modalTitle = document.getElementById('modal-title');
+
+    // MỚI: Lấy tất cả các trường input/textarea của cả hai chế độ
+    const singleInputs = singleEventFields.querySelectorAll('input, textarea');
+    const recurringInputs = recurringFields.querySelectorAll('input, textarea');
+    
+    if (mode === 'event') {
+        modalTitle.textContent = editingEventId ? 'Chỉnh sửa Sự kiện' : 'Tạo Sự Kiện Mới';
+        document.getElementById('event-title').placeholder = "VD: Họp nhóm dự án";
+        eventModeBtn.classList.add('active');
+        scheduleModeBtn.classList.remove('active');
+        
+        // Hiển thị "Sự kiện", ẩn "Lịch học"
+        singleEventFields.classList.remove('hidden');
+        recurringFields.classList.add('hidden');
+        
+        // MỚI: Kích hoạt (enable) các trường "Sự kiện"
+        singleInputs.forEach(input => input.disabled = false);
+        
+        // MỚI: Vô hiệu hóa (disable) các trường "Lịch học"
+        recurringInputs.forEach(input => input.disabled = true);
+
+    } else { // mode === 'schedule'
+        modalTitle.textContent = editingEventId ? 'Chỉnh sửa Lịch Học' : 'Tạo Lịch Học Mới';
+        document.getElementById('event-title').placeholder = "VD: Phát triển ứng dụng Web";
+        scheduleModeBtn.classList.add('active');
+        eventModeBtn.classList.remove('active');
+        
+        // Hiển thị "Lịch học", ẩn "Sự kiện"
+        recurringFields.classList.remove('hidden');
+        singleEventFields.classList.add('hidden');
+        
+        // MỚI: Vô hiệu hóa (disable) các trường "Sự kiện" (Đây là mấu chốt để fix lỗi)
+        singleInputs.forEach(input => input.disabled = true);
+        
+        // MỚI: Kích hoạt (enable) các trường "Lịch học"
+        recurringInputs.forEach(input => input.disabled = false);
+    }
+}
 
         // Get week days
         function getWeekDays(date) {
@@ -1153,7 +1181,6 @@
             const today = new Date();
             const dayLabels = ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'];
             
-            // Render headers
             weekDays.forEach(day => {
                 const isToday = day.toDateString() === today.toDateString();
                 weekGrid.innerHTML += `
@@ -1164,7 +1191,6 @@
                 `;
             });
             
-            // Render columns
             weekDays.forEach(day => {
                 const dayColumn = document.createElement('div');
                 dayColumn.className = 'day-column';
@@ -1172,9 +1198,11 @@
                 weekGrid.appendChild(dayColumn);
                 renderEventsForDay(dayColumn, day);
             });
+
+            attachHoverHearts();
         }
 
-        // Render Events for Day
+        // Render Events for Day - FIX
         function renderEventsForDay(dayColumn, date) {
             const dateString = date.toISOString().split('T')[0];
             
@@ -1197,7 +1225,7 @@
             });
         }
 
-        // Create Event Element
+        // Create Event Element - FIX
         function createEventElement(event, eventId) {
             const startHour = parseInt(event.startTime.split(':')[0]);
             const startMinute = parseInt(event.startTime.split(':')[1]);
@@ -1330,12 +1358,12 @@
             weekdayButtons.forEach(btn => btn.classList.remove('active'));
         }
 
-        // Form Submit
-        eventForm.addEventListener('submit', async (e) => {  // ← Thêm async ở đây
-    e.preventDefault();
-    
-    const title = document.getElementById('event-title').value;
-    let eventData = {};
+        // Form Submit - FIX
+        eventForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const title = document.getElementById('event-title').value;
+            let eventData = {};
             
             if (currentModalMode === 'event') {
                 const startTime = document.getElementById('start-time').value;
@@ -1389,9 +1417,6 @@
                 };
             }
             
-            const urlParams = new URLSearchParams(window.location.search);
-const currentUser = urlParams.get('user') || 'quynh';
-
             try {
                 if (editingEventId) {
                     await updateEvent(currentUser, editingEventId, eventData);
@@ -1399,40 +1424,35 @@ const currentUser = urlParams.get('user') || 'quynh';
                     showNotification('Cập nhật thành công! ✨', 'success');
                 } else {
                     const newEventRef = await addEvent(currentUser, eventData);
-                    const newId = newEventRef.key;
-                    userEvents[newId] = eventData;
+                    userEvents[newEventRef.key] = eventData;
                     showNotification('Thêm thành công! 🎉', 'success');
                 }
                 
                 closeModal();
                 updateView();
             } catch (error) {
-                console.error('Lỗi lưu dữ liệu:', error);
+                console.error('Lỗi lưu:', error);
                 showNotification('Có lỗi xảy ra! 😢', 'error');
             }
-
         });
 
-        // Delete Event
-       deleteBtn.addEventListener('click', async () => {
-    if (!editingEventId) return;
-    
-    if (confirm('Bạn có chắc chắn muốn xóa?')) {
-        const urlParams = new URLSearchParams(window.location.search);
-        const currentUser = urlParams.get('user') || 'quynh';
-        
-        try {
-            await deleteEvent(currentUser, editingEventId);
-            delete userEvents[editingEventId];
-            closeModal();
-            updateView();
-            showNotification('Đã xóa! 🗑️', 'success');
-        } catch (error) {
-            console.error('Lỗi xóa:', error);
-            showNotification('Không thể xóa! 😢', 'error');
-        }
-    }
-});
+        // Delete Event - FIX
+        deleteBtn.addEventListener('click', async () => {
+            if (!editingEventId) return;
+            
+            if (confirm('Bạn có chắc chắn muốn xóa?')) {
+                try {
+                    await deleteEvent(currentUser, editingEventId);
+                    delete userEvents[editingEventId];
+                    closeModal();
+                    updateView();
+                    showNotification('Đã xóa! 🗑️', 'success');
+                } catch (error) {
+                    console.error('Lỗi xóa:', error);
+                    showNotification('Không thể xóa! 😢', 'error');
+                }
+            }
+        });
 
         // Attach Event Listeners
         function attachEventListeners() {
@@ -1449,6 +1469,9 @@ const currentUser = urlParams.get('user') || 'quynh';
             todayBtn.addEventListener('click', () => {
                 currentDate = new Date();
                 updateView();
+                if (window.innerWidth <= 768) {
+                    setTimeout(scrollToCurrentTime, 300);
+                }
             });
 
             addEventFab.addEventListener('click', () => openModal());
@@ -1478,8 +1501,6 @@ const currentUser = urlParams.get('user') || 'quynh';
                     closeModal();
                 }
             });
-
-            setupHeartEffect();
         }
 
         // Scroll to Current Time
@@ -1491,6 +1512,39 @@ const currentUser = urlParams.get('user') || 'quynh';
                 const scrollPosition = (hours - DAY_START_HOUR - 1) * HOUR_HEIGHT;
                 scheduleWrapper.scrollTop = Math.max(0, scrollPosition);
             }
+        }
+
+        // Heart Animation - FIX
+        function attachHoverHearts() {
+            const dayColumns = document.querySelectorAll('.day-column');
+            
+            dayColumns.forEach(column => {
+                let lastHeartTime = 0;
+                
+                column.addEventListener('mousemove', (e) => {
+                    const now = Date.now();
+                    if (now - lastHeartTime < 150) return;
+                    
+                    if (Math.random() > 0.7) {
+                        createFloatingHeart(e.clientX, e.clientY);
+                        lastHeartTime = now;
+                    }
+                });
+            });
+        }
+
+        function createFloatingHeart(x, y) {
+            const heart = document.createElement('div');
+            heart.className = 'floating-heart';
+            heart.textContent = ['💖', '💕', '💗', '💝'][Math.floor(Math.random() * 4)];
+            heart.style.left = x + 'px';
+            heart.style.top = y + 'px';
+            
+            const drift = (Math.random() - 0.5) * 40;
+            heart.style.setProperty('--drift', drift + 'px');
+            
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), 1500);
         }
 
         // Notification
@@ -1505,41 +1559,6 @@ const currentUser = urlParams.get('user') || 'quynh';
                 setTimeout(() => notification.remove(), 300);
             }, 3000);
         }
-
-        function setupHeartEffect() {
-        let lastHeartTime = 0;
-        const heartDelay = 150; // Milliseconds giữa mỗi trái tim
-        
-        document.addEventListener('mousemove', (e) => {
-            const target = e.target.closest('.day-column');
-            if (!target) return;
-            
-            const now = Date.now();
-            if (now - lastHeartTime < heartDelay) return;
-            
-            // Random spawn (30% chance)
-            if (Math.random() > 0.7) {
-                createFloatingHeart(e.clientX, e.clientY);
-                lastHeartTime = now;
-            }
-        });
-    }
-
-    function createFloatingHeart(x, y) {
-        const heart = document.createElement('div');
-        heart.className = 'floating-heart';
-        heart.textContent = ['💖', '💕', '💗', '💝'][Math.floor(Math.random() * 4)];
-        heart.style.left = x + 'px';
-        heart.style.top = y + 'px';
-        
-        // Random horizontal drift
-        const drift = (Math.random() - 0.5) * 40;
-        heart.style.setProperty('--drift', drift + 'px');
-        
-        document.body.appendChild(heart);
-        
-        setTimeout(() => heart.remove(), 1500);
-    }
 
         // Initialize
         init();
