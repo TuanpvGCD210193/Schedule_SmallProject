@@ -908,15 +908,18 @@
     <div class="gift-modal" id="gift-modal">
         <div class="gift-content">
             <div class="gift-header">
-                <h2>🎉 Chúc mừng ngày Phụ nữ Việt Nam! 🎉</h2>
+                <h2>🎉 Chúc mừng ngày Phụ nữ Việt Nam 20/10! 🎉</h2>
             </div>
             <div class="gift-message">
-                <p>Bạn xứng đáng được yêu thương và trân trọng! 💕</p>
-                <p>Chúc bạn luôn hạnh phúc và thành công! ✨</p>
-                <p>Happy Vietnamese Women's Day! 🌸</p>
+                <p>Chúc Quỳnh và mẹ của em sẽ có một ngày 20/10 thật ý nghĩa! 💕</p> 
+                <p>Hôm nay em phải luôn cười thật tươi đấy nhá, hẹn em trưa nay gặp nhaaa✨
+                     Happy Vietnamese Women's Day! 🌸</p>
+                     <p>PS: Anh tính tặng em một bông hồng, nhưng nghĩ lại ai lại tặng bông hồng 
+                        cho một đóa hoa chứ, hehe đọc tới đây em cười chứ gì🤣🤣, chúc em luôn cười tươi như thế nhá💕</p>
+
             </div>
             <button class="gift-close-btn" id="gift-close-btn">
-                Cảm ơn! 💖
+                Đóng
             </button>
         </div>
     </div>
@@ -948,7 +951,7 @@
                     <span class="function-card__name">📝 Ghi Chú</span>
                 </a>
                 <a href="#" class="function-card" data-function="water">
-                    <img src="https://cdn-icons-png.flaticon.com/512/2917/2917995.png" class="function-card__icon" alt="Water Icon">
+                    <img src="assets/icon/lovely.png" class="function-card__icon" alt="Water Icon">
                     <span class="function-card__name">💧 Uống Nước</span>
                 </a>
             </div>
@@ -984,6 +987,8 @@
                 setTimeout(() => {
                     if (functionName === 'notes') {
                         window.location.href = `notes.html?user=${currentUser}`;
+                    } else if (functionName === 'water') {
+                        window.location.href = `water.html?user=${currentUser}`;
                     } else {
                         window.location.href = `${functionName}.html?user=${currentUser}`;
                     }

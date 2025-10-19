@@ -594,7 +594,7 @@
                 <span class="card-deco card-deco-2">📚</span>
                 <div class="profile-card__avatar-wrapper">
                     <div class="avatar-ring"></div>
-                    <img src="assets/man-business-man-icon-illustration-eps-free-vector.jpg" 
+                    <img src="assets/tuan-avartar/Tuan1.png" 
                          alt="Avatar của Tuân" 
                          class="profile-card__avatar"
                          onerror="this.src='https://ui-avatars.com/api/?name=Tuan&background=007aff&color=fff&size=200'">
@@ -629,6 +629,9 @@
         document.addEventListener('DOMContentLoaded', () => {
             const profileCards = document.querySelectorAll('.profile-card');
             const loadingOverlay = document.getElementById('loading-overlay');
+            
+            // Randomize Tuân's avatar
+            randomizeTuanAvatar();
 
             profileCards.forEach(card => {
                 // Ripple effect on click
@@ -659,8 +662,7 @@
                                 // Add showGift parameter to ensure gift box appears
                                 window.location.replace(`quynh-functions.html?user=${user}&showGift=true`);
                             } else if (user === 'tuan') {
-                                alert('Chức năng cho Tuân sẽ được phát triển sau! 🚀');
-                                loadingOverlay.classList.remove('active');
+                                window.location.replace(`tuan-functions.html?user=${user}`);
                             }
                         }, 800);
                     }, 400);
@@ -766,6 +768,27 @@
                 }
             });
         });
+
+        // Function to randomize Tuân's avatar
+        function randomizeTuanAvatar() {
+            const tuanAvatar = document.querySelector('[data-user="tuan"] .profile-card__avatar');
+            if (tuanAvatar) {
+                // Array of Tuân's avatars
+                const tuanAvatars = [
+                    'assets/tuan-avartar/Tuan1.png',
+                    'assets/tuan-avartar/Tuan2.png'
+                ];
+                
+                // Randomly select one avatar
+                const randomIndex = Math.floor(Math.random() * tuanAvatars.length);
+                const selectedAvatar = tuanAvatars[randomIndex];
+                
+                // Update the src
+                tuanAvatar.src = selectedAvatar;
+                
+                console.log(`🎯 Tuân's avatar randomized: ${selectedAvatar}`);
+            }
+        }
     </script>
 </body>
 </html>
