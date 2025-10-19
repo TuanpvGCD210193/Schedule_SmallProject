@@ -212,8 +212,8 @@
 
         /* Notes Layout */
         .notes-layout {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
+            display: flex;
+            flex-direction: column;
             gap: 30px;
             height: calc(100vh - 200px);
         }
@@ -394,19 +394,20 @@
             padding: 30px;
             box-shadow: var(--shadow-soft);
             border: 3px solid rgba(255, 107, 157, 0.1);
-            animation: slideInRight 0.8s ease-out 0.4s both;
+            animation: slideInUp 0.8s ease-out 0.2s both;
             position: relative;
             overflow: hidden;
+            flex: 1;
         }
 
-        @keyframes slideInRight {
+        @keyframes slideInUp {
             from {
                 opacity: 0;
-                transform: translateX(30px);
+                transform: translateY(30px);
             }
             to {
                 opacity: 1;
-                transform: translateX(0);
+                transform: translateY(0);
             }
         }
 
@@ -420,6 +421,8 @@
             background: radial-gradient(circle, rgba(0, 122, 255, 0.05) 0%, transparent 70%);
             transition: all 0.6s ease;
             opacity: 0;
+            pointer-events: none;
+            z-index: 0;
         }
 
         .notes-list-container:hover::before {
@@ -436,6 +439,33 @@
             border-bottom: 2px solid var(--light-pink);
         }
 
+        .add-note-btn {
+            background: linear-gradient(135deg, var(--primary-pink) 0%, var(--accent-purple) 100%);
+            color: var(--white);
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 16px rgba(255, 107, 157, 0.3);
+        }
+
+        .add-note-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 24px rgba(255, 107, 157, 0.4);
+        }
+
+        .add-note-btn img {
+            width: 20px;
+            height: 20px;
+            object-fit: cover;
+        }
+
         .list-title {
             display: flex;
             align-items: center;
@@ -446,7 +476,7 @@
         }
 
         .notes-list {
-            max-height: 400px;
+            max-height: calc(100vh - 300px);
             overflow-y: auto;
             padding-right: 10px;
         }
@@ -613,20 +643,197 @@
         .heart:nth-child(5) { left: 70%; animation-delay: 3s; }
         .heart:nth-child(6) { left: 85%; animation-delay: 5s; }
 
+        /* Note Modal */
+        .note-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 107, 157, 0.95);
+            backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.5s ease;
+        }
+
+        .note-modal.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .note-modal-content {
+            background: white;
+            border-radius: 24px;
+            padding: 40px;
+            text-align: center;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            box-shadow: 0 20px 60px rgba(255, 107, 157, 0.3);
+            transform: translateY(50px);
+            transition: transform 0.5s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .note-modal.show .note-modal-content {
+            transform: translateY(0);
+        }
+
+        .note-modal-content::before {
+            content: '📝';
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 30px;
+            animation: sparkle 1.5s infinite ease-in-out;
+        }
+
+        .note-modal-content::after {
+            content: '✨';
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            font-size: 25px;
+            animation: sparkle 1.5s infinite ease-in-out 0.5s;
+        }
+
+        .modal-header {
+            margin-bottom: 20px;
+        }
+
+        .modal-title {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--primary-pink);
+            margin-bottom: 10px;
+            text-shadow: 0 2px 10px rgba(255, 107, 157, 0.2);
+        }
+
+        .modal-subtitle {
+            font-size: 1rem;
+            color: var(--text-medium);
+            font-weight: 500;
+        }
+
+        .modal-editor {
+            width: 100%;
+            height: 200px;
+            border: 2px solid var(--light-pink);
+            border-radius: 16px;
+            padding: 20px;
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            line-height: 1.6;
+            resize: vertical;
+            transition: all 0.3s ease;
+            background: var(--white);
+            margin-bottom: 20px;
+        }
+
+        .modal-formatting-toolbar {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .modal-format-btn {
+            padding: 8px 12px;
+            border: 2px solid var(--light-pink);
+            background: var(--white);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .modal-format-btn:hover {
+            background: var(--primary-pink);
+            color: var(--white);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 107, 157, 0.3);
+        }
+
+        .modal-format-btn.active {
+            background: var(--primary-pink);
+            color: var(--white);
+            border-color: var(--primary-pink);
+        }
+
+        .modal-format-btn svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        .modal-editor:focus {
+            outline: none;
+            border-color: var(--primary-pink);
+            box-shadow: 0 0 0 3px rgba(255, 107, 157, 0.1);
+            transform: scale(1.02);
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        .modal-btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .modal-save-btn {
+            background: linear-gradient(135deg, var(--primary-pink) 0%, var(--accent-purple) 100%);
+            color: var(--white);
+            box-shadow: 0 4px 16px rgba(255, 107, 157, 0.3);
+        }
+
+        .modal-save-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 24px rgba(255, 107, 157, 0.4);
+        }
+
+        .modal-cancel-btn {
+            background: var(--white);
+            color: var(--text-dark);
+            border: 2px solid var(--light-pink);
+        }
+
+        .modal-cancel-btn:hover {
+            background: var(--light-pink);
+            transform: translateY(-2px);
+        }
+
         /* Responsive Design */
         @media (max-width: 1024px) {
             .notes-layout {
-                grid-template-columns: 1fr;
                 gap: 20px;
                 height: auto;
             }
 
-            .note-editor {
-                height: 250px;
-            }
-
             .notes-list {
-                max-height: 300px;
+                max-height: calc(100vh - 250px);
             }
         }
 
@@ -713,72 +920,6 @@
 
         <!-- Notes Layout -->
         <div class="notes-layout">
-            <!-- Note Editor -->
-            <div class="note-editor-container">
-                <div class="editor-header">
-                    <div class="editor-title">
-                        <img src="assets/icon/kitty.png" alt="Editor Icon" class="editor-icon">
-                        <span>Viết Ghi Chú</span>
-                    </div>
-                </div>
-
-                <div class="formatting-toolbar">
-                    <button class="format-btn" data-format="bold" title="In đậm">
-                        <svg viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M15.6 10.79c.97-.67 1.65-1.77 1.65-2.79 0-2.26-1.75-4-4-4H7v14h7.04c2.09 0 3.71-1.7 3.71-3.79 0-1.52-.86-2.82-2.15-3.42zM10 6.5h3c.83 0 1.5.67 1.5 1.5s-.67 1.5-1.5 1.5h-3v-3zm3.5 9H10v-3h3.5c.83 0 1.5.67 1.5 1.5s-.67 1.5-1.5 1.5z"/>
-                        </svg>
-                        <span>B</span>
-                    </button>
-                    <button class="format-btn" data-format="italic" title="In nghiêng">
-                        <svg viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M10 4v3h2.21l-3.42 8H6v3h8v-3h-2.21l3.42-8H18V4h-8z"/>
-                        </svg>
-                        <span>I</span>
-                    </button>
-                    <button class="format-btn" data-format="underline" title="Gạch chân">
-                        <svg viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M12 17c3.31 0 6-2.69 6-6V3h-2.5v8c0 1.93-1.57 3.5-3.5 3.5S8.5 12.93 8.5 11V3H6v8c0 3.31 2.69 6 6 6zm-7 2v2h14v-2H5z"/>
-                        </svg>
-                        <span>U</span>
-                    </button>
-                    <button class="format-btn" data-format="uppercase" title="Chữ hoa">
-                        <svg viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M7.5 15H10c.83 0 1.5-.67 1.5-1.5S10.83 12 10 12H8.5v-1h1.5c.83 0 1.5-.67 1.5-1.5S10.83 8 10 8H7.5c-.83 0-1.5.67-1.5 1.5v6c0 .83.67 1.5 1.5 1.5zM12 8h4.5c.83 0 1.5.67 1.5 1.5s-.67 1.5-1.5 1.5H13v1h3.5c.83 0 1.5.67 1.5 1.5s-.67 1.5-1.5 1.5H12V8z"/>
-                        </svg>
-                        <span>ABC</span>
-                    </button>
-                    <button class="format-btn" data-format="center" title="Căn giữa">
-                        <svg viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M7 15v2h10v-2H7zm-4 6h18v-2H3v2zm0-8h18v-2H3v2zm4-6v2h10V7H7z"/>
-                        </svg>
-                        <span>Center</span>
-                    </button>
-                    <button class="format-btn" data-format="large" title="Chữ to">
-                        <svg viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M9 4v3h5v3h-5v2h5v3h-5v3H7V4h2zm7 0h2v16h-2V4z"/>
-                        </svg>
-                        <span>A+</span>
-                    </button>
-                </div>
-
-                <textarea 
-                    id="noteEditor" 
-                    class="note-editor" 
-                    placeholder="Viết ghi chú của bạn ở đây... Sử dụng các nút trên để định dạng văn bản!"
-                ></textarea>
-
-                <div class="note-actions">
-                    <button class="action-btn clear-btn" onclick="clearNote()">
-                        <img src="assets/icon/shot.png" alt="Clear" style="width: 16px; height: 16px;">
-                        Xóa
-                    </button>
-                    <button class="action-btn save-btn" onclick="saveNote()">
-                        <img src="assets/icon/lovely.png" alt="Save" style="width: 16px; height: 16px;">
-                        Lưu
-                    </button>
-                </div>
-            </div>
-
             <!-- Notes List -->
             <div class="notes-list-container">
                 <div class="list-header">
@@ -786,6 +927,10 @@
                         <img src="assets/icon/panda.png" alt="List Icon" class="editor-icon">
                         <span>Danh Sách Ghi Chú</span>
                     </div>
+                    <button class="add-note-btn" id="addNoteBtn">
+                        <img src="assets/icon/kitty.png" alt="Add Note">
+                        Thêm Ghi Chú
+                    </button>
                 </div>
 
                 <div class="notes-list" id="notesList">
@@ -796,9 +941,122 @@
                 </div>
             </div>
         </div>
+
+        <!-- Note Modal -->
+        <div class="note-modal" id="noteModal">
+            <div class="note-modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title">Viết Ghi Chú Mới</h2>
+                    <p class="modal-subtitle">Viết và lưu ghi chú quan trọng của bạn</p>
+                </div>
+
+                <div class="modal-formatting-toolbar">
+                    <button class="modal-format-btn" data-format="bold" title="In đậm">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M15.6 10.79c.97-.67 1.65-1.77 1.65-2.79 0-2.26-1.75-4-4-4H7v14h7.04c2.09 0 3.71-1.7 3.71-3.79 0-1.52-.86-2.82-2.15-3.42zM10 6.5h3c.83 0 1.5.67 1.5 1.5s-.67 1.5-1.5 1.5h-3v-3zm3.5 9H10v-3h3.5c.83 0 1.5.67 1.5 1.5s-.67 1.5-1.5 1.5z"/>
+                        </svg>
+                        <span>B</span>
+                    </button>
+                    <button class="modal-format-btn" data-format="italic" title="In nghiêng">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M10 4v3h2.21l-3.42 8H6v3h8v-3h-2.21l3.42-8H18V4h-8z"/>
+                        </svg>
+                        <span>I</span>
+                    </button>
+                    <button class="modal-format-btn" data-format="underline" title="Gạch chân">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 17c3.31 0 6-2.69 6-6V3h-2.5v8c0 1.93-1.57 3.5-3.5 3.5S8.5 12.93 8.5 11V3H6v8c0 3.31 2.69 6 6 6zm-7 2v2h14v-2H5z"/>
+                        </svg>
+                        <span>U</span>
+                    </button>
+                    <button class="modal-format-btn" data-format="uppercase" title="Chữ hoa">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M7.5 15H10c.83 0 1.5-.67 1.5-1.5S10.83 12 10 12H8.5v-1h1.5c.83 0 1.5-.67 1.5-1.5S10.83 8 10 8H7.5c-.83 0-1.5.67-1.5 1.5v6c0 .83.67 1.5 1.5 1.5zM12 8h4.5c.83 0 1.5.67 1.5 1.5s-.67 1.5-1.5 1.5H13v1h3.5c.83 0 1.5.67 1.5 1.5s-.67 1.5-1.5 1.5H12V8z"/>
+                        </svg>
+                        <span>ABC</span>
+                    </button>
+                    <button class="modal-format-btn" data-format="center" title="Căn giữa">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M7 15v2h10v-2H7zm-4 6h18v-2H3v2zm0-8h18v-2H3v2zm4-6v2h10V7H7z"/>
+                        </svg>
+                        <span>Center</span>
+                    </button>
+                    <button class="modal-format-btn" data-format="large" title="Chữ to">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M9 4v3h5v3h-5v2h5v3h-5v3H7V4h2zm7 0h2v16h-2V4z"/>
+                        </svg>
+                        <span>A+</span>
+                    </button>
+                    <button class="modal-format-btn" data-format="small" title="Chữ nhỏ">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M9 4v3h5v3h-5v2h5v3h-5v3H7V4h2zm7 0h2v16h-2V4z"/>
+                        </svg>
+                        <span>A-</span>
+                    </button>
+                    <button class="modal-format-btn" data-format="left" title="Căn trái">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M15 15H3v2h12v-2zm0-8H3v2h12V7zm4 4H3v2h16v-2zm0-8H3v2h16V3z"/>
+                        </svg>
+                        <span>←</span>
+                    </button>
+                    <button class="modal-format-btn" data-format="right" title="Căn phải">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M9 15h12v2H9v-2zm0-8h12v2H9V7zm-4 4h12v2H5v-2zm0-8h12v2H5V3z"/>
+                        </svg>
+                        <span>→</span>
+                    </button>
+                </div>
+
+                <textarea 
+                    id="modalNoteEditor" 
+                    class="modal-editor" 
+                    placeholder="Viết ghi chú của bạn ở đây... Sử dụng các nút trên để định dạng văn bản!"
+                ></textarea>
+
+                <div class="modal-actions">
+                    <button class="modal-btn modal-cancel-btn" onclick="closeNoteModal()">
+                        <img src="assets/icon/shot.png" alt="Cancel" style="width: 16px; height: 16px;">
+                        Hủy
+                    </button>
+                    <button class="modal-btn modal-save-btn" id="saveNoteBtn">
+                        <img src="assets/icon/lovely.png" alt="Save" style="width: 16px; height: 16px;">
+                        Lưu
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
 
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-database-compat.js"></script>
+
     <script>
+        // Firebase configuration - Using demo config for now
+        const firebaseConfig = {
+            apiKey: "demo-key",
+            authDomain: "demo-project.firebaseapp.com",
+            databaseURL: "https://demo-project-default-rtdb.firebaseio.com",
+            projectId: "demo-project",
+            storageBucket: "demo-project.appspot.com",
+            messagingSenderId: "123456789",
+            appId: "1:123456789:web:demo"
+        };
+
+        // Initialize Firebase with error handling
+        let database = null;
+        let firebaseAvailable = false;
+        
+        try {
+            firebase.initializeApp(firebaseConfig);
+            database = firebase.database();
+            firebaseAvailable = true;
+            console.log('Firebase initialized successfully');
+        } catch (error) {
+            console.warn('Firebase initialization failed, using localStorage fallback:', error);
+            firebaseAvailable = false;
+        }
+
         // Get user from URL
         const urlParams = new URLSearchParams(window.location.search);
         const currentUser = urlParams.get('user') || 'quynh';
@@ -809,14 +1067,17 @@
 
         // Initialize
         document.addEventListener('DOMContentLoaded', function() {
-            renderNotes();
+            console.log('🚀 Initializing notes app...');
+            loadNotesFromFirebase();
+            setupModal();
             setupFormatting();
-            setupEditor();
+            setupAddNoteButton();
+            console.log('✅ Initialization complete');
         });
 
         // Setup formatting toolbar
         function setupFormatting() {
-            const formatBtns = document.querySelectorAll('.format-btn');
+            const formatBtns = document.querySelectorAll('.modal-format-btn');
             formatBtns.forEach(btn => {
                 btn.addEventListener('click', function() {
                     const format = this.dataset.format;
@@ -828,7 +1089,7 @@
 
         // Apply text formatting
         function applyFormat(format) {
-            const editor = document.getElementById('noteEditor');
+            const editor = document.getElementById('modalNoteEditor');
             const start = editor.selectionStart;
             const end = editor.selectionEnd;
             const selectedText = editor.value.substring(start, end);
@@ -854,6 +1115,15 @@
                     case 'large':
                         formattedText = `# ${selectedText}`;
                         break;
+                    case 'small':
+                        formattedText = `## ${selectedText}`;
+                        break;
+                    case 'left':
+                        formattedText = `\n${selectedText}\n`;
+                        break;
+                    case 'right':
+                        formattedText = `\n\n${selectedText}\n\n`;
+                        break;
                 }
                 
                 editor.value = editor.value.substring(0, start) + formattedText + editor.value.substring(end);
@@ -862,39 +1132,196 @@
             }
         }
 
-        // Setup editor
-        function setupEditor() {
-            const editor = document.getElementById('noteEditor');
+        // Setup add note button
+        function setupAddNoteButton() {
+            const addBtn = document.getElementById('addNoteBtn');
             
-            editor.addEventListener('input', function() {
-                // Auto-save draft
-                localStorage.setItem('draft_' + currentUser, this.value);
-            });
-
-            // Load draft
-            const draft = localStorage.getItem('draft_' + currentUser);
-            if (draft) {
-                editor.value = draft;
+            console.log('🔧 Setting up add note button...');
+            console.log('Add button:', addBtn);
+            
+            if (addBtn && !addBtn.hasAttribute('data-setup')) {
+                addBtn.setAttribute('data-setup', 'true');
+                
+                // Remove any existing listeners first
+                const newBtn = addBtn.cloneNode(true);
+                addBtn.parentNode.replaceChild(newBtn, addBtn);
+                
+                newBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    console.log('🔥 Add note button clicked via addEventListener - OPENING MODAL ONLY');
+                    console.log('🔥 Event details:', {
+                        type: e.type,
+                        target: e.target,
+                        currentTarget: e.currentTarget,
+                        bubbles: e.bubbles,
+                        cancelable: e.cancelable
+                    });
+                    openAddNoteModal();
+                });
+                console.log('✅ Add note button setup with fresh listener');
+            } else if (addBtn) {
+                console.log('⚠️ Add note button already setup');
             }
         }
 
-        // Save note
-        function saveNote() {
-            const editor = document.getElementById('noteEditor');
-            const content = editor.value.trim();
+        // Setup modal
+        function setupModal() {
+            const modal = document.getElementById('noteModal');
+            const saveBtn = document.getElementById('saveNoteBtn');
             
-            if (!content) {
-                alert('Vui lòng nhập nội dung ghi chú!');
-                return;
+            console.log('🔧 Setting up modal...');
+            console.log('Modal:', modal);
+            console.log('Save button:', saveBtn);
+            
+            // Close modal when clicking outside
+            if (modal && !modal.hasAttribute('data-setup')) {
+                modal.setAttribute('data-setup', 'true');
+                modal.addEventListener('click', function(e) {
+                    if (e.target === modal) {
+                        closeNoteModal();
+                    }
+                });
+                console.log('✅ Modal click outside setup');
             }
 
-            const note = {
-                id: currentNoteId || Date.now(),
-                content: content,
-                timestamp: new Date().toISOString(),
-                formatted: formatNoteContent(content)
-            };
+            // Close modal with Escape key
+            if (!window.escapeListenerAdded) {
+                window.escapeListenerAdded = true;
+                document.addEventListener('keydown', function(e) {
+                    if (e.key === 'Escape' && modal && modal.classList.contains('show')) {
+                        closeNoteModal();
+                    }
+                });
+                console.log('✅ Escape key setup');
+            }
 
+            // Setup save button
+            if (saveBtn && !saveBtn.hasAttribute('data-setup')) {
+                saveBtn.setAttribute('data-setup', 'true');
+                saveBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    console.log('🔥 Save button clicked via addEventListener');
+                    
+                    // Disable button immediately
+                    this.disabled = true;
+                    this.style.opacity = '0.5';
+                    this.style.cursor = 'not-allowed';
+                    
+                    saveNoteFromModal();
+                });
+                console.log('✅ Save button setup');
+            } else if (saveBtn) {
+                console.log('⚠️ Save button already setup');
+            }
+        }
+
+        // Open add note modal
+        function openAddNoteModal() {
+            console.log('🔥 openAddNoteModal called');
+            
+            // Prevent duplicate calls
+            if (window.openingModal) {
+                console.log('❌ Already opening modal, ignoring duplicate call');
+                return;
+            }
+            
+            window.openingModal = true;
+            
+            const modal = document.getElementById('noteModal');
+            const editor = document.getElementById('modalNoteEditor');
+            
+            if (!modal || !editor) {
+                console.error('Modal or editor not found!');
+                window.openingModal = false;
+                return;
+            }
+            
+            // Clear editor
+            editor.value = '';
+            currentNoteId = null;
+            
+            // Show modal
+            modal.classList.add('show');
+            document.body.style.overflow = 'hidden';
+            
+            console.log('✅ Modal opened successfully');
+            
+            // Focus editor
+            setTimeout(() => {
+                if (editor) {
+                    editor.focus();
+                    console.log('✅ Editor focused');
+                }
+                window.openingModal = false;
+            }, 300);
+        }
+
+        // Close note modal
+        function closeNoteModal() {
+            const modal = document.getElementById('noteModal');
+            modal.classList.remove('show');
+            document.body.style.overflow = 'auto';
+            
+            // Re-enable save button
+            const saveBtn = document.getElementById('saveNoteBtn');
+            if (saveBtn) {
+                saveBtn.disabled = false;
+                saveBtn.style.opacity = '1';
+                saveBtn.style.cursor = 'pointer';
+            }
+        }
+
+        // Load notes from Firebase or localStorage
+        function loadNotesFromFirebase() {
+            if (firebaseAvailable && database) {
+                const notesRef = database.ref(`notes/${currentUser}`);
+                notesRef.on('value', (snapshot) => {
+                    const data = snapshot.val();
+                    if (data) {
+                        notes = Object.values(data);
+                        renderNotes();
+                    } else {
+                        notes = [];
+                        renderNotes();
+                    }
+                }, (error) => {
+                    console.warn('Firebase read failed, using localStorage:', error);
+                    loadNotesFromLocalStorage();
+                });
+            } else {
+                loadNotesFromLocalStorage();
+            }
+        }
+
+        // Load notes from localStorage fallback
+        function loadNotesFromLocalStorage() {
+            const storedNotes = localStorage.getItem('notes_' + currentUser);
+            if (storedNotes) {
+                notes = JSON.parse(storedNotes);
+            } else {
+                notes = [];
+            }
+            renderNotes();
+        }
+
+        // Save note to Firebase or localStorage
+        function saveNoteToFirebase(note) {
+            if (firebaseAvailable && database) {
+                const notesRef = database.ref(`notes/${currentUser}/${note.id}`);
+                return notesRef.set(note);
+            } else {
+                // Fallback to localStorage
+                return new Promise((resolve) => {
+                    saveNoteToLocalStorage(note);
+                    resolve();
+                });
+            }
+        }
+
+        // Save note to localStorage
+        function saveNoteToLocalStorage(note) {
             if (currentNoteId) {
                 // Update existing note
                 const index = notes.findIndex(n => n.id === currentNoteId);
@@ -905,20 +1332,112 @@
                 // Add new note
                 notes.unshift(note);
             }
-
-            // Save to localStorage
             localStorage.setItem('notes_' + currentUser, JSON.stringify(notes));
+        }
+
+        // Delete note from Firebase or localStorage
+        function deleteNoteFromFirebase(noteId) {
+            if (firebaseAvailable && database) {
+                const noteRef = database.ref(`notes/${currentUser}/${noteId}`);
+                return noteRef.remove();
+            } else {
+                // Fallback to localStorage
+                return new Promise((resolve) => {
+                    deleteNoteFromLocalStorage(noteId);
+                    resolve();
+                });
+            }
+        }
+
+        // Delete note from localStorage
+        function deleteNoteFromLocalStorage(noteId) {
+            notes = notes.filter(n => n.id !== noteId);
+            localStorage.setItem('notes_' + currentUser, JSON.stringify(notes));
+        }
+
+        // Save note from modal
+        function saveNoteFromModal() {
+            console.log('🔥 saveNoteFromModal called, isSaving:', window.isSaving);
+            console.log('🔥 Call stack:', new Error().stack);
             
-            // Clear editor
-            editor.value = '';
-            currentNoteId = null;
-            localStorage.removeItem('draft_' + currentUser);
+            if (window.isSaving) {
+                console.log('❌ Already saving, ignoring duplicate call');
+                return;
+            }
             
-            // Re-render notes
-            renderNotes();
+            // Double check with timestamp
+            const now = Date.now();
+            if (window.lastSaveTime && (now - window.lastSaveTime) < 2000) {
+                console.log('❌ Too soon since last save, ignoring');
+                return;
+            }
             
-            // Show success animation
-            showSuccessAnimation();
+            window.isSaving = true;
+            window.lastSaveTime = now;
+            console.log('✅ Set isSaving to true, lastSaveTime:', now);
+            
+            const editor = document.getElementById('modalNoteEditor');
+            if (!editor) {
+                console.log('❌ Editor not found');
+                window.isSaving = false;
+                return;
+            }
+            
+            const content = editor.value.trim();
+            if (!content) {
+                alert('Vui lòng nhập nội dung ghi chú!');
+                window.isSaving = false;
+                return;
+            }
+
+            const note = {
+                id: currentNoteId || Date.now(),
+                content: content,
+                timestamp: new Date().toISOString(),
+                formatted: formatNoteContent(content)
+            };
+
+            console.log('📝 Creating note with ID:', note.id);
+            console.log('📊 Current notes count before:', notes.length);
+
+            try {
+                // Update local notes array
+                if (currentNoteId) {
+                    const index = notes.findIndex(n => n.id === currentNoteId);
+                    if (index !== -1) {
+                        notes[index] = note;
+                        console.log('📝 Updated existing note');
+                    }
+                } else {
+                    notes.unshift(note);
+                    console.log('📝 Added new note, count now:', notes.length);
+                }
+                
+                // Save to localStorage
+                localStorage.setItem('notes_' + currentUser, JSON.stringify(notes));
+                console.log('💾 Saved to localStorage');
+                
+                // Try Firebase if available
+                if (firebaseAvailable && database) {
+                    saveNoteToFirebase(note).catch(() => {});
+                }
+                
+                // Update UI
+                renderNotes();
+                closeNoteModal();
+                showSuccessAnimation();
+                
+                console.log('✅ Save completed successfully');
+                
+            } catch (error) {
+                console.error('❌ Error saving note:', error);
+                alert('Lỗi khi lưu ghi chú!');
+            } finally {
+                setTimeout(() => {
+                    window.isSaving = false;
+                    console.log('🔄 Reset isSaving to false');
+                }, 2000); // Increased timeout
+            }
         }
 
         // Format note content for display
@@ -927,22 +1446,39 @@
                 .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
                 .replace(/\*(.*?)\*/g, '<em>$1</em>')
                 .replace(/__(.*?)__/g, '<u>$1</u>')
-                .replace(/# (.*?)(\n|$)/g, '<div style="font-size: 1.2em; font-weight: bold; margin: 10px 0;">$1</div>')
+                .replace(/# (.*?)(\n|$)/g, '<div style="font-size: 1.4em; font-weight: bold; margin: 15px 0; color: var(--primary-pink);">$1</div>')
+                .replace(/## (.*?)(\n|$)/g, '<div style="font-size: 1.1em; font-weight: 600; margin: 10px 0; color: var(--accent-blue);">$1</div>')
                 .replace(/\n/g, '<br>');
         }
 
-        // Clear note
-        function clearNote() {
-            if (confirm('Bạn có chắc muốn xóa nội dung hiện tại?')) {
-                document.getElementById('noteEditor').value = '';
-                currentNoteId = null;
-                localStorage.removeItem('draft_' + currentUser);
+        // Edit note
+        function editNote(id) {
+            const note = notes.find(n => n.id === id);
+            if (note) {
+                const modal = document.getElementById('noteModal');
+                const editor = document.getElementById('modalNoteEditor');
+                
+                // Set content and ID
+                editor.value = note.content;
+                currentNoteId = id;
+                
+                // Show modal
+                modal.classList.add('show');
+                document.body.style.overflow = 'hidden';
+                
+                // Focus editor
+                setTimeout(() => {
+                    editor.focus();
+                }, 300);
             }
         }
 
         // Render notes list
         function renderNotes() {
             const notesList = document.getElementById('notesList');
+            
+            console.log('🎨 Rendering notes, count:', notes.length);
+            console.log('📊 Notes data:', notes);
             
             if (notes.length === 0) {
                 notesList.innerHTML = `
@@ -977,29 +1513,31 @@
                     </div>
                 </div>
             `).join('');
+            
+            console.log('✅ Notes rendered successfully');
         }
 
-        // Edit note
-        function editNote(id) {
-            const note = notes.find(n => n.id === id);
-            if (note) {
-                document.getElementById('noteEditor').value = note.content;
-                currentNoteId = id;
-                document.getElementById('noteEditor').focus();
-            }
-        }
 
         // Delete note
         function deleteNote(id) {
             if (confirm('Bạn có chắc muốn xóa ghi chú này?')) {
-                notes = notes.filter(n => n.id !== id);
-                localStorage.setItem('notes_' + currentUser, JSON.stringify(notes));
-                renderNotes();
-                
-                if (currentNoteId === id) {
-                    document.getElementById('noteEditor').value = '';
-                    currentNoteId = null;
-                }
+                deleteNoteFromFirebase(id)
+                    .then(() => {
+                        console.log('Note deleted successfully');
+                        
+                        // Update local notes array
+                        notes = notes.filter(n => n.id !== id);
+                        
+                        // Re-render notes
+                        renderNotes();
+                        
+                        // Show success animation
+                        showSuccessAnimation();
+                    })
+                    .catch((error) => {
+                        console.error('Error deleting note:', error);
+                        alert('Lỗi khi xóa ghi chú! Vui lòng thử lại.');
+                    });
             }
         }
 
@@ -1034,8 +1572,44 @@
             window.location.href = `quynh-functions.html?user=${currentUser}`;
         }
 
-        // Make function globally available
+        // Clear all notes (for testing)
+        function clearAllNotes() {
+            if (confirm('Xóa tất cả ghi chú?')) {
+                notes = [];
+                localStorage.setItem('notes_' + currentUser, JSON.stringify(notes));
+                renderNotes();
+                console.log('🗑️ All notes cleared');
+            }
+        }
+
+        // Debug event listeners
+        function debugEventListeners() {
+            console.log('🔍 Debugging event listeners...');
+            
+            const addBtn = document.getElementById('addNoteBtn');
+            const saveBtn = document.getElementById('saveNoteBtn');
+            
+            console.log('Add button listeners:', getEventListeners ? getEventListeners(addBtn) : 'getEventListeners not available');
+            console.log('Save button listeners:', getEventListeners ? getEventListeners(saveBtn) : 'getEventListeners not available');
+            
+            console.log('Add button onclick:', addBtn.onclick);
+            console.log('Save button onclick:', saveBtn.onclick);
+            
+            console.log('Add button data-setup:', addBtn.getAttribute('data-setup'));
+            console.log('Save button data-setup:', saveBtn.getAttribute('data-setup'));
+        }
+
+
+        // Make functions globally available
         window.goBackToFunctions = goBackToFunctions;
+        window.openAddNoteModal = openAddNoteModal;
+        window.closeNoteModal = closeNoteModal;
+        window.saveNoteFromModal = saveNoteFromModal;
+        window.editNote = editNote;
+        window.deleteNote = deleteNote;
+        window.clearAllNotes = clearAllNotes;
+        window.debugEventListeners = debugEventListeners;
     </script>
 </body>
 </html>
+
