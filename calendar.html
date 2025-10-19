@@ -16,9 +16,9 @@
             --primary-quynh: #c2185b;
             --primary-light: #e91e63;
             --bg-light: #fff5f8;
-            --text-dark: #333;
-            --text-medium: #555;
-            --text-light: #888;
+            --text-dark: #8e0e4f;
+            --text-medium: #c2185b;
+            --text-light: #e91e63;
             --border-light: #ffd4e5;
             --shadow-sm: 0 2px 8px rgba(194, 24, 91, 0.08);
             --shadow-md: 0 4px 20px rgba(194, 24, 91, 0.12);
@@ -26,15 +26,30 @@
             --hour-height: 80px;
             --safe-area-top: env(safe-area-inset-top, 0px);
             --safe-area-bottom: env(safe-area-inset-bottom, 0px);
+            --safe-area-left: env(safe-area-inset-left, 0px);
+            --safe-area-right: env(safe-area-inset-right, 0px);
         }
 
         body {
             font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #fff5f8 0%, #ffe5ec 50%, #ffd4e5 100%);
+            background: linear-gradient(135deg, #ffd4e5 0%, #fce4ec 50%, #f8bbd0 100%);
             color: var(--text-dark);
             overflow-x: hidden;
             padding-top: var(--safe-area-top);
             padding-bottom: var(--safe-area-bottom);
+            padding-left: var(--safe-area-left);
+            padding-right: var(--safe-area-right);
+        }
+
+        /* Ensure iPhone can scroll horizontally */
+        @media (max-width: 430px) {
+            body {
+                overflow-x: hidden; /* Prevent body horizontal scroll */
+            }
+            
+            #app-container {
+                overflow-x: hidden; /* Prevent app container horizontal scroll */
+            }
         }
 
         .hidden { display: none !important; }
@@ -103,7 +118,7 @@
 
         /* Header */
         .app-header {
-            background: rgba(255, 255, 255, 0.95);
+            background: linear-gradient(135deg, var(--primary-quynh) 0%, var(--primary-light) 100%);
             backdrop-filter: blur(20px);
             padding: 16px 20px;
             box-shadow: var(--shadow-sm);
@@ -113,7 +128,11 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            border-bottom: 3px solid var(--border-light);
+            border-bottom: 3px solid var(--primary-quynh);
+            margin-left: calc(-1 * var(--safe-area-left));
+            margin-right: calc(-1 * var(--safe-area-right));
+            padding-left: calc(20px + var(--safe-area-left));
+            padding-right: calc(20px + var(--safe-area-right));
         }
 
         .back-button {
@@ -121,17 +140,17 @@
             align-items: center;
             gap: 8px;
             padding: 10px 16px;
-            background: transparent;
-            border: 2px solid var(--primary-quynh);
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.3);
             border-radius: 12px;
-            color: var(--primary-quynh);
+            color: white;
             font-weight: 700;
             cursor: pointer;
             transition: all 0.3s ease;
         }
 
         .back-button:hover {
-            background: var(--primary-quynh);
+            background: rgba(255, 255, 255, 0.3);
             color: white;
             transform: translateX(-3px);
         }
@@ -145,20 +164,25 @@
             width: 44px;
             height: 44px;
             border-radius: 50%;
-            background: var(--bg-light);
-            border: 2px solid var(--border-light);
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.3);
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
             transition: all 0.3s ease;
-            color: var(--primary-quynh);
+            color: white;
         }
 
         .icon-button:hover {
-            background: var(--primary-quynh);
+            background: rgba(255, 255, 255, 0.3);
             color: white;
             transform: scale(1.1);
+        }
+
+        .icon-button:focus {
+            outline: 2px solid var(--primary-quynh);
+            outline-offset: 2px;
         }
 
         .calendar-container {
@@ -168,12 +192,12 @@
         }
 
         .calendar-header {
-            background: white;
+            background: linear-gradient(135deg, #fff5f8 0%, #ffe5ec 100%);
             padding: 20px;
             border-radius: 20px;
             margin-bottom: 20px;
             box-shadow: var(--shadow-sm);
-            border: 2px solid var(--border-light);
+            border: 2px solid var(--primary-quynh);
         }
 
         .calendar-nav {
@@ -195,28 +219,39 @@
             width: 40px;
             height: 40px;
             border-radius: 50%;
-            background: var(--bg-light);
-            border: 2px solid var(--border-light);
+            background: linear-gradient(135deg, var(--primary-quynh) 0%, var(--primary-light) 100%);
+            border: 2px solid var(--primary-quynh);
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
             transition: all 0.3s ease;
-            color: var(--primary-quynh);
+            color: white;
+            pointer-events: auto;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
         }
 
         .nav-button:hover {
-            background: var(--primary-quynh);
+            background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary-quynh) 100%);
             color: white;
             transform: scale(1.1);
         }
 
+        .nav-button:focus {
+            outline: 2px solid var(--primary-quynh);
+            outline-offset: 2px;
+        }
+
         .month-year-header {
-            font-size: 1.4rem;
+            font-size: clamp(1.2rem, 4vw, 1.8rem);
             font-weight: 800;
             color: var(--primary-quynh);
             text-align: center;
             min-width: 200px;
+            text-shadow: 0 2px 4px rgba(194, 24, 91, 0.3);
         }
 
         .today-button {
@@ -228,6 +263,11 @@
             font-weight: 700;
             cursor: pointer;
             transition: all 0.3s ease;
+            pointer-events: auto;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
         }
 
         .today-button:hover {
@@ -237,10 +277,11 @@
 
         .view-toggle-nav {
             display: flex;
-            background: var(--bg-light);
+            background: linear-gradient(135deg, #fce4ec 0%, #f8bbd0 100%);
             border-radius: 16px;
             padding: 4px;
             gap: 4px;
+            border: 2px solid var(--primary-quynh);
         }
 
         .view-toggle-btn {
@@ -249,28 +290,30 @@
             background: transparent;
             border: none;
             font-weight: 700;
-            color: var(--text-medium);
+            color: var(--primary-quynh);
             cursor: pointer;
             transition: all 0.3s ease;
         }
 
         .view-toggle-btn.active {
-            background: white;
-            color: var(--primary-quynh);
+            background: linear-gradient(135deg, var(--primary-quynh) 0%, var(--primary-light) 100%);
+            color: white;
             box-shadow: var(--shadow-sm);
         }
 
         /* Schedule Wrapper - FIX */
         .schedule-wrapper {
-            background: white;
+            background: linear-gradient(135deg, #fff5f8 0%, #ffe5ec 100%);
             border-radius: 20px;
             overflow: hidden;
             box-shadow: var(--shadow-md);
-            border: 3px solid var(--border-light);
+            border: 3px solid var(--primary-quynh);
             display: flex;
             max-height: calc(100vh - 300px);
             overflow-y: auto;
             position: relative;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
         }
 
         .schedule-wrapper::-webkit-scrollbar {
@@ -286,15 +329,7 @@
             border-radius: 5px;
         }
 
-        /* Time Axis - FIX */
-        .time-axis {
-            flex-shrink: 0;
-            width: 70px;
-            background: var(--bg-light);
-            border-right: 3px solid var(--border-light);
-            display: flex;
-            flex-direction: column;
-        }
+        /* Time Axis - FIX - Moved to schedule-grid-container */
 
         .time-label-line {
             height: var(--hour-height);
@@ -305,13 +340,379 @@
             padding-top: 8px;
             font-size: 0.85rem;
             font-weight: 600;
-            color: var(--text-medium);
+            color: var(--primary-quynh);
         }
 
         .week-view-grid {
             flex-grow: 1;
-            display: grid;
+            display: flex;
+            flex-direction: column;
             position: relative;
+        }
+
+        .day-headers-container {
+            display: grid;
+            grid-template-columns: 70px repeat(7, 1fr);
+            background: linear-gradient(135deg, #fce4ec 0%, #f8bbd0 100%);
+            border-bottom: 3px solid var(--primary-quynh);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        /* Day View - Single Column Layout */
+        .day-headers-container.day-view {
+            grid-template-columns: 70px 1fr;
+        }
+
+        .time-axis-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px 8px;
+            background: linear-gradient(135deg, #fce4ec 0%, #f8bbd0 100%);
+            border-right: 3px solid var(--primary-quynh);
+            font-weight: 600;
+            color: var(--primary-quynh);
+        }
+
+        .schedule-grid-container {
+            display: grid;
+            grid-template-columns: 70px repeat(7, 1fr);
+            flex-grow: 1;
+            position: relative;
+        }
+
+        /* Day View - Single Column Layout */
+        .schedule-grid-container.day-view {
+            grid-template-columns: 70px 1fr;
+        }
+
+        /* Day View Styles - COMPLETELY NEW INDEPENDENT VIEW */
+        .day-view-main {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            background: linear-gradient(135deg, #ffe5ec 0%, #ffd4e5 50%, #fce4ec 100%);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            border: 3px solid var(--primary-quynh);
+        }
+
+        /* Day Navigation Header */
+        .day-nav-header {
+            display: flex !important;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background: linear-gradient(135deg, var(--primary-quynh) 0%, var(--primary-light) 100%);
+            border-bottom: 3px solid var(--primary-quynh);
+            position: sticky;
+            top: 0;
+            z-index: 15;
+            gap: 20px;
+            width: 100%;
+            min-height: 80px;
+        }
+
+        .day-nav-arrow {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            display: flex !important;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: white;
+            font-size: 1.2rem;
+            font-weight: bold;
+            flex-shrink: 0;
+            visibility: visible !important;
+            opacity: 1 !important;
+        }
+
+        .day-nav-arrow:hover {
+            background: rgba(255, 255, 255, 0.3);
+            color: white;
+            transform: scale(1.1);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+
+        .day-nav-center {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            min-width: 250px;
+            text-align: center;
+        }
+
+        .day-nav-weekday {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.95);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-align: center;
+        }
+
+        .day-nav-date {
+            font-size: 3.5rem;
+            font-weight: 900;
+            color: white;
+            line-height: 1;
+            text-align: center;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .day-nav-today {
+            background: rgba(255, 255, 255, 0.25);
+            color: white;
+            border-radius: 25px;
+            padding: 12px 24px;
+            font-size: 1.1rem;
+            font-weight: 800;
+            animation: pulse-today 2s infinite;
+            border: 2px solid rgba(255, 255, 255, 0.4);
+            text-align: center;
+        }
+
+        /* Day Content Area - NEW INDEPENDENT */
+        .day-content-area {
+            display: grid;
+            grid-template-columns: 80px 1fr;
+            flex-grow: 1;
+            position: relative;
+            height: calc(100vh - 180px);
+            min-height: 800px;
+            overflow: hidden;
+        }
+
+        .day-view-time-axis {
+            background: linear-gradient(135deg, #fce4ec 0%, #f8bbd0 100%);
+            border-right: 3px solid var(--primary-quynh);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            z-index: 5;
+            min-height: calc(var(--hour-height) * 18);
+        }
+
+        .day-view-column {
+            position: relative;
+            height: 100%;
+            background: linear-gradient(135deg, #fff5f8 0%, #ffe5ec 50%, #ffd4e5 100%);
+            background-image: linear-gradient(to bottom, 
+                transparent calc(var(--hour-height) - 1px), 
+                var(--primary-quynh) calc(var(--hour-height) - 1px), 
+                var(--primary-quynh) var(--hour-height), 
+                transparent var(--hour-height)
+            );
+            background-size: 100% var(--hour-height);
+            cursor: crosshair;
+            min-height: calc(var(--hour-height) * 24);
+            padding: 0 20px;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        .day-view-column::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .day-view-column::-webkit-scrollbar-track {
+            background: var(--bg-light);
+        }
+
+        .day-view-column::-webkit-scrollbar-thumb {
+            background: var(--primary-quynh);
+            border-radius: 4px;
+        }
+
+        /* Current Time Indicator */
+        .current-time-indicator {
+            position: absolute;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary-quynh), var(--primary-light));
+            z-index: 20;
+            box-shadow: 0 0 8px rgba(194, 24, 91, 0.6);
+        }
+
+        .current-time-indicator::before {
+            content: '';
+            position: absolute;
+            left: -6px;
+            top: -4px;
+            width: 10px;
+            height: 10px;
+            background: var(--primary-quynh);
+            border-radius: 50%;
+            box-shadow: 0 0 8px rgba(194, 24, 91, 0.8);
+        }
+
+        /* Day View Improvements */
+        .day-view-column {
+            position: relative;
+        }
+
+        .day-view-column:hover {
+            background-color: rgba(194, 24, 91, 0.02);
+        }
+
+        .day-view-column::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: repeating-linear-gradient(
+                to bottom,
+                transparent 0,
+                transparent calc(var(--hour-height) - 1px),
+                var(--border-light) calc(var(--hour-height) - 1px),
+                var(--border-light) var(--hour-height)
+            );
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* Event boxes in day view - IMPROVED */
+        .day-view-column .event-box {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: calc(100% - 32px);
+            max-width: 400px;
+            z-index: 10;
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(194, 24, 91, 0.2);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            padding: 16px;
+            min-height: 70px;
+        }
+
+        .day-view-column .event-box:hover {
+            transform: translateX(-50%) translateX(8px) scale(1.02);
+            box-shadow: 0 8px 24px rgba(194, 24, 91, 0.2);
+            z-index: 15;
+        }
+
+        .day-view-column .event-subject {
+            font-size: 1.1rem;
+            font-weight: 800;
+            margin-bottom: 12px;
+            line-height: 1.3;
+            color: inherit;
+        }
+
+        .day-view-column .event-info {
+            font-size: 0.9rem;
+            gap: 10px;
+        }
+
+        .day-view-column .event-info-row {
+            font-size: 0.85rem;
+            gap: 12px;
+            font-weight: 500;
+        }
+
+        .day-view-column .event-info-row svg {
+            width: 20px;
+            height: 20px;
+            opacity: 0.8;
+        }
+
+        /* Day view empty state - IMPROVED */
+        .day-view-empty {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 300px;
+            color: var(--primary-quynh);
+            font-size: 1rem;
+            text-align: center;
+            padding: 40px;
+            width: calc(100% - 32px);
+            max-width: 400px;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(194, 24, 91, 0.2);
+        }
+
+        .day-view-empty-icon {
+            font-size: 3rem;
+            margin-bottom: 16px;
+            opacity: 0.6;
+        }
+
+        .day-view-empty-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--primary-quynh);
+        }
+
+        .day-view-empty-subtitle {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            line-height: 1.4;
+            color: var(--primary-quynh);
+        }
+
+        /* Day view time slots clickable */
+        .day-view-column {
+            position: relative;
+            cursor: crosshair;
+        }
+
+        .day-view-column:hover::after {
+            content: '📅 Click để tạo sự kiện mới';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(135deg, var(--primary-quynh), var(--primary-light));
+            color: white;
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            z-index: 5;
+            pointer-events: none;
+            opacity: 0;
+            animation: fadeInOut 2s ease-in-out;
+            box-shadow: 0 4px 16px rgba(194, 24, 91, 0.3);
+        }
+
+        @keyframes fadeInOut {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 1; }
+        }
+
+        .time-axis {
+            flex-shrink: 0;
+            width: 70px;
+            background: linear-gradient(135deg, #fce4ec 0%, #f8bbd0 100%);
+            border-right: 3px solid var(--primary-quynh);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            z-index: 5;
         }
 
         .day-header {
@@ -319,29 +720,62 @@
             flex-direction: column;
             align-items: center;
             padding: 16px 8px;
-            background: var(--bg-light);
-            border-bottom: 3px solid var(--border-light);
-            border-right: 2px solid var(--border-light);
+            background: linear-gradient(135deg, #fce4ec 0%, #f8bbd0 100%);
+            border-bottom: 3px solid var(--primary-quynh);
+            border-right: 2px solid var(--primary-quynh);
             position: sticky;
             top: 0;
             z-index: 10;
+        }
+
+        /* Day View - Single column header */
+        .day-header.day-view {
+            border-right: none;
+            padding: 20px 12px;
         }
 
         .day-header:last-child {
             border-right: none;
         }
 
+        .day-nav-controls {
+            display: flex;
+            gap: 8px;
+            margin-top: 8px;
+            justify-content: center;
+        }
+
+        .day-nav-arrow-small {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: var(--primary-quynh);
+        }
+
+        .day-nav-arrow-small:hover {
+            background: var(--primary-quynh);
+            color: white;
+            transform: scale(1.1);
+        }
+
         .day-label {
             font-size: 0.75rem;
             font-weight: 700;
-            color: var(--text-medium);
+            color: var(--primary-quynh);
             text-transform: uppercase;
             letter-spacing: 1px;
             margin-bottom: 4px;
         }
 
         .date-label {
-            font-size: 1.8rem;
+            font-size: clamp(1.4rem, 5vw, 2rem);
             font-weight: 800;
             width: 50px;
             height: 50px;
@@ -364,17 +798,19 @@
         }
 
         .day-column {
-            border-right: 2px solid var(--border-light);
+            border-right: 2px solid var(--primary-quynh);
             position: relative;
             height: calc(var(--hour-height) * 18);
-            background: linear-gradient(to bottom, 
+            background: linear-gradient(135deg, #fff5f8 0%, #ffe5ec 100%);
+            background-image: linear-gradient(to bottom, 
                 transparent calc(var(--hour-height) - 1px), 
-                var(--border-light) calc(var(--hour-height) - 1px), 
-                var(--border-light) var(--hour-height), 
+                var(--primary-quynh) calc(var(--hour-height) - 1px), 
+                var(--primary-quynh) var(--hour-height), 
                 transparent var(--hour-height)
             );
             background-size: 100% var(--hour-height);
             cursor: crosshair;
+            min-height: calc(var(--hour-height) * 18);
         }
 
         .day-column:last-child {
@@ -382,74 +818,246 @@
         }
 
         .day-column:hover {
-            background-color: rgba(194, 24, 91, 0.02);
+            background: linear-gradient(135deg, #ffe5ec 0%, #ffd4e5 100%);
         }
 
         /* Event Box - FIX */
         .event-box {
             position: absolute;
-            left: 4px;
-            right: 4px;
+            left: 6px;
+            right: 6px;
             border-radius: 12px;
-            padding: 10px;
-            overflow: hidden;
-            font-size: 0.85rem;
+            padding: 12px;
+            overflow: visible;
+            font-size: 0.9rem;
             cursor: pointer;
             transition: all 0.3s ease;
             border-left: 5px solid;
-            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 3px 15px rgba(194, 24, 91, 0.2);
+            min-height: 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
         }
 
         .event-box:hover {
-            transform: translateX(3px) scale(1.02);
-            box-shadow: 0 8px 24px rgba(194, 24, 91, 0.2);
-            z-index: 15;
+            transform: scale(1.15); /* PHÓNG TO HƠN NỮA khi hover */
+            box-shadow: 0 12px 40px rgba(194, 24, 91, 0.5); /* PHÓNG TO shadow */
+            z-index: 20; /* Đảm bảo hiển thị trên cùng */
+            transition: all 0.3s ease; /* Smooth transition */
+        }
+
+        .event-box:active {
+            transform: translateX(1px) scale(0.98);
+            transition: all 0.1s ease;
+        }
+
+        /* Better touch targets for mobile */
+        @media (max-width: 768px) {
+            .event-box {
+                min-height: 60px;
+                padding: 14px;
+            }
+            
+            .event-subject {
+                font-size: 0.9rem;
+                margin-bottom: 10px;
+            }
+            
+            .event-info {
+                font-size: 0.8rem;
+                gap: 8px;
+            }
+        }
+
+        /* Touch-friendly improvements for all mobile devices */
+        @media (max-width: 768px) {
+            /* Larger touch targets */
+            .nav-button,
+            .today-button,
+            .view-toggle-btn,
+            .day-nav-arrow,
+            .day-nav-arrow-small {
+                min-height: 44px;
+                min-width: 44px;
+            }
+
+            /* Better spacing for touch */
+            .day-column {
+                padding: 2px;
+            }
+
+            /* Improved event box touch targets */
+            .event-box {
+                cursor: pointer;
+                -webkit-tap-highlight-color: rgba(194, 24, 91, 0.2);
+                touch-action: manipulation;
+            }
+
+            .event-box:active {
+                transform: scale(0.95);
+                transition: transform 0.1s ease;
+            }
+
+            /* Better scroll behavior */
+            .schedule-wrapper {
+                -webkit-overflow-scrolling: touch;
+                scroll-behavior: smooth;
+            }
+
+            /* Custom scrollbar for mobile */
+            .schedule-wrapper::-webkit-scrollbar {
+                height: 8px;
+                width: 8px;
+            }
+
+            .schedule-wrapper::-webkit-scrollbar-track {
+                background: rgba(194, 24, 91, 0.1);
+                border-radius: 4px;
+            }
+
+            .schedule-wrapper::-webkit-scrollbar-thumb {
+                background: var(--primary-quynh);
+                border-radius: 4px;
+            }
+
+            .schedule-wrapper::-webkit-scrollbar-thumb:hover {
+                background: var(--primary-light);
+            }
+
+            .day-view-column {
+                -webkit-overflow-scrolling: touch;
+                scroll-behavior: smooth;
+            }
+
+            /* Prevent text selection on touch */
+            .day-header,
+            .time-label-line,
+            .nav-button,
+            .today-button,
+            .view-toggle-btn {
+                -webkit-user-select: none;
+                -moz-user-select: none;
+                -ms-user-select: none;
+                user-select: none;
+            }
+
+            /* Better focus states for accessibility */
+            .nav-button:focus,
+            .today-button:focus,
+            .view-toggle-btn:focus,
+            .day-nav-arrow:focus,
+            .day-nav-arrow-small:focus {
+                outline: 3px solid var(--primary-quynh);
+                outline-offset: 2px;
+            }
+
+            /* Improved modal touch targets */
+            .modal-content {
+                touch-action: pan-y;
+            }
+
+            .button {
+                touch-action: manipulation;
+                -webkit-tap-highlight-color: rgba(194, 24, 91, 0.2);
+            }
+
+            /* Better form inputs for mobile */
+            .form-group input,
+            .form-group select,
+            .form-group textarea {
+                font-size: 16px; /* Prevents zoom on iOS */
+                -webkit-appearance: none;
+                appearance: none;
+                border-radius: 12px;
+            }
+
+            /* Improved category and weekday buttons */
+            .category-btn,
+            .weekday-btn {
+                touch-action: manipulation;
+                -webkit-tap-highlight-color: rgba(194, 24, 91, 0.2);
+            }
+
+            .category-btn:active,
+            .weekday-btn:active {
+                transform: scale(0.95);
+                transition: transform 0.1s ease;
+            }
         }
 
         .event-box.category-study {
-            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
-            border-left-color: #1976d2;
+            background: linear-gradient(135deg, #e8f5e8 0%, #c8e6c9 100%);
+            border-left-color: #4caf50;
+            color: #2e7d32;
         }
 
         .event-box.category-personal {
             background: linear-gradient(135deg, #fce4ec 0%, #f8bbd0 100%);
             border-left-color: #c2185b;
+            color: #880e4f;
         }
 
         .event-box.category-work {
             background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
-            border-left-color: #f57c00;
+            border-left-color: #ff9800;
+            color: #f57c00;
+        }
+
+        .event-box.category-study .event-subject {
+            color: #2e7d32;
+        }
+
+        .event-box.category-personal .event-subject {
+            color: #880e4f;
+        }
+
+        .event-box.category-work .event-subject {
+            color: #f57c00;
         }
 
         .event-subject {
             font-weight: 700;
-            font-size: 0.95rem;
-            margin-bottom: 6px;
+            font-size: clamp(0.85rem, 2.5vw, 1.1rem);
+            margin-bottom: 8px;
             color: inherit;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
+            line-height: 1.3;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            hyphens: auto;
+            -webkit-hyphens: auto;
+            -ms-hyphens: auto;
         }
 
         .event-info {
             display: flex;
             flex-direction: column;
-            gap: 4px;
-            font-size: 0.75rem;
-            opacity: 0.85;
+            gap: 6px;
+            font-size: 0.8rem;
+            opacity: 0.9;
+            margin-top: auto;
         }
 
         .event-info-row {
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
+            font-size: 0.75rem;
+            line-height: 1.2;
         }
 
         .event-info-row svg {
-            width: 14px;
-            height: 14px;
+            width: 16px;
+            height: 16px;
             flex-shrink: 0;
+            opacity: 0.8;
+        }
+
+        .event-info-row span {
+            flex: 1;
+            min-width: 0;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
         }
 
         /* FAB */
@@ -463,8 +1071,8 @@
             background: linear-gradient(135deg, var(--primary-quynh), var(--primary-light));
             color: white;
             font-size: 2.5rem;
-            border: 4px solid white;
-            box-shadow: 0 8px 32px rgba(194, 24, 91, 0.4);
+            border: 4px solid #fff5f8;
+            box-shadow: 0 8px 32px rgba(194, 24, 91, 0.6);
             z-index: 200;
             cursor: pointer;
             transition: all 0.3s ease;
@@ -485,7 +1093,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.7);
+            background: rgba(194, 24, 91, 0.7);
             backdrop-filter: blur(8px);
             display: flex;
             justify-content: center;
@@ -501,15 +1109,15 @@
         }
 
         .modal-content {
-            background: white;
+            background: linear-gradient(135deg, #fff5f8 0%, #ffe5ec 100%);
             padding: 32px;
             border-radius: 24px;
             width: 100%;
             max-width: 600px;
             max-height: 90vh;
             overflow-y: auto;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            border: 3px solid var(--border-light);
+            box-shadow: 0 20px 60px rgba(194, 24, 91, 0.3);
+            border: 3px solid var(--primary-quynh);
             transform: scale(0.9);
             animation: scaleIn 0.3s ease forwards;
         }
@@ -528,7 +1136,7 @@
         }
 
         .modal-title {
-            font-size: 1.8rem;
+            font-size: clamp(1.4rem, 5vw, 1.8rem);
             font-weight: 800;
             color: var(--primary-quynh);
             margin-bottom: 24px;
@@ -695,7 +1303,7 @@
         }
 
         .button--danger {
-            background: #ff3b30;
+            background: linear-gradient(135deg, #e91e63, #f06292);
             color: white;
         }
 
@@ -739,9 +1347,9 @@
             animation: slideInFromRight 0.3s ease;
         }
 
-        .notification--success { background: #4caf50; }
-        .notification--error { background: #f44336; }
-        .notification--info { background: #2196f3; }
+        .notification--success { background: linear-gradient(135deg, #4caf50, #66bb6a); }
+        .notification--error { background: linear-gradient(135deg, #e91e63, #f06292); }
+        .notification--info { background: linear-gradient(135deg, #c2185b, #e91e63); }
 
         @keyframes slideInFromRight {
             from {
@@ -754,38 +1362,1449 @@
             }
         }
 
-        /* Mobile Responsive */
-        @media (max-width: 768px) {
+        /* iPhone 15 Pro Max - GIỮ NGUYÊN CSS LAPTOP + HORIZONTAL SCROLL */
+        @media (max-width: 430px) {
+            /* Giữ nguyên CSS laptop cho iPhone */
+            .calendar-container {
+                padding: 24px; /* Giữ nguyên như laptop */
+                max-width: 1600px; /* Giữ nguyên như laptop */
+            }
+
+            .schedule-wrapper {
+                border-radius: 24px; /* Giữ nguyên như laptop */
+                max-height: calc(100vh - 280px); /* Giữ nguyên như laptop */
+                overflow-x: auto; /* Chỉ thêm horizontal scroll */
+                overflow-y: auto;
+                -webkit-overflow-scrolling: touch;
+                scroll-behavior: smooth;
+                scroll-snap-type: x mandatory;
+                height: calc(100vh - 200px); /* Tăng height để chứa grid đã zoom */
+                min-height: 600px; /* Tăng min-height */
+            }
+
+            .week-view-grid {
+                min-width: 100%; /* Giữ nguyên width laptop */
+                width: 100%;
+                transform: scale(0.7); /* ZOOM NHỎ xuống 70% */
+                transform-origin: top left; /* Zoom từ góc trên trái */
+            }
+
+            .day-headers-container,
+            .schedule-grid-container {
+                grid-template-columns: 80px repeat(7, 1fr); /* Giữ nguyên như laptop */
+                min-width: 100%;
+                width: 100%;
+            }
+
+            .day-headers-container.day-view,
+            .schedule-grid-container.day-view {
+                grid-template-columns: 80px 1fr;
+                min-width: auto;
+                width: auto;
+            }
+
+            .day-header,
+            .day-column {
+                min-width: auto; /* Giữ nguyên như laptop */
+                width: auto;
+                padding: 20px 12px; /* Giữ nguyên như laptop */
+            }
+
+            .day-header {
+                padding: 24px 12px; /* Tăng padding để bù cho zoom grid */
+            }
+
+            .time-axis {
+                width: 80px; /* Giữ nguyên như laptop */
+            }
+
+            .time-axis-header {
+                padding: 20px 12px; /* Giữ nguyên như laptop */
+                font-size: 1.1rem; /* Tăng font size để bù cho zoom grid */
+            }
+
+            .time-label-line {
+                font-size: 0.95rem; /* Tăng font size để bù cho zoom grid */
+                padding-top: 10px; /* Giữ nguyên như laptop */
+            }
+
+            .day-label {
+                font-size: 0.95rem; /* Tăng font size để bù cho zoom grid */
+                margin-bottom: 8px; /* Giữ nguyên như laptop */
+                letter-spacing: 1px; /* Giữ nguyên như laptop */
+            }
+
+            .date-label {
+                font-size: 2.4rem; /* Tăng font size để bù cho zoom grid */
+                width: 60px; /* Giữ nguyên như laptop */
+                height: 60px;
+                line-height: 60px;
+            }
+
+            .date-label.today {
+                font-size: 2.6rem; /* Tăng font size để bù cho zoom grid */
+                width: 65px; /* Giữ nguyên như laptop */
+                height: 65px;
+                line-height: 65px;
+            }
+
+            /* Event Boxes - GIỚI HẠN SCALE để text không tràn */
+            .event-box {
+                font-size: 0.9rem; /* Giữ font size laptop */
+                padding: 12px; /* Giữ padding laptop */
+                min-height: 60px; /* Giữ min-height laptop */
+                border-radius: 12px; /* Giữ border-radius laptop */
+                left: 6px; /* Giữ margin laptop */
+                right: 6px;
+                width: calc(100% - 12px); /* Giữ width laptop */
+                max-width: none;
+                transform: scale(1.0); /* KHÔNG SCALE - giữ nguyên */
+                z-index: 1;
+                /* Tăng font size để bù cho việc zoom grid */
+                font-size: 1.1rem;
+                padding: 14px;
+                min-height: 70px;
+            }
+
+            .event-subject {
+                font-size: 1.3rem; /* Tăng font size để bù cho zoom grid */
+                margin-bottom: 10px; /* Tăng margin */
+                line-height: 1.4; /* Giữ line-height laptop */
+                font-weight: 700; /* Giữ font-weight laptop */
+                word-break: break-word;
+                overflow-wrap: break-word;
+                white-space: normal;
+                overflow: hidden; /* GIỚI HẠN overflow */
+                text-overflow: ellipsis; /* Thêm ellipsis nếu text quá dài */
+                display: -webkit-box;
+                -webkit-line-clamp: 2; /* Giới hạn 2 dòng */
+                line-clamp: 2; /* Standard property for compatibility */
+                -webkit-box-orient: vertical;
+            }
+
+            .event-info {
+                font-size: 0.9rem; /* Tăng font size để bù cho zoom grid */
+                gap: 8px; /* Tăng gap */
+            }
+
+            .event-info-row {
+                font-size: 0.85rem; /* Tăng font size để bù cho zoom grid */
+                gap: 10px; /* Tăng gap */
+                white-space: nowrap; /* Ngăn text wrap */
+                overflow: hidden; /* GIỚI HẠN overflow */
+                text-overflow: ellipsis; /* Thêm ellipsis */
+            }
+
+            .event-info-row svg {
+                width: 20px; /* Tăng icon size để bù cho zoom grid */
+                height: 20px;
+                flex-shrink: 0;
+            }
+
+            .event-info-row span {
+                flex: 1;
+                min-width: 0;
+                overflow: hidden; /* GIỚI HẠN overflow */
+                text-overflow: ellipsis; /* Thêm ellipsis */
+                white-space: nowrap; /* Ngăn text wrap */
+            }
+
+            .day-column {
+                scroll-snap-align: start;
+            }
+
+            /* Custom scrollbar */
+            .schedule-wrapper::-webkit-scrollbar {
+                height: 8px;
+            }
+
+            .schedule-wrapper::-webkit-scrollbar-track {
+                background: rgba(194, 24, 91, 0.1);
+                border-radius: 4px;
+            }
+
+            .schedule-wrapper::-webkit-scrollbar-thumb {
+                background: linear-gradient(90deg, var(--primary-quynh), var(--primary-light));
+                border-radius: 4px;
+            }
+
+            .schedule-wrapper::-webkit-scrollbar-thumb:hover {
+                background: linear-gradient(90deg, var(--primary-light), var(--primary-quynh));
+            }
+
+            /* Scroll indicators */
+            .schedule-wrapper::after {
+                content: '👆 Vuốt ngang để xem toàn bộ tuần';
+                position: absolute;
+                bottom: 20px;
+                left: 50%;
+                transform: translateX(-50%);
+                background: linear-gradient(135deg, rgba(194, 24, 91, 0.95), rgba(233, 30, 99, 0.95));
+                color: white;
+                padding: 12px 24px;
+                border-radius: 25px;
+                font-size: 0.85rem;
+                font-weight: 700;
+                z-index: 10;
+                pointer-events: none;
+                animation: fadeInOut 4s ease-in-out;
+                /* Điều chỉnh vị trí để phù hợp với grid đã zoom */
+                bottom: 10px;
+            }
+
+            @keyframes fadeInOut {
+                0%, 100% { opacity: 0; }
+                20%, 80% { opacity: 1; }
+            }
+
+            .schedule-wrapper.scrolled::after {
+                display: none;
+            }
+
+            /* Day View Mobile - Giữ nguyên laptop style */
+            .day-content-area {
+                grid-template-columns: 80px 1fr; /* Giữ nguyên như laptop */
+                height: calc(100vh - 200px); /* Giữ nguyên như laptop */
+                min-height: 800px; /* Giữ nguyên như laptop */
+            }
+
+            .day-view-time-axis {
+                width: 80px; /* Giữ nguyên như laptop */
+            }
+
+            .day-nav-header {
+                padding: 32px; /* Giữ nguyên như laptop */
+                gap: 32px; /* Giữ nguyên như laptop */
+            }
+
+            .day-nav-arrow {
+                width: 60px; /* Giữ nguyên như laptop */
+                height: 60px;
+                font-size: 1.5rem; /* Giữ nguyên như laptop */
+            }
+
+            .day-nav-center {
+                min-width: 280px; /* Giữ nguyên như laptop */
+                gap: 16px; /* Giữ nguyên như laptop */
+            }
+
+            .day-nav-weekday {
+                font-size: 1.6rem; /* Giữ nguyên như laptop */
+                letter-spacing: 3px; /* Giữ nguyên như laptop */
+            }
+
+            .day-nav-date {
+                font-size: 4rem; /* Giữ nguyên như laptop */
+            }
+
+            .day-nav-today {
+                font-size: 1.2rem; /* Giữ nguyên như laptop */
+                padding: 14px 28px; /* Giữ nguyên như laptop */
+            }
+
+            .day-view-column .event-box {
+                width: calc(100% - 40px); /* Giữ nguyên như laptop */
+                max-width: 450px; /* Giữ nguyên như laptop */
+                padding: 20px; /* Giữ nguyên như laptop */
+                min-height: 80px; /* Giữ nguyên như laptop */
+                left: 50%;
+                transform: translateX(-50%);
+            }
+
+            .day-view-column .event-subject {
+                font-size: 1.2rem; /* Giữ nguyên như laptop */
+                margin-bottom: 14px; /* Giữ nguyên như laptop */
+            }
+
+            .day-view-column .event-info {
+                font-size: 1rem; /* Giữ nguyên như laptop */
+                gap: 12px; /* Giữ nguyên như laptop */
+            }
+
+            .day-view-column .event-info-row {
+                font-size: 0.9rem; /* Giữ nguyên như laptop */
+                gap: 14px; /* Giữ nguyên như laptop */
+            }
+
+            .day-view-column .event-info-row svg {
+                width: 22px; /* Giữ nguyên như laptop */
+                height: 22px;
+            }
+
+            .day-view-empty {
+                height: 350px; /* Giữ nguyên như laptop */
+                padding: 50px 30px; /* Giữ nguyên như laptop */
+                width: calc(100% - 40px); /* Giữ nguyên như laptop */
+                max-width: 450px; /* Giữ nguyên như laptop */
+            }
+
+            .day-view-empty-icon {
+                font-size: 4rem; /* Giữ nguyên như laptop */
+            }
+
+            .day-view-empty-title {
+                font-size: 1.4rem; /* Giữ nguyên như laptop */
+            }
+
+            .day-view-empty-subtitle {
+                font-size: 1rem; /* Giữ nguyên như laptop */
+            }
+
+            /* FAB và Modal - Giữ nguyên laptop style */
+            .fab {
+                width: 80px; /* Giữ nguyên như laptop */
+                height: 80px;
+                bottom: calc(40px + var(--safe-area-bottom)); /* Giữ nguyên như laptop */
+                right: 40px;
+                font-size: 3rem; /* Giữ nguyên như laptop */
+            }
+
+            .modal-content {
+                padding: 40px; /* Giữ nguyên như laptop */
+                max-width: 700px; /* Giữ nguyên như laptop */
+                border-radius: 28px; /* Giữ nguyên như laptop */
+            }
+
+            .modal-title {
+                font-size: 2rem; /* Giữ nguyên như laptop */
+                margin-bottom: 32px; /* Giữ nguyên như laptop */
+            }
+
+            .form-group label {
+                font-size: 1rem; /* Giữ nguyên như laptop */
+                margin-bottom: 12px; /* Giữ nguyên như laptop */
+            }
+
+            .form-group input,
+            .form-group select,
+            .form-group textarea {
+                padding: 16px 20px; /* Giữ nguyên như laptop */
+                font-size: 1.1rem; /* Giữ nguyên như laptop */
+                border-radius: 16px; /* Giữ nguyên như laptop */
+            }
+
+            .button {
+                padding: 16px 32px; /* Giữ nguyên như laptop */
+                font-size: 1.1rem; /* Giữ nguyên như laptop */
+                border-radius: 16px; /* Giữ nguyên như laptop */
+            }
+
+            .app-header {
+                padding: 20px 32px; /* Giữ nguyên như laptop */
+            }
+
+            .back-button {
+                padding: 12px 20px; /* Giữ nguyên như laptop */
+                font-size: 1rem; /* Giữ nguyên như laptop */
+            }
+
+            .icon-button {
+                width: 48px; /* Giữ nguyên như laptop */
+                height: 48px;
+            }
+
+            /* Calendar header - Giữ nguyên laptop style */
+            .calendar-header {
+                padding: 28px; /* Giữ nguyên như laptop */
+                border-radius: 24px; /* Giữ nguyên như laptop */
+                margin-bottom: 24px; /* Giữ nguyên như laptop */
+            }
+
+            .calendar-nav {
+                flex-direction: row; /* Giữ nguyên như laptop */
+                justify-content: space-between; /* Giữ nguyên như laptop */
+                align-items: center; /* Giữ nguyên như laptop */
+                gap: 24px; /* Giữ nguyên như laptop */
+            }
+
+            .nav-controls {
+                order: 1; /* Giữ nguyên như laptop */
+                gap: 16px; /* Giữ nguyên như laptop */
+            }
+
+            .today-button {
+                order: 2; /* Giữ nguyên như laptop */
+                padding: 14px 32px; /* Giữ nguyên như laptop */
+                font-size: 1.1rem; /* Giữ nguyên như laptop */
+            }
+
+            .view-toggle-nav {
+                order: 3; /* Giữ nguyên như laptop */
+                display: flex; /* Giữ nguyên như laptop */
+                padding: 6px; /* Giữ nguyên như laptop */
+                gap: 6px; /* Giữ nguyên như laptop */
+            }
+
+            .view-toggle-btn {
+                padding: 12px 24px; /* Giữ nguyên như laptop */
+                font-size: 1rem; /* Giữ nguyên như laptop */
+            }
+
+            .month-year-header {
+                font-size: 2rem; /* Giữ nguyên như laptop */
+                min-width: 300px; /* Giữ nguyên như laptop */
+            }
+
+
+
+        }
+
+        /* iPhone nhỏ - TỐI ƯU TỐI ĐA cho màn hình nhỏ - TRÀN RA NGOÀI */
+        @media (max-width: 375px) {
+            .calendar-container {
+                padding: 8px 0; /* Bỏ padding left/right để tràn ra ngoài */
+                overflow-x: visible; /* Cho phép tràn ra ngoài */
+            }
+
+            .schedule-wrapper {
+                border-left: none; /* Bỏ border để tràn đẹp */
+                border-right: none;
+                width: 100vw; /* Full viewport width */
+                margin-left: calc(-50vw + 50%); /* Center và tràn ra ngoài */
+                overflow-x: auto !important; /* Force horizontal scroll */
+            }
+
+            .week-view-grid,
+            .day-headers-container,
+            .schedule-grid-container {
+                min-width: 400vw; /* SIÊU RỘNG cho iPhone nhỏ */
+                width: 400vw;
+            }
+
+            .day-header,
+            .day-column {
+                min-width: calc((400vw - 80px) / 7); /* SIÊU RỘNG */
+                width: calc((400vw - 80px) / 7);
+                padding: 18px 16px; /* Tăng padding */
+            }
+
+            /* Event Boxes - PHÓNG TO TỪNG Ô cho iPhone nhỏ */
+            .event-box {
+                font-size: 1.3rem; /* PHÓNG TO font size */
+                padding: 22px; /* PHÓNG TO padding */
+                min-height: 110px; /* PHÓNG TO min-height */
+                left: 6px; /* Tăng margin để ô rộng hơn */
+                right: 6px;
+                width: calc(100% - 12px); /* Ô SIÊU RỘNG */
+                max-width: none; /* Bỏ max-width */
+                transform: scale(1.12); /* PHÓNG TO toàn bộ ô */
+                z-index: 2; /* Đảm bảo ô phóng to hiển thị trên cùng */
+                border-radius: 20px; /* PHÓNG TO border radius */
+                box-shadow: 0 10px 30px rgba(194, 24, 91, 0.5); /* PHÓNG TO shadow */
+            }
+
+            .event-subject {
+                font-size: 1.4rem; /* PHÓNG TO font size */
+                line-height: 1.7; /* PHÓNG TO line height */
+                margin-bottom: 12px; /* PHÓNG TO margin */
+                font-weight: 800; /* PHÓNG TO font weight */
+                word-break: break-word;
+                overflow-wrap: break-word;
+                white-space: normal;
+                overflow: visible;
+                text-shadow: 0 3px 6px rgba(0, 0, 0, 0.15); /* PHÓNG TO shadow */
+            }
+
+            .event-info {
+                font-size: 1.1rem; /* PHÓNG TO font size */
+                gap: 12px; /* PHÓNG TO gap */
+            }
+
+            .event-info-row {
+                font-size: 1rem; /* PHÓNG TO font size */
+                gap: 14px; /* PHÓNG TO gap */
+                white-space: normal; /* Cho phép text wrap */
+                overflow: visible; /* Cho phép text hiển thị đầy đủ */
+                margin-bottom: 10px; /* PHÓNG TO margin giữa các rows */
+            }
+
+            .event-info-row svg {
+                width: 24px; /* PHÓNG TO icon size */
+                height: 24px;
+                flex-shrink: 0; /* Không cho icon bị co lại */
+            }
+
+            .event-info-row span {
+                flex: 1; /* Cho phép text chiếm hết không gian */
+                min-width: 0; /* Cho phép text wrap */
+                word-break: break-word;
+                overflow-wrap: break-word;
+                font-weight: 700; /* PHÓNG TO font weight */
+            }
+        }
+
+        /* Tablet và mobile lớn */
+        @media (max-width: 768px) and (min-width: 431px) {
+            :root {
+                --hour-height: 85px;
+            }
+
+            .calendar-header {
+                padding: 14px;
+                margin-bottom: 14px;
+                border-radius: 18px;
+            }
+
+            .calendar-nav {
+                flex-direction: column;
+                gap: 14px;
+                align-items: center;
+            }
+
+            .month-year-header {
+                font-size: 1.5rem;
+                margin-bottom: 6px;
+            }
+
+            .nav-controls {
+                gap: 14px;
+            }
+
+            .nav-button {
+                width: 46px;
+                height: 46px;
+            }
+
+            .today-button {
+                padding: 11px 26px;
+                font-size: 1rem;
+            }
+
+            .view-toggle-nav {
+                display: flex;
+                width: 100%;
+                max-width: 320px;
+                padding: 5px;
+                gap: 5px;
+            }
+
+            .view-toggle-btn {
+                padding: 11px 16px;
+                font-size: 0.9rem;
+            }
+
+            /* Week View - Tablet Optimized */
+            .day-headers-container {
+                grid-template-columns: 60px repeat(7, 1fr);
+                border-radius: 14px 14px 0 0;
+            }
+
+            .day-headers-container.day-view {
+                grid-template-columns: 60px 1fr;
+            }
+
+            .schedule-grid-container {
+                grid-template-columns: 60px repeat(7, 1fr);
+            }
+
+            .schedule-grid-container.day-view {
+                grid-template-columns: 60px 1fr;
+            }
+
+            .time-axis {
+                width: 60px;
+            }
+
+            .time-axis-header {
+                padding: 14px 8px;
+                font-size: 0.8rem;
+            }
+
+            .time-label-line {
+                font-size: 0.75rem;
+                padding-top: 7px;
+            }
+
+            .day-header {
+                padding: 14px 6px;
+            }
+
+            .day-label {
+                font-size: 0.75rem;
+                margin-bottom: 7px;
+            }
+
+            .date-label {
+                font-size: 1.4rem;
+                width: 40px;
+                height: 40px;
+                line-height: 40px;
+            }
+
+            .date-label.today {
+                font-size: 1.5rem;
+                width: 44px;
+                height: 44px;
+                line-height: 44px;
+            }
+
+            /* Event Boxes - Tablet Friendly */
+            .event-box {
+                font-size: 0.8rem;
+                padding: 9px;
+                min-height: 52px;
+                border-radius: 9px;
+                left: 5px;
+                right: 5px;
+            }
+
+            .event-subject {
+                font-size: 0.85rem;
+                margin-bottom: 5px;
+                line-height: 1.25;
+            }
+
+            .event-info {
+                font-size: 0.75rem;
+                gap: 5px;
+            }
+
+            .event-info-row {
+                font-size: 0.7rem;
+                gap: 7px;
+            }
+
+            .event-info-row svg {
+                width: 15px;
+                height: 15px;
+            }
+
+            /* Day View Tablet */
+            .day-content-area {
+                grid-template-columns: 60px 1fr;
+                height: calc(100vh - 150px);
+                min-height: 650px;
+            }
+
+            .day-view-time-axis {
+                width: 60px;
+            }
+
+            .day-nav-header {
+                padding: 20px 14px;
+                gap: 20px;
+            }
+
+            .day-nav-arrow {
+                width: 50px;
+                height: 50px;
+            }
+
+            .day-nav-center {
+                min-width: 200px;
+            }
+
+            .day-nav-weekday {
+                font-size: 1.3rem;
+            }
+
+            .day-nav-date {
+                font-size: 3rem;
+            }
+
+            .day-view-column .event-box {
+                width: calc(100% - 20px);
+                max-width: 350px;
+                padding: 13px;
+                min-height: 65px;
+            }
+
+            .day-view-column .event-subject {
+                font-size: 1.1rem;
+                margin-bottom: 12px;
+            }
+
+            .day-view-column .event-info {
+                font-size: 0.9rem;
+                gap: 10px;
+            }
+
+            .day-view-column .event-info-row {
+                font-size: 0.85rem;
+                gap: 12px;
+            }
+
+            .day-view-column .event-info-row svg {
+                width: 20px;
+                height: 20px;
+            }
+
+            /* Navigation Controls */
+            .day-nav-controls {
+                gap: 7px;
+                margin-top: 7px;
+            }
+
+            .day-nav-arrow-small {
+                width: 30px;
+                height: 30px;
+            }
+
+            /* Modal */
+            .modal-content {
+                padding: 28px;
+                margin: 18px;
+                border-radius: 18px;
+            }
+
+            .modal-title {
+                font-size: 1.7rem;
+                margin-bottom: 18px;
+            }
+
+            .form-group-inline {
+                grid-template-columns: 1fr;
+                gap: 14px;
+            }
+
+            .category-selector {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+
+            .weekdays-selector {
+                gap: 7px;
+            }
+
+            .weekday-btn {
+                min-width: 46px;
+                min-height: 46px;
+                font-size: 0.85rem;
+            }
+
+            .button {
+                min-height: 50px;
+                padding: 15px 22px;
+                font-size: 0.95rem;
+            }
+
+            .category-btn {
+                min-height: 65px;
+                padding: 18px 14px;
+            }
+
+            /* FAB */
+            .fab {
+                width: 70px;
+                height: 70px;
+                bottom: calc(30px + var(--safe-area-bottom));
+                right: 30px;
+                font-size: 2.5rem;
+            }
+
+            /* Schedule Wrapper */
+            .schedule-wrapper {
+                border-radius: 18px;
+                max-height: calc(100vh - 220px);
+            }
+
+            /* Better spacing */
+            .calendar-container {
+                padding: 16px;
+            }
+        }
+
+        /* Laptop màn hình vừa - SPACING RỘNG RÃI VÀ FONT LỚN */
+        @media (min-width: 1024px) {
+            .calendar-container {
+                max-width: 1600px;
+                padding: 24px;
+            }
+
+            .calendar-header {
+                padding: 28px;
+                border-radius: 24px;
+                margin-bottom: 24px;
+            }
+
+            .calendar-nav {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+                gap: 24px;
+            }
+
+            .nav-controls {
+                order: 1;
+                gap: 16px;
+            }
+
+            .today-button {
+                order: 2;
+                padding: 14px 32px;
+                font-size: 1.1rem;
+            }
+
+            .view-toggle-nav {
+                order: 3;
+                display: flex;
+                padding: 6px;
+                gap: 6px;
+            }
+
+            .view-toggle-btn {
+                padding: 12px 24px;
+                font-size: 1rem;
+            }
+
+            .month-year-header {
+                font-size: 2rem;
+                min-width: 300px;
+            }
+
+            /* Week View - LAPTOP OPTIMIZED - FULL WIDTH */
+            .calendar-container {
+                padding: 24px; /* Restore padding cho laptop */
+                overflow-x: visible; /* Allow overflow cho laptop */
+            }
+
+            .schedule-wrapper {
+                border-left: 3px solid var(--primary-quynh); /* Restore border cho laptop */
+                border-right: 3px solid var(--primary-quynh);
+                border-radius: 24px; /* Restore border radius cho laptop */
+            }
+
+            .week-view-grid,
+            .day-headers-container,
+            .schedule-grid-container {
+                min-width: 100%; /* Full width cho laptop */
+                width: 100%;
+            }
+
+            .day-headers-container {
+                grid-template-columns: 100px repeat(7, 1fr); /* Tăng time axis */
+            }
+
+            .day-headers-container.day-view {
+                grid-template-columns: 100px 1fr;
+            }
+
+            .schedule-grid-container {
+                grid-template-columns: 100px repeat(7, 1fr); /* Tăng time axis */
+            }
+
+            .schedule-grid-container.day-view {
+                grid-template-columns: 100px 1fr;
+            }
+
+            .day-content-area {
+                grid-template-columns: 100px 1fr; /* Tăng time axis */
+                height: calc(100vh - 200px);
+                min-height: 900px;
+            }
+
+            .day-view-time-axis {
+                width: 100px; /* Tăng từ 90px */
+            }
+
+            .day-nav-header {
+                padding: 32px;
+                gap: 32px;
+            }
+
+            .day-nav-arrow {
+                width: 60px;
+                height: 60px;
+                font-size: 1.5rem;
+            }
+
+            .day-nav-center {
+                min-width: 280px;
+                gap: 16px;
+            }
+
+            .day-nav-weekday {
+                font-size: 1.6rem;
+                letter-spacing: 3px;
+            }
+
+            .day-nav-date {
+                font-size: 4rem;
+            }
+
+            .day-nav-today {
+                font-size: 1.2rem;
+                padding: 14px 28px;
+            }
+
+            .time-axis {
+                width: 100px; /* Tăng từ 80px */
+            }
+
+            .time-axis-header {
+                padding: 24px 16px; /* Tăng padding */
+                font-size: 1.1rem; /* Tăng font size */
+            }
+
+            .day-header {
+                padding: 24px 16px; /* Tăng padding */
+            }
+
+            .day-label {
+                font-size: 1rem; /* Tăng font size */
+                margin-bottom: 12px; /* Tăng margin */
+                letter-spacing: 2px; /* Tăng letter spacing */
+            }
+
+            .date-label {
+                font-size: 2.5rem; /* Tăng font size */
+                width: 70px; /* Tăng width */
+                height: 70px; /* Tăng height */
+                line-height: 70px;
+            }
+
+            .date-label.today {
+                font-size: 2.8rem; /* Tăng font size */
+                width: 75px; /* Tăng width */
+                height: 75px; /* Tăng height */
+                line-height: 75px;
+            }
+
+            .day-column {
+                min-height: calc(var(--hour-height) * 18);
+            }
+
+            .day-view-column {
+                min-height: calc(var(--hour-height) * 24);
+                padding: 0 32px;
+            }
+
+            /* Event Boxes - LAPTOP SIZE - LỚN VÀ RỘNG RÃI */
+            .event-box {
+                font-size: 1rem; /* Font size lớn hơn */
+                padding: 16px; /* Padding rộng rãi */
+                min-height: 80px; /* Min-height lớn hơn */
+                left: 8px; /* Margin rộng rãi */
+                right: 8px;
+                border-radius: 16px; /* Border radius lớn hơn */
+            }
+
+            .event-subject {
+                font-size: 1.1rem; /* Font size lớn hơn */
+                line-height: 1.5; /* Line height rộng rãi */
+                margin-bottom: 12px; /* Margin lớn hơn */
+            }
+
+            .event-info {
+                font-size: 0.9rem; /* Font size lớn hơn */
+                gap: 8px; /* Gap rộng rãi */
+            }
+
+            .event-info-row {
+                font-size: 0.85rem; /* Font size lớn hơn */
+                gap: 10px; /* Gap rộng rãi */
+            }
+
+            .event-info-row svg {
+                width: 20px; /* Icon size lớn hơn */
+                height: 20px;
+            }
+
+            .day-view-column .event-box {
+                width: calc(100% - 40px);
+                max-width: 450px;
+                padding: 20px;
+                min-height: 80px;
+            }
+
+            .day-view-column .event-subject {
+                font-size: 1.2rem;
+                margin-bottom: 14px;
+            }
+
+            .day-view-column .event-info {
+                font-size: 1rem;
+                gap: 12px;
+            }
+
+            .day-view-column .event-info-row {
+                font-size: 0.9rem;
+                gap: 14px;
+            }
+
+            .day-view-column .event-info-row svg {
+                width: 22px;
+                height: 22px;
+            }
+
+            .day-view-empty {
+                height: 350px;
+                padding: 50px 30px;
+                width: calc(100% - 40px);
+                max-width: 450px;
+            }
+
+            .day-view-empty-icon {
+                font-size: 4rem;
+            }
+
+            .day-view-empty-title {
+                font-size: 1.4rem;
+            }
+
+            .day-view-empty-subtitle {
+                font-size: 1rem;
+            }
+
+            .schedule-wrapper {
+                max-height: calc(100vh - 280px);
+                border-radius: 24px;
+            }
+
+            .fab {
+                width: 80px;
+                height: 80px;
+                bottom: calc(40px + var(--safe-area-bottom));
+                right: 40px;
+                font-size: 3rem;
+            }
+
+            .modal-content {
+                padding: 40px;
+                max-width: 700px;
+                border-radius: 28px;
+            }
+
+            .modal-title {
+                font-size: 2rem;
+                margin-bottom: 32px;
+            }
+
+            .form-group label {
+                font-size: 1rem;
+                margin-bottom: 12px;
+            }
+
+            .form-group input,
+            .form-group select,
+            .form-group textarea {
+                padding: 16px 20px;
+                font-size: 1.1rem;
+                border-radius: 16px;
+            }
+
+            .button {
+                padding: 16px 32px;
+                font-size: 1.1rem;
+                border-radius: 16px;
+            }
+
+            .app-header {
+                padding: 20px 32px;
+            }
+
+            .back-button {
+                padding: 12px 20px;
+                font-size: 1rem;
+            }
+
+            .icon-button {
+                width: 48px;
+                height: 48px;
+            }
+        }
+
+        /* Laptop màn hình lớn */
+        @media (min-width: 1440px) {
+            .calendar-container {
+                max-width: 1800px;
+                padding: 32px;
+            }
+
+            .calendar-header {
+                padding: 32px;
+                border-radius: 28px;
+                margin-bottom: 32px;
+            }
+
+            .month-year-header {
+                font-size: 2.2rem;
+                min-width: 350px;
+            }
+
+            .day-content-area {
+                height: calc(100vh - 220px);
+                min-height: 1000px;
+            }
+
+            .day-nav-header {
+                padding: 40px;
+                gap: 40px;
+            }
+
+            .day-nav-center {
+                min-width: 320px;
+                gap: 20px;
+            }
+
+            .day-nav-weekday {
+                font-size: 1.8rem;
+                letter-spacing: 4px;
+            }
+
+            .day-nav-date {
+                font-size: 4.5rem;
+            }
+
+            .day-nav-today {
+                font-size: 1.3rem;
+                padding: 16px 32px;
+            }
+
+            .day-nav-arrow {
+                width: 70px;
+                height: 70px;
+                font-size: 1.8rem;
+            }
+
+            .day-view-column .event-box {
+                width: calc(100% - 48px);
+                max-width: 500px;
+                padding: 24px;
+                min-height: 90px;
+            }
+
+            .day-view-column .event-subject {
+                font-size: 1.3rem;
+                margin-bottom: 16px;
+            }
+
+            .day-view-column .event-info {
+                font-size: 1.1rem;
+                gap: 14px;
+            }
+
+            .day-view-column .event-info-row {
+                font-size: 1rem;
+                gap: 16px;
+            }
+
+            .day-view-column .event-info-row svg {
+                width: 24px;
+                height: 24px;
+            }
+
+            .day-view-empty {
+                height: 400px;
+                padding: 60px 40px;
+                width: calc(100% - 48px);
+                max-width: 500px;
+            }
+
+            .day-view-empty-icon {
+                font-size: 5rem;
+            }
+
+            .day-view-empty-title {
+                font-size: 1.6rem;
+            }
+
+            .day-view-empty-subtitle {
+                font-size: 1.1rem;
+            }
+
+            .schedule-wrapper {
+                max-height: calc(100vh - 300px);
+                border-radius: 28px;
+            }
+
+            .fab {
+                width: 90px;
+                height: 90px;
+                bottom: calc(50px + var(--safe-area-bottom));
+                right: 50px;
+                font-size: 3.5rem;
+            }
+
+            .modal-content {
+                padding: 48px;
+                max-width: 800px;
+                border-radius: 32px;
+            }
+
+            .modal-title {
+                font-size: 2.2rem;
+                margin-bottom: 40px;
+            }
+
+            .form-group label {
+                font-size: 1.1rem;
+                margin-bottom: 14px;
+            }
+
+            .form-group input,
+            .form-group select,
+            .form-group textarea {
+                padding: 18px 24px;
+                font-size: 1.2rem;
+                border-radius: 18px;
+            }
+
+            .button {
+                padding: 18px 36px;
+                font-size: 1.2rem;
+                border-radius: 18px;
+            }
+
+            .app-header {
+                padding: 24px 40px;
+            }
+
+            .back-button {
+                padding: 14px 24px;
+                font-size: 1.1rem;
+            }
+
+            .icon-button {
+                width: 52px;
+                height: 52px;
+            }
+
+            .event-box {
+                font-size: 1rem;
+                padding: 14px;
+                min-height: 60px;
+            }
+
+            .event-subject {
+                font-size: 1.1rem;
+            }
+        }
+
+        /* Desktop màn hình rất lớn */
+        @media (min-width: 1920px) {
+            .calendar-container {
+                max-width: 2000px;
+                padding: 40px;
+            }
+
             :root {
                 --hour-height: 100px;
             }
 
             .calendar-header {
-                padding: 16px;
+                padding: 40px;
+                border-radius: 32px;
+                margin-bottom: 40px;
             }
 
-            .calendar-nav {
-                flex-direction: column;
+            .month-year-header {
+                font-size: 2.4rem;
+                min-width: 400px;
             }
 
-            .view-toggle-nav {
-                display: none;
+            .day-content-area {
+                height: calc(100vh - 240px);
+                min-height: 1100px;
             }
 
-            .week-view-grid {
-                grid-template-columns: 1fr !important;
+            .day-nav-header {
+                padding: 48px;
+                gap: 48px;
+            }
+
+            .day-nav-center {
+                min-width: 360px;
+                gap: 24px;
+            }
+
+            .day-nav-weekday {
+                font-size: 2rem;
+                letter-spacing: 5px;
+            }
+
+            .day-nav-date {
+                font-size: 5rem;
+            }
+
+            .day-nav-today {
+                font-size: 1.4rem;
+                padding: 18px 36px;
+            }
+
+            .day-nav-arrow {
+                width: 80px;
+                height: 80px;
+                font-size: 2rem;
+            }
+
+            .day-view-column .event-box {
+                width: calc(100% - 56px);
+                max-width: 550px;
+                padding: 28px;
+                min-height: 100px;
+            }
+
+            .day-view-column .event-subject {
+                font-size: 1.4rem;
+                margin-bottom: 18px;
+            }
+
+            .day-view-column .event-info {
+                font-size: 1.2rem;
+                gap: 16px;
+            }
+
+            .day-view-column .event-info-row {
+                font-size: 1.1rem;
+                gap: 18px;
+            }
+
+            .day-view-column .event-info-row svg {
+                width: 26px;
+                height: 26px;
+            }
+
+            .day-view-empty {
+                height: 450px;
+                padding: 70px 50px;
+                width: calc(100% - 56px);
+                max-width: 550px;
+            }
+
+            .day-view-empty-icon {
+                font-size: 6rem;
+            }
+
+            .day-view-empty-title {
+                font-size: 1.8rem;
+            }
+
+            .day-view-empty-subtitle {
+                font-size: 1.2rem;
+            }
+
+            .schedule-wrapper {
+                max-height: calc(100vh - 320px);
+                border-radius: 32px;
+            }
+
+            .fab {
+                width: 100px;
+                height: 100px;
+                bottom: calc(60px + var(--safe-area-bottom));
+                right: 60px;
+                font-size: 4rem;
             }
 
             .modal-content {
-                padding: 24px;
+                padding: 56px;
+                max-width: 900px;
+                border-radius: 36px;
             }
 
-            .form-group-inline {
-                grid-template-columns: 1fr;
+            .modal-title {
+                font-size: 2.4rem;
+                margin-bottom: 48px;
             }
 
-            .category-selector {
-                grid-template-columns: 1fr;
+            .form-group label {
+                font-size: 1.2rem;
+                margin-bottom: 16px;
+            }
+
+            .form-group input,
+            .form-group select,
+            .form-group textarea {
+                padding: 20px 28px;
+                font-size: 1.3rem;
+                border-radius: 20px;
+            }
+
+            .button {
+                padding: 20px 40px;
+                font-size: 1.3rem;
+                border-radius: 20px;
+            }
+
+            .app-header {
+                padding: 28px 48px;
+            }
+
+            .back-button {
+                padding: 16px 28px;
+                font-size: 1.2rem;
+            }
+
+            .icon-button {
+                width: 56px;
+                height: 56px;
+            }
+
+            .event-box {
+                font-size: 1.1rem;
+                padding: 16px;
+                min-height: 70px;
+            }
+
+            .event-subject {
+                font-size: 1.2rem;
+            }
+        }
+
+        /* Dark mode support - PINK THEME */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-light: #ffd4e5;
+                --text-dark: #8e0e4f;
+                --text-medium: #c2185b;
+                --text-light: #e91e63;
+                --border-light: #f8bbd0;
+            }
+
+            body {
+                background: linear-gradient(135deg, #ffd4e5 0%, #fce4ec 50%, #f8bbd0 100%);
+            }
+
+            .app-header {
+                background: linear-gradient(135deg, var(--primary-quynh) 0%, var(--primary-light) 100%);
+            }
+
+            .calendar-header {
+                background: linear-gradient(135deg, #fff5f8 0%, #ffe5ec 100%);
+            }
+
+            .schedule-wrapper {
+                background: linear-gradient(135deg, #fff5f8 0%, #ffe5ec 100%);
+            }
+
+            .modal-content {
+                background: linear-gradient(135deg, #fff5f8 0%, #ffe5ec 100%);
+            }
+        }
+
+        /* Reduced motion support */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+
+            .volleyball {
+                animation: none !important;
+            }
+
+            .floating-heart {
+                animation: none !important;
+            }
+        }
+
+        /* High contrast mode */
+        @media (prefers-contrast: high) {
+            .event-box {
+                border: 2px solid currentColor;
+            }
+
+            .day-column:hover {
+                background-color: rgba(194, 24, 91, 0.2);
+            }
+
+            .nav-button:focus,
+            .icon-button:focus,
+            .button:focus {
+                outline: 3px solid var(--primary-quynh);
+                outline-offset: 3px;
             }
         }
     </style>
@@ -821,19 +2840,19 @@
             <div class="calendar-header">
                 <div class="calendar-nav">
                     <div class="nav-controls">
-                        <button class="nav-button" id="prev-nav-btn">
+                        <button class="nav-button" id="prev-nav-btn" onclick="navigateWeek(-1)">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
                                 <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
                             </svg>
                         </button>
                         <h2 class="month-year-header" id="month-year-header">Tháng 10 2025</h2>
-                        <button class="nav-button" id="next-nav-btn">
+                        <button class="nav-button" id="next-nav-btn" onclick="navigateWeek(1)">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
                                 <path d="M8.59 16.59L10 18l6-6-6-6-1.41 1.41L13.17 12z"/>
                             </svg>
                         </button>
                     </div>
-                    <button class="today-button" id="today-btn">Hôm nay</button>
+                    <button class="today-button" id="today-btn" onclick="goToToday()">Hôm nay</button>
                 </div>
 
                 <nav class="view-toggle-nav">
@@ -844,8 +2863,16 @@
             </div>
 
             <div class="schedule-wrapper" id="schedule-wrapper">
-                <div class="time-axis" id="time-axis"></div>
-                <div class="week-view-grid" id="week-view-grid"></div>
+                <div class="week-view-grid" id="week-view-grid">
+                    <div class="day-headers-container" id="day-headers-container">
+                        <div class="time-axis-header"></div>
+                        <!-- Day headers will be inserted here -->
+                    </div>
+                    <div class="schedule-grid-container" id="schedule-grid-container">
+                        <div class="time-axis" id="time-axis"></div>
+                        <!-- Day columns will be inserted here -->
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -1042,6 +3069,8 @@
         // DOM Elements
         const monthYearHeader = document.getElementById('month-year-header');
         const weekGrid = document.getElementById('week-view-grid');
+        const dayHeadersContainer = document.getElementById('day-headers-container');
+        const scheduleGridContainer = document.getElementById('schedule-grid-container');
         const timeAxis = document.getElementById('time-axis');
         const scheduleWrapper = document.getElementById('schedule-wrapper');
         const prevNavBtn = document.getElementById('prev-nav-btn');
@@ -1077,22 +3106,99 @@
             }
         }
 
+        // Ensure event listeners are attached when DOM is ready
+        document.addEventListener('DOMContentLoaded', () => {
+            // Re-attach event listeners if needed
+            if (prevNavBtn && nextNavBtn && todayBtn) {
+                attachEventListeners();
+            }
+        });
+
         // Create Time Axis - FIX
         function createTimeAxis() {
-            timeAxis.innerHTML = '';
+            const timeAxisEl = document.getElementById('time-axis');
+            if (!timeAxisEl) return;
             
-            const headerSpacer = document.createElement('div');
-            headerSpacer.style.height = '82px';
-            headerSpacer.style.flexShrink = '0';
-            timeAxis.appendChild(headerSpacer);
+            timeAxisEl.innerHTML = '';
             
             for (let hour = DAY_START_HOUR; hour < DAY_END_HOUR; hour++) {
                 const hourString = hour.toString().padStart(2, '0') + ':00';
                 const div = document.createElement('div');
                 div.className = 'time-label-line';
                 div.textContent = hourString;
-                timeAxis.appendChild(div);
+                timeAxisEl.appendChild(div);
             }
+        }
+
+        // Create Day View Time Axis
+        function createDayViewTimeAxis() {
+            const timeAxisEl = document.getElementById('day-view-time-axis');
+            if (!timeAxisEl) return;
+            
+            timeAxisEl.innerHTML = '';
+            
+            // Create time labels from 05:00 to 23:00 (18 hours)
+            for (let hour = DAY_START_HOUR; hour < DAY_END_HOUR; hour++) {
+                const hourString = hour.toString().padStart(2, '0') + ':00';
+                const div = document.createElement('div');
+                div.className = 'time-label-line';
+                div.textContent = hourString;
+                div.style.height = 'var(--hour-height)';
+                div.style.display = 'flex';
+                div.style.alignItems = 'flex-start';
+                div.style.justifyContent = 'center';
+                div.style.paddingTop = '8px';
+                div.style.fontSize = '0.85rem';
+                div.style.fontWeight = '600';
+                div.style.color = 'var(--primary-quynh)';
+                timeAxisEl.appendChild(div);
+            }
+        }
+
+        // Add Current Time Indicator
+        function addCurrentTimeIndicator(dayColumn) {
+            const now = new Date();
+            const currentHour = now.getHours();
+            const currentMinute = now.getMinutes();
+            
+            if (currentHour >= DAY_START_HOUR && currentHour < DAY_END_HOUR) {
+                const currentTimeEl = document.createElement('div');
+                currentTimeEl.className = 'current-time-indicator';
+                
+                const pxPerMinute = HOUR_HEIGHT / 60;
+                const totalMinutes = (currentHour - DAY_START_HOUR) * 60 + currentMinute;
+                const top = totalMinutes * pxPerMinute;
+                
+                currentTimeEl.style.top = `${top}px`;
+                dayColumn.appendChild(currentTimeEl);
+            }
+        }
+
+        // Add Click to Create Event
+        function addClickToCreateEvent(dayColumn, date) {
+            dayColumn.addEventListener('click', (e) => {
+                if (e.target.classList.contains('event-box') || e.target.closest('.event-box')) {
+                    return;
+                }
+                
+                const rect = dayColumn.getBoundingClientRect();
+                const clickY = e.clientY - rect.top;
+                const hourHeight = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--hour-height')) || 80;
+                const minutesPerPixel = 60 / hourHeight;
+                const clickedMinutes = Math.floor(clickY * minutesPerPixel);
+                const clickedHour = Math.floor(clickedMinutes / 60) + DAY_START_HOUR;
+                const clickedMinute = clickedMinutes % 60;
+                
+                if (clickedHour >= DAY_START_HOUR && clickedHour < DAY_END_HOUR) {
+                    const startTime = `${clickedHour.toString().padStart(2, '0')}:${clickedMinute.toString().padStart(2, '0')}`;
+                    const endTime = `${(clickedHour + 1).toString().padStart(2, '0')}:${clickedMinute.toString().padStart(2, '0')}`;
+                    
+                    openModal();
+                    document.getElementById('single-date').value = date.toISOString().split('T')[0];
+                    document.getElementById('start-time').value = startTime;
+                    document.getElementById('end-time').value = endTime;
+                }
+            });
         }
 
         // Modal Mode Management
@@ -1155,61 +3261,214 @@
 
         // Update View
         function updateView() {
-            renderWeekView(currentDate);
+            if (currentView === 'day') {
+                renderDayView(currentDate);
+            } else {
+                renderWeekView(currentDate);
+            }
             updateHeader();
         }
 
         // Update Header
         function updateHeader() {
-            const weekDays = getWeekDays(currentDate);
-            const firstDay = weekDays[0];
-            const lastDay = weekDays[6];
-            
-            if (firstDay.getMonth() !== lastDay.getMonth()) {
-                monthYearHeader.textContent = `Thg ${firstDay.getMonth() + 1} - Thg ${lastDay.getMonth() + 1}, ${lastDay.getFullYear()}`;
+            if (currentView === 'day') {
+                // Hide global navigation for day view
+                const navControls = document.querySelector('.nav-controls');
+                const todayButton = document.querySelector('.today-button');
+                if (navControls) navControls.style.display = 'none';
+                if (todayButton) todayButton.style.display = 'none';
+                
+                const dayLabels = ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'];
+                const dayLabel = dayLabels[currentDate.getDay()];
+                monthYearHeader.textContent = `${dayLabel}, ${currentDate.getDate()} Tháng ${currentDate.getMonth() + 1}, ${currentDate.getFullYear()}`;
             } else {
-                monthYearHeader.textContent = `Tháng ${firstDay.getMonth() + 1}, ${firstDay.getFullYear()}`;
+                // Show global navigation for week view
+                const navControls = document.querySelector('.nav-controls');
+                const todayButton = document.querySelector('.today-button');
+                if (navControls) navControls.style.display = 'flex';
+                if (todayButton) todayButton.style.display = 'block';
+                const weekDays = getWeekDays(currentDate);
+                const firstDay = weekDays[0];
+                const lastDay = weekDays[6];
+                
+                if (firstDay.getMonth() !== lastDay.getMonth()) {
+                    monthYearHeader.textContent = `Thg ${firstDay.getMonth() + 1} - Thg ${lastDay.getMonth() + 1}, ${lastDay.getFullYear()}`;
+                } else {
+                    monthYearHeader.textContent = `Tháng ${firstDay.getMonth() + 1}, ${firstDay.getFullYear()}`;
+                }
             }
         }
 
-        // Render Week View
+        // Render Day View - SIMILAR TO WEEK VIEW
+        function renderDayView(date) {
+            const today = new Date();
+            const dayLabels = ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'];
+            const fullDayLabels = ['Chủ Nhật', 'Thứ Hai', 'Thứ Ba', 'Thứ Tư', 'Thứ Năm', 'Thứ Sáu', 'Thứ Bảy'];
+            const isToday = date.toDateString() === today.toDateString();
+            
+            // Clear everything and create week-like structure for day view
+            scheduleWrapper.innerHTML = `
+                <div class="week-view-grid" id="week-view-grid">
+                    <div class="day-headers-container" id="day-headers-container">
+                        <div class="time-axis-header"></div>
+                    </div>
+                    <div class="schedule-grid-container" id="schedule-grid-container">
+                        <div class="time-axis" id="time-axis"></div>
+                    </div>
+                </div>
+            `;
+            
+            // Get fresh references
+            const dayHeadersContainer = document.getElementById('day-headers-container');
+            const scheduleGridContainer = document.getElementById('schedule-grid-container');
+            const timeAxis = document.getElementById('time-axis');
+            
+            // Add day-view class for single column layout
+            dayHeadersContainer.classList.add('day-view');
+            scheduleGridContainer.classList.add('day-view');
+            
+            // Create day header (similar to week view)
+            const dayHeader = document.createElement('div');
+            dayHeader.className = 'day-header day-view';
+            dayHeader.innerHTML = `
+                <div class="day-label">${dayLabels[date.getDay()]}</div>
+                <div class="date-label ${isToday ? 'today' : ''}">${date.getDate()}</div>
+                <div class="day-nav-controls">
+                    <button class="day-nav-arrow-small" onclick="navigateDay(-1)" title="Ngày trước">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+                        </svg>
+                    </button>
+                    <button class="day-nav-arrow-small" onclick="navigateDay(1)" title="Ngày sau">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M8.59 16.59L10 18l6-6-6-6-1.41 1.41L13.17 12z"/>
+                        </svg>
+                    </button>
+                </div>
+            `;
+            dayHeadersContainer.appendChild(dayHeader);
+            
+            // Create time labels
+            createTimeAxis();
+            
+            // Create day column (similar to week view)
+            const dayColumn = document.createElement('div');
+            dayColumn.className = 'day-column';
+            dayColumn.dataset.date = date.toISOString().split('T')[0];
+            scheduleGridContainer.appendChild(dayColumn);
+            
+            // Render events for the day
+            const hasEvents = renderEventsForDay(dayColumn, date);
+            
+            // Add empty state if no events
+            if (!hasEvents) {
+                addEmptyState(dayColumn);
+            }
+            
+            // Add current time indicator if today
+            if (isToday) {
+                addCurrentTimeIndicator(dayColumn);
+            }
+            
+            // Add click to create event functionality
+            addClickToCreateEvent(dayColumn, date);
+
+            console.log('Day View rendered like Week View:', {
+                date: date.toDateString(),
+                dayLabel: dayLabels[date.getDay()],
+                dayNumber: date.getDate(),
+                isToday: isToday
+            });
+        }
+
+        // Render Week View - ORIGINAL WEEK VIEW
         function renderWeekView(dateInWeek) {
             const weekDays = getWeekDays(dateInWeek);
-            weekGrid.style.gridTemplateColumns = 'repeat(7, 1fr)';
-            weekGrid.innerHTML = '';
-            
             const today = new Date();
             const dayLabels = ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'];
             
+            // Clear everything and restore week view structure
+            scheduleWrapper.innerHTML = `
+                <div class="week-view-grid" id="week-view-grid">
+                    <div class="day-headers-container" id="day-headers-container">
+                        <div class="time-axis-header"></div>
+                    </div>
+                    <div class="schedule-grid-container" id="schedule-grid-container">
+                        <div class="time-axis" id="time-axis"></div>
+                    </div>
+                </div>
+            `;
+            
+            // Get fresh references
+            const dayHeadersContainer = document.getElementById('day-headers-container');
+            const scheduleGridContainer = document.getElementById('schedule-grid-container');
+            const timeAxis = document.getElementById('time-axis');
+            
+            // Render day headers
             weekDays.forEach(day => {
                 const isToday = day.toDateString() === today.toDateString();
-                weekGrid.innerHTML += `
-                    <div class="day-header">
-                        <div class="day-label">${dayLabels[day.getDay()]}</div>
-                        <div class="date-label ${isToday ? 'today' : ''}">${day.getDate()}</div>
-                    </div>
+                const dayHeader = document.createElement('div');
+                dayHeader.className = 'day-header';
+                dayHeader.innerHTML = `
+                    <div class="day-label">${dayLabels[day.getDay()]}</div>
+                    <div class="date-label ${isToday ? 'today' : ''}">${day.getDate()}</div>
                 `;
+                dayHeadersContainer.appendChild(dayHeader);
             });
             
+            // Create time labels
+            createTimeAxis();
+            
+            // Render day columns
             weekDays.forEach(day => {
                 const dayColumn = document.createElement('div');
                 dayColumn.className = 'day-column';
                 dayColumn.dataset.date = day.toISOString().split('T')[0];
-                weekGrid.appendChild(dayColumn);
+                scheduleGridContainer.appendChild(dayColumn);
                 renderEventsForDay(dayColumn, day);
             });
 
             attachHoverHearts();
+            
+            // Auto-scroll to upcoming event on mobile
+            if (window.innerWidth <= 430) {
+                // Debug: Log scroll info
+                console.log('iPhone detected, setting up horizontal scroll...');
+                console.log('Schedule wrapper width:', scheduleWrapper.offsetWidth);
+                console.log('Week view grid width:', document.querySelector('.week-view-grid')?.offsetWidth);
+                
+                setTimeout(() => {
+                    scrollToUpcomingEvent();
+                }, 500);
+                
+                // Hide scroll indicator after user scrolls
+                let hasScrolled = false;
+                scheduleWrapper.addEventListener('scroll', (e) => {
+                    if (!hasScrolled) {
+                        hasScrolled = true;
+                        scheduleWrapper.classList.add('scrolled');
+                    }
+                    console.log('Scrolling horizontally:', e.target.scrollLeft);
+                });
+
+                // Force enable horizontal scroll
+                scheduleWrapper.style.overflowX = 'auto';
+                scheduleWrapper.style.webkitOverflowScrolling = 'touch';
+            }
         }
 
         // Render Events for Day - FIX
         function renderEventsForDay(dayColumn, date) {
             const dateString = date.toISOString().split('T')[0];
+            let hasEvents = false;
             
             Object.entries(userEvents).forEach(([eventId, event]) => {
                 if (event.type === 'single' && event.date === dateString) {
                     const eventEl = createEventElement(event, eventId);
-                    if (eventEl) dayColumn.appendChild(eventEl);
+                    if (eventEl) {
+                        dayColumn.appendChild(eventEl);
+                        hasEvents = true;
+                    }
                 }
                 
                 if (event.type === 'recurring' && event.daysOfWeek) {
@@ -1219,10 +3478,30 @@
                     
                     if (inRange && event.daysOfWeek.includes(date.getDay())) {
                         const eventEl = createEventElement(event, eventId);
-                        if (eventEl) dayColumn.appendChild(eventEl);
+                        if (eventEl) {
+                            dayColumn.appendChild(eventEl);
+                            hasEvents = true;
+                        }
                     }
                 }
             });
+            
+            return hasEvents;
+        }
+
+        // Add Empty State - IMPROVED
+        function addEmptyState(dayColumn) {
+            const emptyState = document.createElement('div');
+            emptyState.className = 'day-view-empty';
+            emptyState.innerHTML = `
+                <div class="day-view-empty-icon">📅</div>
+                <div class="day-view-empty-title">Chưa có sự kiện nào</div>
+                <div class="day-view-empty-subtitle">
+                    Click vào khung thời gian để tạo sự kiện mới<br>
+                    hoặc sử dụng nút + ở góc phải màn hình
+                </div>
+            `;
+            dayColumn.appendChild(emptyState);
         }
 
         // Create Event Element - FIX
@@ -1456,29 +3735,83 @@
 
         // Attach Event Listeners
         function attachEventListeners() {
-            prevNavBtn.addEventListener('click', () => {
-                currentDate.setDate(currentDate.getDate() - 7);
-                updateView();
-            });
+            // Remove existing listeners to avoid duplicates
+            if (prevNavBtn) {
+                prevNavBtn.replaceWith(prevNavBtn.cloneNode(true));
+            }
+            if (nextNavBtn) {
+                nextNavBtn.replaceWith(nextNavBtn.cloneNode(true));
+            }
+            if (todayBtn) {
+                todayBtn.replaceWith(todayBtn.cloneNode(true));
+            }
 
-            nextNavBtn.addEventListener('click', () => {
-                currentDate.setDate(currentDate.getDate() + 7);
-                updateView();
-            });
+            // Get fresh references after cloning
+            const freshPrevBtn = document.getElementById('prev-nav-btn');
+            const freshNextBtn = document.getElementById('next-nav-btn');
+            const freshTodayBtn = document.getElementById('today-btn');
 
-            todayBtn.addEventListener('click', () => {
-                currentDate = new Date();
-                updateView();
-                if (window.innerWidth <= 768) {
-                    setTimeout(scrollToCurrentTime, 300);
-                }
-            });
+            if (freshPrevBtn) {
+                freshPrevBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    console.log('Previous week clicked');
+                    currentDate.setDate(currentDate.getDate() - 7);
+                    updateView();
+                });
+            }
 
-            addEventFab.addEventListener('click', () => openModal());
-            document.getElementById('cancel-btn').addEventListener('click', closeModal);
+            if (freshNextBtn) {
+                freshNextBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    console.log('Next week clicked');
+                    currentDate.setDate(currentDate.getDate() + 7);
+                    updateView();
+                });
+            }
+
+            if (freshTodayBtn) {
+                freshTodayBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    console.log('Today clicked');
+                    currentDate = new Date();
+                    updateView();
+                    if (window.innerWidth <= 768) {
+                        setTimeout(scrollToCurrentTime, 300);
+                    }
+                });
+            }
+
+            // Other event listeners
+            if (addEventFab) {
+                addEventFab.addEventListener('click', () => openModal());
+            }
             
-            eventModeBtn.addEventListener('click', () => setModalMode('event'));
-            scheduleModeBtn.addEventListener('click', () => setModalMode('schedule'));
+            const cancelBtn = document.getElementById('cancel-btn');
+            if (cancelBtn) {
+                cancelBtn.addEventListener('click', closeModal);
+            }
+            
+            if (eventModeBtn) {
+                eventModeBtn.addEventListener('click', () => setModalMode('event'));
+            }
+            if (scheduleModeBtn) {
+                scheduleModeBtn.addEventListener('click', () => setModalMode('schedule'));
+            }
+
+            // View toggle buttons
+            const viewDayBtn = document.getElementById('view-day-btn');
+            const viewWeekBtn = document.getElementById('view-week-btn');
+            const viewMonthBtn = document.getElementById('view-month-btn');
+
+            if (viewDayBtn) {
+                viewDayBtn.addEventListener('click', () => setViewMode('day'));
+            }
+            if (viewWeekBtn) {
+                viewWeekBtn.addEventListener('click', () => setViewMode('week'));
+            }
+            if (viewMonthBtn) {
+                viewMonthBtn.addEventListener('click', () => setViewMode('month'));
+            }
 
             categoryButtons.forEach(btn => {
                 btn.addEventListener('click', () => {
@@ -1492,9 +3825,11 @@
                 btn.addEventListener('click', () => btn.classList.toggle('active'));
             });
 
-            eventModal.addEventListener('click', (e) => {
-                if (e.target === eventModal) closeModal();
-            });
+            if (eventModal) {
+                eventModal.addEventListener('click', (e) => {
+                    if (e.target === eventModal) closeModal();
+                });
+            }
 
             document.addEventListener('keydown', (e) => {
                 if (e.key === 'Escape' && !eventModal.classList.contains('hidden')) {
@@ -1511,6 +3846,100 @@
             if (hours >= DAY_START_HOUR && hours <= DAY_END_HOUR) {
                 const scrollPosition = (hours - DAY_START_HOUR - 1) * HOUR_HEIGHT;
                 scheduleWrapper.scrollTop = Math.max(0, scrollPosition);
+            }
+        }
+
+        // Scroll to Upcoming Event on Mobile - UPDATED FOR NEW WIDTHS
+        function scrollToUpcomingEvent() {
+            if (window.innerWidth > 430) return; // Only for iPhone
+            
+            const now = new Date();
+            const today = now.getDay();
+            const currentHour = now.getHours();
+            const currentMinute = now.getMinutes();
+            const currentTime = currentHour * 60 + currentMinute;
+            
+            // Find the next upcoming event today
+            let upcomingEvent = null;
+            let minTimeDiff = Infinity;
+            
+            Object.entries(userEvents).forEach(([eventId, event]) => {
+                if (event.type === 'single' && event.date === now.toISOString().split('T')[0]) {
+                    const eventStartTime = event.startTime.split(':');
+                    const eventHour = parseInt(eventStartTime[0]);
+                    const eventMinute = parseInt(eventStartTime[1]);
+                    const eventTime = eventHour * 60 + eventMinute;
+                    
+                    if (eventTime > currentTime) {
+                        const timeDiff = eventTime - currentTime;
+                        if (timeDiff < minTimeDiff) {
+                            minTimeDiff = timeDiff;
+                            upcomingEvent = event;
+                        }
+                    }
+                }
+                
+                if (event.type === 'recurring' && event.daysOfWeek && event.daysOfWeek.includes(today)) {
+                    const startDate = event.startDate ? new Date(event.startDate) : null;
+                    const endDate = event.endDate ? new Date(event.endDate) : null;
+                    const inRange = (!startDate || now >= startDate) && (!endDate || now <= endDate);
+                    
+                    if (inRange) {
+                        const eventStartTime = event.startTime.split(':');
+                        const eventHour = parseInt(eventStartTime[0]);
+                        const eventMinute = parseInt(eventStartTime[1]);
+                        const eventTime = eventHour * 60 + eventMinute;
+                        
+                        if (eventTime > currentTime) {
+                            const timeDiff = eventTime - currentTime;
+                            if (timeDiff < minTimeDiff) {
+                                minTimeDiff = timeDiff;
+                                upcomingEvent = event;
+                            }
+                        }
+                    }
+                }
+            });
+            
+            if (upcomingEvent) {
+                // Scroll to the upcoming event
+                const eventStartTime = upcomingEvent.startTime.split(':');
+                const eventHour = parseInt(eventStartTime[0]);
+                const eventMinute = parseInt(eventStartTime[1]);
+                
+                if (eventHour >= DAY_START_HOUR && eventHour < DAY_END_HOUR) {
+                    const scrollPosition = (eventHour - DAY_START_HOUR) * HOUR_HEIGHT + (eventMinute / 60) * HOUR_HEIGHT;
+                    scheduleWrapper.scrollTop = Math.max(0, scrollPosition - 100); // Offset for better visibility
+                }
+                
+                // Also scroll horizontally to the day with the event - UPDATED WIDTH CALCULATION
+                const eventDate = upcomingEvent.date || now.toISOString().split('T')[0];
+                const eventDay = new Date(eventDate).getDay();
+                
+                // Tính toán width dựa trên viewport size - UPDATED FOR OVERFLOW
+                let dayWidth;
+                if (window.innerWidth <= 375) {
+                    dayWidth = (window.innerWidth * 0.7 - 80) / 7; // 70% scale - 80px cho iPhone nhỏ
+                } else {
+                    dayWidth = (window.innerWidth * 0.7 - 80) / 7; // 70% scale - 80px cho iPhone thường
+                }
+                
+                const horizontalScroll = dayWidth * eventDay;
+                scheduleWrapper.scrollLeft = horizontalScroll;
+            } else {
+                // No upcoming events, scroll to current time and today
+                scrollToCurrentTime();
+                
+                // Tính toán width cho today scroll - UPDATED FOR OVERFLOW
+                let dayWidth;
+                if (window.innerWidth <= 375) {
+                    dayWidth = (window.innerWidth * 0.7 - 80) / 7; // 70% scale - 80px cho iPhone nhỏ
+                } else {
+                    dayWidth = (window.innerWidth * 0.7 - 80) / 7; // 70% scale - 80px cho iPhone thường
+                }
+                
+                const todayScroll = dayWidth * today;
+                scheduleWrapper.scrollLeft = todayScroll;
             }
         }
 
@@ -1559,6 +3988,57 @@
                 setTimeout(() => notification.remove(), 300);
             }, 3000);
         }
+
+        // Set View Mode
+        function setViewMode(mode) {
+            currentView = mode;
+            
+            // Update active button
+            const viewDayBtn = document.getElementById('view-day-btn');
+            const viewWeekBtn = document.getElementById('view-week-btn');
+            const viewMonthBtn = document.getElementById('view-month-btn');
+            
+            if (viewDayBtn) viewDayBtn.classList.remove('active');
+            if (viewWeekBtn) viewWeekBtn.classList.remove('active');
+            if (viewMonthBtn) viewMonthBtn.classList.remove('active');
+            
+            if (mode === 'day' && viewDayBtn) {
+                viewDayBtn.classList.add('active');
+            } else if (mode === 'week' && viewWeekBtn) {
+                viewWeekBtn.classList.add('active');
+            } else if (mode === 'month' && viewMonthBtn) {
+                viewMonthBtn.classList.add('active');
+            }
+            
+            // Update view
+            updateView();
+        }
+
+        // Global navigation functions for onclick handlers
+        window.navigateWeek = function(direction) {
+            console.log('Navigate week:', direction);
+            if (currentView === 'day') {
+                currentDate.setDate(currentDate.getDate() + direction);
+            } else {
+                currentDate.setDate(currentDate.getDate() + (direction * 7));
+            }
+            updateView();
+        };
+
+        window.navigateDay = function(direction) {
+            console.log('Navigate day:', direction);
+            currentDate.setDate(currentDate.getDate() + direction);
+            updateView();
+        };
+
+        window.goToToday = function() {
+            console.log('Go to today');
+            currentDate = new Date();
+            updateView();
+            if (window.innerWidth <= 768) {
+                setTimeout(scrollToCurrentTime, 300);
+            }
+        };
 
         // Initialize
         init();
