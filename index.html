@@ -600,7 +600,7 @@
                          onerror="this.src='https://ui-avatars.com/api/?name=Tuan&background=007aff&color=fff&size=200'">
                 </div>
                 <p class="profile-card__name">taunus_03</p>
-                <p class="profile-card__role">Sinh viên</p>
+                <p class="profile-card__role">Anh IT kiêm PT</p>
             </button>
 
             <button class="profile-card" data-user="quynh">
@@ -614,7 +614,7 @@
                          onerror="this.src='https://ui-avatars.com/api/?name=Quynh&background=c2185b&color=fff&size=200'">
                 </div>
                 <p class="profile-card__name">_uyqhn</p>
-                <p class="profile-card__role">Sinh viên</p>
+                <p class="profile-card__role"></p>
             </button>
         </div>
     </div>
@@ -656,7 +656,8 @@
                         
                         setTimeout(() => {
                             if (user === 'quynh') {
-                                window.location.href = `quynh-functions.html?user=${user}`;
+                                // Add showGift parameter to ensure gift box appears
+                                window.location.replace(`quynh-functions.html?user=${user}&showGift=true`);
                             } else if (user === 'tuan') {
                                 alert('Chức năng cho Tuân sẽ được phát triển sau! 🚀');
                                 loadingOverlay.classList.remove('active');

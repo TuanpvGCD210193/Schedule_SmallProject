@@ -1,0 +1,1041 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UniSchedule | Ghi Chú</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-pink: #ff6b9d;
+            --secondary-pink: #ffc2d4;
+            --light-pink: #ffe5ec;
+            --accent-orange: #ffab73;
+            --accent-blue: #007aff;
+            --accent-purple: #8e44ad;
+            --white: #ffffff;
+            --text-dark: #4a4a4a;
+            --text-medium: #666;
+            --text-light: #888;
+            --shadow-soft: 0 8px 32px rgba(255, 107, 157, 0.15);
+            --shadow-hover: 0 12px 48px rgba(255, 107, 157, 0.25);
+        }
+
+        body {
+            font-family: 'Quicksand', 'Inter', sans-serif;
+            background: linear-gradient(135deg, #ffeef2 0%, #fff0f6 50%, #ffe5ec 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Volleyball Background Animation */
+        .volleyball-bg {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .volleyball {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background: radial-gradient(circle at 30% 30%, #fff, #ffd4e5);
+            border-radius: 50%;
+            opacity: 0.15;
+            animation: float-volleyball 15s infinite ease-in-out;
+        }
+
+        .volleyball::before,
+        .volleyball::after {
+            content: '';
+            position: absolute;
+            background: var(--primary-pink);
+            opacity: 0.3;
+        }
+
+        .volleyball::before {
+            width: 2px;
+            height: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .volleyball::after {
+            width: 100%;
+            height: 2px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .volleyball:nth-child(1) { left: 10%; top: 20%; animation-delay: 0s; }
+        .volleyball:nth-child(2) { left: 80%; top: 60%; animation-delay: 3s; }
+        .volleyball:nth-child(3) { left: 60%; top: 10%; animation-delay: 6s; }
+        .volleyball:nth-child(4) { left: 20%; top: 70%; animation-delay: 9s; }
+        .volleyball:nth-child(5) { left: 90%; top: 30%; animation-delay: 12s; }
+
+        @keyframes float-volleyball {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+            }
+            25% {
+                transform: translateY(-30px) rotate(90deg);
+            }
+            50% {
+                transform: translateY(-15px) rotate(180deg);
+            }
+            75% {
+                transform: translateY(-40px) rotate(270deg);
+            }
+        }
+
+        /* Net Pattern Background */
+        .net-pattern {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            opacity: 0.03;
+            background-image: 
+                repeating-linear-gradient(0deg, var(--primary-pink), var(--primary-pink) 2px, transparent 2px, transparent 20px),
+                repeating-linear-gradient(90deg, var(--primary-pink), var(--primary-pink) 2px, transparent 2px, transparent 20px);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Main Container */
+        .notes-container {
+            position: relative;
+            z-index: 1;
+            min-height: 100vh;
+            padding: 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .notes-header {
+            text-align: center;
+            margin-bottom: 40px;
+            animation: slideInDown 0.8s ease-out;
+        }
+
+        @keyframes slideInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .notes-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary-pink) 0%, var(--accent-purple) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+            text-shadow: 0 4px 16px rgba(255, 107, 157, 0.2);
+        }
+
+        .notes-subtitle {
+            font-size: 1.1rem;
+            color: var(--text-medium);
+            font-weight: 500;
+        }
+
+        /* Back Button */
+        .back-button {
+            position: fixed;
+            top: 30px;
+            left: 30px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            background: var(--white);
+            border: 3px solid var(--primary-pink);
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--primary-pink);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-soft);
+            z-index: 100;
+            animation: slideInLeft 0.6s ease-out;
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .back-button:hover {
+            background: var(--primary-pink);
+            color: var(--white);
+            transform: translateX(-5px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .back-button svg {
+            transition: transform 0.3s ease;
+        }
+
+        .back-button:hover svg {
+            transform: translateX(-3px);
+        }
+
+        /* Notes Layout */
+        .notes-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            height: calc(100vh - 200px);
+        }
+
+        /* Note Editor */
+        .note-editor-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 30px;
+            box-shadow: var(--shadow-soft);
+            border: 3px solid rgba(255, 107, 157, 0.1);
+            animation: slideInLeft 0.8s ease-out 0.2s both;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .note-editor-container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 107, 157, 0.05) 0%, transparent 70%);
+            transition: all 0.6s ease;
+            opacity: 0;
+        }
+
+        .note-editor-container:hover::before {
+            opacity: 1;
+            transform: rotate(180deg);
+        }
+
+        .editor-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light-pink);
+        }
+
+        .editor-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--primary-pink);
+        }
+
+        .editor-icon {
+            width: 32px;
+            height: 32px;
+            object-fit: cover;
+            border-radius: 8px;
+            animation: float-icon 3s infinite ease-in-out;
+        }
+
+        @keyframes float-icon {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-5px);
+            }
+        }
+
+        .formatting-toolbar {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .format-btn {
+            padding: 8px 12px;
+            border: 2px solid var(--light-pink);
+            background: var(--white);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .format-btn:hover {
+            background: var(--primary-pink);
+            color: var(--white);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 107, 157, 0.3);
+        }
+
+        .format-btn.active {
+            background: var(--primary-pink);
+            color: var(--white);
+            border-color: var(--primary-pink);
+        }
+
+        .format-btn svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        .note-editor {
+            width: 100%;
+            height: 300px;
+            border: 2px solid var(--light-pink);
+            border-radius: 16px;
+            padding: 20px;
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            line-height: 1.6;
+            resize: vertical;
+            transition: all 0.3s ease;
+            background: var(--white);
+        }
+
+        .note-editor:focus {
+            outline: none;
+            border-color: var(--primary-pink);
+            box-shadow: 0 0 0 3px rgba(255, 107, 157, 0.1);
+            transform: scale(1.02);
+        }
+
+        .note-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+            justify-content: flex-end;
+        }
+
+        .action-btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .save-btn {
+            background: linear-gradient(135deg, var(--primary-pink) 0%, var(--accent-purple) 100%);
+            color: var(--white);
+            box-shadow: 0 4px 16px rgba(255, 107, 157, 0.3);
+        }
+
+        .save-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 24px rgba(255, 107, 157, 0.4);
+        }
+
+        .clear-btn {
+            background: var(--white);
+            color: var(--text-dark);
+            border: 2px solid var(--light-pink);
+        }
+
+        .clear-btn:hover {
+            background: var(--light-pink);
+            transform: translateY(-2px);
+        }
+
+        /* Notes List */
+        .notes-list-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 30px;
+            box-shadow: var(--shadow-soft);
+            border: 3px solid rgba(255, 107, 157, 0.1);
+            animation: slideInRight 0.8s ease-out 0.4s both;
+            position: relative;
+            overflow: hidden;
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .notes-list-container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(0, 122, 255, 0.05) 0%, transparent 70%);
+            transition: all 0.6s ease;
+            opacity: 0;
+        }
+
+        .notes-list-container:hover::before {
+            opacity: 1;
+            transform: rotate(-180deg);
+        }
+
+        .list-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light-pink);
+        }
+
+        .list-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--accent-blue);
+        }
+
+        .notes-list {
+            max-height: 400px;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+
+        .notes-list::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .notes-list::-webkit-scrollbar-track {
+            background: var(--light-pink);
+            border-radius: 3px;
+        }
+
+        .notes-list::-webkit-scrollbar-thumb {
+            background: var(--primary-pink);
+            border-radius: 3px;
+        }
+
+        .note-item {
+            background: var(--white);
+            border: 2px solid var(--light-pink);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .note-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 24px rgba(255, 107, 157, 0.2);
+            border-color: var(--primary-pink);
+        }
+
+        .note-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 107, 157, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .note-item:hover::before {
+            left: 100%;
+        }
+
+        .note-content {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: var(--text-dark);
+            margin-bottom: 10px;
+            word-wrap: break-word;
+        }
+
+        .note-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
+            color: var(--text-light);
+        }
+
+        .note-date {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .note-actions-item {
+            display: flex;
+            gap: 8px;
+        }
+
+        .note-action-btn {
+            padding: 4px 8px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.8rem;
+        }
+
+        .edit-btn {
+            background: var(--accent-blue);
+            color: var(--white);
+        }
+
+        .edit-btn:hover {
+            background: #0056b3;
+            transform: scale(1.1);
+        }
+
+        .delete-btn {
+            background: #ff4757;
+            color: var(--white);
+        }
+
+        .delete-btn:hover {
+            background: #ff3742;
+            transform: scale(1.1);
+        }
+
+        .empty-notes {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-light);
+        }
+
+        .empty-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            opacity: 0.5;
+        }
+
+        .empty-text {
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        /* Floating Hearts */
+        .floating-hearts {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .heart {
+            position: absolute;
+            font-size: 20px;
+            opacity: 0;
+            animation: float-heart-up 8s infinite ease-in-out;
+        }
+
+        @keyframes float-heart-up {
+            0% {
+                opacity: 0;
+                transform: translateY(0) scale(0.5) rotate(0deg);
+            }
+            10% {
+                opacity: 0.6;
+            }
+            90% {
+                opacity: 0.3;
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-100vh) scale(1.2) rotate(360deg);
+            }
+        }
+
+        .heart:nth-child(1) { left: 10%; animation-delay: 0s; }
+        .heart:nth-child(2) { left: 25%; animation-delay: 2s; }
+        .heart:nth-child(3) { left: 40%; animation-delay: 4s; }
+        .heart:nth-child(4) { left: 55%; animation-delay: 1s; }
+        .heart:nth-child(5) { left: 70%; animation-delay: 3s; }
+        .heart:nth-child(6) { left: 85%; animation-delay: 5s; }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .notes-layout {
+                grid-template-columns: 1fr;
+                gap: 20px;
+                height: auto;
+            }
+
+            .note-editor {
+                height: 250px;
+            }
+
+            .notes-list {
+                max-height: 300px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .notes-container {
+                padding: 15px;
+            }
+
+            .notes-title {
+                font-size: 2rem;
+            }
+
+            .note-editor-container,
+            .notes-list-container {
+                padding: 20px;
+            }
+
+            .formatting-toolbar {
+                gap: 6px;
+            }
+
+            .format-btn {
+                padding: 6px 10px;
+                font-size: 0.8rem;
+            }
+
+            .back-button {
+                top: 20px;
+                left: 20px;
+                padding: 10px 20px;
+                font-size: 0.9rem;
+            }
+        }
+
+        /* Text Formatting Styles */
+        .bold { font-weight: bold; }
+        .italic { font-style: italic; }
+        .underline { text-decoration: underline; }
+        .uppercase { text-transform: uppercase; }
+        .center { text-align: center; }
+        .right { text-align: right; }
+        .large { font-size: 1.2em; }
+        .small { font-size: 0.8em; }
+    </style>
+</head>
+<body>
+    <!-- Volleyball Background -->
+    <div class="volleyball-bg">
+        <div class="volleyball"></div>
+        <div class="volleyball"></div>
+        <div class="volleyball"></div>
+        <div class="volleyball"></div>
+        <div class="volleyball"></div>
+    </div>
+
+    <!-- Net Pattern -->
+    <div class="net-pattern"></div>
+
+    <!-- Floating Hearts -->
+    <div class="floating-hearts">
+        <div class="heart">💖</div>
+        <div class="heart">💕</div>
+        <div class="heart">💗</div>
+        <div class="heart">💖</div>
+        <div class="heart">💕</div>
+        <div class="heart">💗</div>
+    </div>
+
+    <!-- Back Button -->
+    <button class="back-button" onclick="goBackToFunctions()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+        </svg>
+        <span>Quay lại</span>
+    </button>
+
+    <!-- Main Container -->
+    <div class="notes-container">
+        <!-- Header -->
+        <div class="notes-header">
+            <h1 class="notes-title">📝 Ghi Chú Cá Nhân</h1>
+            <p class="notes-subtitle">Viết và lưu trữ những ghi chú quan trọng của bạn</p>
+        </div>
+
+        <!-- Notes Layout -->
+        <div class="notes-layout">
+            <!-- Note Editor -->
+            <div class="note-editor-container">
+                <div class="editor-header">
+                    <div class="editor-title">
+                        <img src="assets/icon/kitty.png" alt="Editor Icon" class="editor-icon">
+                        <span>Viết Ghi Chú</span>
+                    </div>
+                </div>
+
+                <div class="formatting-toolbar">
+                    <button class="format-btn" data-format="bold" title="In đậm">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M15.6 10.79c.97-.67 1.65-1.77 1.65-2.79 0-2.26-1.75-4-4-4H7v14h7.04c2.09 0 3.71-1.7 3.71-3.79 0-1.52-.86-2.82-2.15-3.42zM10 6.5h3c.83 0 1.5.67 1.5 1.5s-.67 1.5-1.5 1.5h-3v-3zm3.5 9H10v-3h3.5c.83 0 1.5.67 1.5 1.5s-.67 1.5-1.5 1.5z"/>
+                        </svg>
+                        <span>B</span>
+                    </button>
+                    <button class="format-btn" data-format="italic" title="In nghiêng">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M10 4v3h2.21l-3.42 8H6v3h8v-3h-2.21l3.42-8H18V4h-8z"/>
+                        </svg>
+                        <span>I</span>
+                    </button>
+                    <button class="format-btn" data-format="underline" title="Gạch chân">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 17c3.31 0 6-2.69 6-6V3h-2.5v8c0 1.93-1.57 3.5-3.5 3.5S8.5 12.93 8.5 11V3H6v8c0 3.31 2.69 6 6 6zm-7 2v2h14v-2H5z"/>
+                        </svg>
+                        <span>U</span>
+                    </button>
+                    <button class="format-btn" data-format="uppercase" title="Chữ hoa">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M7.5 15H10c.83 0 1.5-.67 1.5-1.5S10.83 12 10 12H8.5v-1h1.5c.83 0 1.5-.67 1.5-1.5S10.83 8 10 8H7.5c-.83 0-1.5.67-1.5 1.5v6c0 .83.67 1.5 1.5 1.5zM12 8h4.5c.83 0 1.5.67 1.5 1.5s-.67 1.5-1.5 1.5H13v1h3.5c.83 0 1.5.67 1.5 1.5s-.67 1.5-1.5 1.5H12V8z"/>
+                        </svg>
+                        <span>ABC</span>
+                    </button>
+                    <button class="format-btn" data-format="center" title="Căn giữa">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M7 15v2h10v-2H7zm-4 6h18v-2H3v2zm0-8h18v-2H3v2zm4-6v2h10V7H7z"/>
+                        </svg>
+                        <span>Center</span>
+                    </button>
+                    <button class="format-btn" data-format="large" title="Chữ to">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M9 4v3h5v3h-5v2h5v3h-5v3H7V4h2zm7 0h2v16h-2V4z"/>
+                        </svg>
+                        <span>A+</span>
+                    </button>
+                </div>
+
+                <textarea 
+                    id="noteEditor" 
+                    class="note-editor" 
+                    placeholder="Viết ghi chú của bạn ở đây... Sử dụng các nút trên để định dạng văn bản!"
+                ></textarea>
+
+                <div class="note-actions">
+                    <button class="action-btn clear-btn" onclick="clearNote()">
+                        <img src="assets/icon/shot.png" alt="Clear" style="width: 16px; height: 16px;">
+                        Xóa
+                    </button>
+                    <button class="action-btn save-btn" onclick="saveNote()">
+                        <img src="assets/icon/lovely.png" alt="Save" style="width: 16px; height: 16px;">
+                        Lưu
+                    </button>
+                </div>
+            </div>
+
+            <!-- Notes List -->
+            <div class="notes-list-container">
+                <div class="list-header">
+                    <div class="list-title">
+                        <img src="assets/icon/panda.png" alt="List Icon" class="editor-icon">
+                        <span>Danh Sách Ghi Chú</span>
+                    </div>
+                </div>
+
+                <div class="notes-list" id="notesList">
+                    <div class="empty-notes">
+                        <div class="empty-icon">📝</div>
+                        <div class="empty-text">Chưa có ghi chú nào. Hãy viết ghi chú đầu tiên của bạn!</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Get user from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const currentUser = urlParams.get('user') || 'quynh';
+
+        // Notes data
+        let notes = JSON.parse(localStorage.getItem('notes_' + currentUser) || '[]');
+        let currentNoteId = null;
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            renderNotes();
+            setupFormatting();
+            setupEditor();
+        });
+
+        // Setup formatting toolbar
+        function setupFormatting() {
+            const formatBtns = document.querySelectorAll('.format-btn');
+            formatBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const format = this.dataset.format;
+                    applyFormat(format);
+                    this.classList.toggle('active');
+                });
+            });
+        }
+
+        // Apply text formatting
+        function applyFormat(format) {
+            const editor = document.getElementById('noteEditor');
+            const start = editor.selectionStart;
+            const end = editor.selectionEnd;
+            const selectedText = editor.value.substring(start, end);
+            
+            if (selectedText) {
+                let formattedText = '';
+                switch(format) {
+                    case 'bold':
+                        formattedText = `**${selectedText}**`;
+                        break;
+                    case 'italic':
+                        formattedText = `*${selectedText}*`;
+                        break;
+                    case 'underline':
+                        formattedText = `__${selectedText}__`;
+                        break;
+                    case 'uppercase':
+                        formattedText = selectedText.toUpperCase();
+                        break;
+                    case 'center':
+                        formattedText = `\n\n${selectedText}\n\n`;
+                        break;
+                    case 'large':
+                        formattedText = `# ${selectedText}`;
+                        break;
+                }
+                
+                editor.value = editor.value.substring(0, start) + formattedText + editor.value.substring(end);
+                editor.focus();
+                editor.setSelectionRange(start, start + formattedText.length);
+            }
+        }
+
+        // Setup editor
+        function setupEditor() {
+            const editor = document.getElementById('noteEditor');
+            
+            editor.addEventListener('input', function() {
+                // Auto-save draft
+                localStorage.setItem('draft_' + currentUser, this.value);
+            });
+
+            // Load draft
+            const draft = localStorage.getItem('draft_' + currentUser);
+            if (draft) {
+                editor.value = draft;
+            }
+        }
+
+        // Save note
+        function saveNote() {
+            const editor = document.getElementById('noteEditor');
+            const content = editor.value.trim();
+            
+            if (!content) {
+                alert('Vui lòng nhập nội dung ghi chú!');
+                return;
+            }
+
+            const note = {
+                id: currentNoteId || Date.now(),
+                content: content,
+                timestamp: new Date().toISOString(),
+                formatted: formatNoteContent(content)
+            };
+
+            if (currentNoteId) {
+                // Update existing note
+                const index = notes.findIndex(n => n.id === currentNoteId);
+                if (index !== -1) {
+                    notes[index] = note;
+                }
+            } else {
+                // Add new note
+                notes.unshift(note);
+            }
+
+            // Save to localStorage
+            localStorage.setItem('notes_' + currentUser, JSON.stringify(notes));
+            
+            // Clear editor
+            editor.value = '';
+            currentNoteId = null;
+            localStorage.removeItem('draft_' + currentUser);
+            
+            // Re-render notes
+            renderNotes();
+            
+            // Show success animation
+            showSuccessAnimation();
+        }
+
+        // Format note content for display
+        function formatNoteContent(content) {
+            return content
+                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                .replace(/\*(.*?)\*/g, '<em>$1</em>')
+                .replace(/__(.*?)__/g, '<u>$1</u>')
+                .replace(/# (.*?)(\n|$)/g, '<div style="font-size: 1.2em; font-weight: bold; margin: 10px 0;">$1</div>')
+                .replace(/\n/g, '<br>');
+        }
+
+        // Clear note
+        function clearNote() {
+            if (confirm('Bạn có chắc muốn xóa nội dung hiện tại?')) {
+                document.getElementById('noteEditor').value = '';
+                currentNoteId = null;
+                localStorage.removeItem('draft_' + currentUser);
+            }
+        }
+
+        // Render notes list
+        function renderNotes() {
+            const notesList = document.getElementById('notesList');
+            
+            if (notes.length === 0) {
+                notesList.innerHTML = `
+                    <div class="empty-notes">
+                        <div class="empty-icon">📝</div>
+                        <div class="empty-text">Chưa có ghi chú nào. Hãy viết ghi chú đầu tiên của bạn!</div>
+                    </div>
+                `;
+                return;
+            }
+
+            notesList.innerHTML = notes.map(note => `
+                <div class="note-item" onclick="editNote(${note.id})">
+                    <div class="note-content">${note.formatted}</div>
+                    <div class="note-meta">
+                        <div class="note-date">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/>
+                            </svg>
+                            ${new Date(note.timestamp).toLocaleString('vi-VN')}
+                        </div>
+                        <div class="note-actions-item">
+                            <button class="note-action-btn edit-btn" onclick="event.stopPropagation(); editNote(${note.id})">
+                                <img src="assets/icon/kitty (1).png" alt="Edit" style="width: 12px; height: 12px;">
+                                Sửa
+                            </button>
+                            <button class="note-action-btn delete-btn" onclick="event.stopPropagation(); deleteNote(${note.id})">
+                                <img src="assets/icon/volleyball.png" alt="Delete" style="width: 12px; height: 12px;">
+                                Xóa
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Edit note
+        function editNote(id) {
+            const note = notes.find(n => n.id === id);
+            if (note) {
+                document.getElementById('noteEditor').value = note.content;
+                currentNoteId = id;
+                document.getElementById('noteEditor').focus();
+            }
+        }
+
+        // Delete note
+        function deleteNote(id) {
+            if (confirm('Bạn có chắc muốn xóa ghi chú này?')) {
+                notes = notes.filter(n => n.id !== id);
+                localStorage.setItem('notes_' + currentUser, JSON.stringify(notes));
+                renderNotes();
+                
+                if (currentNoteId === id) {
+                    document.getElementById('noteEditor').value = '';
+                    currentNoteId = null;
+                }
+            }
+        }
+
+        // Show success animation
+        function showSuccessAnimation() {
+            // Create floating hearts
+            for (let i = 0; i < 5; i++) {
+                setTimeout(() => {
+                    createFloatingHeart();
+                }, i * 100);
+            }
+        }
+
+        // Create floating heart
+        function createFloatingHeart() {
+            const heart = document.createElement('div');
+            heart.textContent = '💖';
+            heart.style.position = 'fixed';
+            heart.style.left = Math.random() * window.innerWidth + 'px';
+            heart.style.top = window.innerHeight + 'px';
+            heart.style.fontSize = '20px';
+            heart.style.pointerEvents = 'none';
+            heart.style.zIndex = '9999';
+            heart.style.animation = 'float-heart-up 3s ease-out forwards';
+            document.body.appendChild(heart);
+            
+            setTimeout(() => heart.remove(), 3000);
+        }
+
+        // Go back to functions
+        function goBackToFunctions() {
+            window.location.href = `quynh-functions.html?user=${currentUser}`;
+        }
+
+        // Make function globally available
+        window.goBackToFunctions = goBackToFunctions;
+    </script>
+</body>
+</html>

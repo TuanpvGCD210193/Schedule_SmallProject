@@ -481,6 +481,391 @@
                 transform: translateY(-100px) scale(1.5);
             }
         }
+
+        /* Gift Box 20/10 - Center Screen */
+        .gift-box-container {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1000;
+            animation: float-gift 3s infinite ease-in-out;
+            display: block;
+        }
+
+        .gift-box-container.hidden {
+            display: none;
+        }
+
+        .gift-arrow-container.hidden {
+            display: none;
+        }
+
+        /* Gift Box Main */
+        .gift-box {
+            width: 140px;
+            height: 140px;
+            background: linear-gradient(135deg, #ff6b9d 0%, #8e44ad 50%, #ff6b9d 100%);
+            border-radius: 25px;
+            cursor: pointer;
+            box-shadow: 
+                0 0 0 6px rgba(255, 255, 255, 0.9),
+                0 0 0 10px rgba(255, 107, 157, 0.3),
+                0 12px 40px rgba(255, 107, 157, 0.5),
+                inset 0 3px 6px rgba(255, 255, 255, 0.4);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+            border: 3px solid rgba(255, 255, 255, 0.8);
+        }
+
+        /* Gift Box Hover Effect */
+        .gift-box:hover {
+            transform: scale(1.15) rotate(5deg);
+            box-shadow: 
+                0 0 0 8px rgba(255, 255, 255, 0.95),
+                0 0 0 12px rgba(255, 107, 157, 0.4),
+                0 16px 56px rgba(255, 107, 157, 0.7),
+                inset 0 3px 6px rgba(255, 255, 255, 0.5);
+        }
+
+        /* Gift Box Icon */
+        .gift-box::before {
+            content: '🎁';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 70px;
+            animation: sparkle-gift 2s infinite ease-in-out;
+            text-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+            filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.5));
+        }
+
+        /* Gift Box Ribbon */
+        .gift-box::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 10px;
+            background: linear-gradient(90deg, #ffd700 0%, #ffed4e 50%, #ffd700 100%);
+            transform: translateY(-50%);
+            box-shadow: 0 3px 6px rgba(255, 215, 0, 0.4);
+            border-radius: 2px;
+        }
+
+        /* Floating Animation */
+        @keyframes float-gift {
+            0%, 100% {
+                transform: translate(-50%, -50%) translateY(0px);
+            }
+            50% {
+                transform: translate(-50%, -50%) translateY(-10px);
+            }
+        }
+
+        /* Sparkle Animation */
+        @keyframes sparkle-gift {
+            0%, 100% {
+                transform: translate(-50%, -50%) scale(1) rotate(0deg);
+                filter: brightness(1);
+            }
+            50% {
+                transform: translate(-50%, -50%) scale(1.1) rotate(10deg);
+                filter: brightness(1.2);
+            }
+        }
+
+        /* Click Animation */
+        .gift-box:active {
+            transform: scale(0.95) rotate(-2deg);
+            animation: gift-open 0.6s ease-out;
+        }
+
+        @keyframes gift-open {
+            0% {
+                transform: scale(1) rotate(0deg);
+            }
+            50% {
+                transform: scale(1.2) rotate(10deg);
+            }
+            100% {
+                transform: scale(1.1) rotate(5deg);
+            }
+        }
+
+        /* Gift Modal */
+        .gift-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 107, 157, 0.95);
+            backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.5s ease;
+        }
+
+        .gift-modal.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .gift-content {
+            background: white;
+            border-radius: 30px;
+            padding: 50px;
+            text-align: center;
+            max-width: 500px;
+            box-shadow: 0 20px 60px rgba(255, 107, 157, 0.3);
+            transform: translateY(50px);
+            transition: transform 0.5s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .gift-modal.show .gift-content {
+            transform: translateY(0);
+        }
+
+        .gift-content::before {
+            content: '💕';
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 30px;
+            animation: sparkle 1.5s infinite ease-in-out;
+        }
+
+        .gift-content::after {
+            content: '✨';
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            font-size: 25px;
+            animation: sparkle 1.5s infinite ease-in-out 0.5s;
+        }
+
+        .gift-header h2 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: var(--primary-pink);
+            margin-bottom: 20px;
+            text-shadow: 0 2px 10px rgba(255, 107, 157, 0.2);
+        }
+
+        .gift-message {
+            margin-bottom: 30px;
+        }
+
+        .gift-message p {
+            font-size: 1.2rem;
+            color: var(--text-dark);
+            margin-bottom: 15px;
+            line-height: 1.6;
+            font-weight: 500;
+        }
+
+        .gift-close-btn {
+            background: linear-gradient(135deg, var(--primary-pink) 0%, var(--accent-orange) 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 16px rgba(255, 107, 157, 0.3);
+        }
+
+        .gift-close-btn:hover {
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 6px 24px rgba(255, 107, 157, 0.4);
+        }
+
+        .gift-close-btn:active {
+            transform: translateY(0) scale(0.98);
+        }
+
+        /* Confetti Animation */
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: var(--primary-pink);
+            animation: confetti-fall 2s ease-out forwards;
+            pointer-events: none;
+            z-index: 1500;
+        }
+
+        @keyframes confetti-fall {
+            0% {
+                opacity: 1;
+                transform: translateY(0) rotate(0deg);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(100vh) rotate(360deg);
+            }
+        }
+
+        /* Gift Arrow Animation - COMMENT OUT AFTER 20/10 */
+        .gift-arrow-container {
+            position: fixed;
+            top: 50%;
+            right: 20%;
+            transform: translateY(-50%);
+            z-index: 1500;
+            pointer-events: none;
+            animation: arrowBounce 2s infinite ease-in-out;
+        }
+
+        .gift-arrow {
+            position: relative;
+            width: 200px;
+            height: 60px;
+            background: linear-gradient(135deg, #ff6b9d 0%, #8e44ad 100%);
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 32px rgba(255, 107, 157, 0.4);
+            border: 3px solid rgba(255, 255, 255, 0.8);
+        }
+
+        .gift-arrow::before {
+            content: '';
+            position: absolute;
+            right: -15px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 0;
+            height: 0;
+            border-left: 20px solid #8e44ad;
+            border-top: 15px solid transparent;
+            border-bottom: 15px solid transparent;
+        }
+
+        .gift-arrow-text {
+            color: white;
+            font-size: 1rem;
+            font-weight: 700;
+            text-align: center;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            padding: 0 20px;
+        }
+
+        .gift-arrow-icon {
+            font-size: 1.2rem;
+            margin-right: 8px;
+            animation: arrowPulse 1.5s infinite ease-in-out;
+        }
+
+        @keyframes arrowBounce {
+            0%, 100% {
+                transform: translateY(-50%) translateX(0);
+            }
+            50% {
+                transform: translateY(-50%) translateX(-10px);
+            }
+        }
+
+        @keyframes arrowPulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.2);
+            }
+        }
+
+        /* Responsive Design for Gift Box */
+        @media (max-width: 768px) {
+            .gift-box {
+                width: 120px;
+                height: 120px;
+            }
+            
+            .gift-box::before {
+                font-size: 60px;
+            }
+
+            .gift-content {
+                padding: 40px 30px;
+                margin: 20px;
+            }
+
+            .gift-header h2 {
+                font-size: 1.8rem;
+            }
+
+            .gift-message p {
+                font-size: 1.1rem;
+            }
+
+            .gift-arrow-container {
+                right: 10%;
+                width: 150px;
+            }
+
+            .gift-arrow {
+                width: 150px;
+                height: 50px;
+            }
+
+            .gift-arrow-text {
+                font-size: 0.9rem;
+                padding: 0 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .gift-box {
+                width: 100px;
+                height: 100px;
+            }
+            
+            .gift-box::before {
+                font-size: 50px;
+            }
+
+            .gift-content {
+                padding: 30px 20px;
+                margin: 15px;
+            }
+
+            .gift-header h2 {
+                font-size: 1.6rem;
+            }
+
+            .gift-message p {
+                font-size: 1rem;
+            }
+
+            .gift-arrow-container {
+                right: 5%;
+                width: 120px;
+            }
+
+            .gift-arrow {
+                width: 120px;
+                height: 45px;
+            }
+
+            .gift-arrow-text {
+                font-size: 0.8rem;
+                padding: 0 10px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -496,8 +881,48 @@
     <!-- Net Pattern -->
     <div class="net-pattern"></div>
 
+    <!-- Gift Box 20/10 -->
+    <div class="gift-box-container">
+        <div class="gift-box" id="gift-box">
+            <!-- Gift box content will be added via CSS pseudo-elements -->
+        </div>
+    </div>
+
+    <!-- Gift Arrow - COMMENT OUT AFTER 20/10 -->
+    <!-- 
+    <div class="gift-arrow-container" id="gift-arrow-container">
+        <div class="gift-arrow">
+            <span class="gift-arrow-icon">👆</span>
+            <span class="gift-arrow-text">Nhấn vào hộp quà!</span>
+        </div>
+    </div>
+    -->
+    <div class="gift-arrow-container" id="gift-arrow-container">
+        <div class="gift-arrow">
+            <span class="gift-arrow-icon">👆</span>
+            <span class="gift-arrow-text">Nhấn vào hộp quà!</span>
+        </div>
+    </div>
+
+    <!-- Gift Modal (hidden by default) -->
+    <div class="gift-modal" id="gift-modal">
+        <div class="gift-content">
+            <div class="gift-header">
+                <h2>🎉 Chúc mừng ngày Phụ nữ Việt Nam! 🎉</h2>
+            </div>
+            <div class="gift-message">
+                <p>Bạn xứng đáng được yêu thương và trân trọng! 💕</p>
+                <p>Chúc bạn luôn hạnh phúc và thành công! ✨</p>
+                <p>Happy Vietnamese Women's Day! 🌸</p>
+            </div>
+            <button class="gift-close-btn" id="gift-close-btn">
+                Cảm ơn! 💖
+            </button>
+        </div>
+    </div>
+
     <!-- Back Button -->
-    <button class="back-button" onclick="window.history.back()">
+    <button class="back-button" onclick="goBackToIndex()">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
             <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
         </svg>
@@ -519,7 +944,7 @@
                     <span class="function-card__name">📅 Lịch</span>
                 </a>
                 <a href="#" class="function-card" data-function="notes">
-                    <img src="https://cdn-icons-png.flaticon.com/512/2541/2541988.png" class="function-card__icon" alt="Notes Icon">
+                    <img src="assets/icon/kitty.png" class="function-card__icon" alt="Notes Icon">
                     <span class="function-card__name">📝 Ghi Chú</span>
                 </a>
                 <a href="#" class="function-card" data-function="water">
@@ -534,6 +959,7 @@
         // Get user from URL
         const urlParams = new URLSearchParams(window.location.search);
         const currentUser = urlParams.get('user');
+        const showGift = urlParams.get('showGift');
 
         // Load profile (simplified for demo)
         const profileDisplay = document.getElementById('current-user-profile');
@@ -556,7 +982,11 @@
                 
                 // Navigate after animation
                 setTimeout(() => {
-                    window.location.href = `${functionName}.html?user=${currentUser}`;
+                    if (functionName === 'notes') {
+                        window.location.href = `notes.html?user=${currentUser}`;
+                    } else {
+                        window.location.href = `${functionName}.html?user=${currentUser}`;
+                    }
                 }, 300);
             });
         });
@@ -586,6 +1016,121 @@
                 }
             });
         });
+
+        // Gift Box 20/10 Functionality
+        const giftBox = document.getElementById('gift-box');
+        const giftModal = document.getElementById('gift-modal');
+        const giftCloseBtn = document.getElementById('gift-close-btn');
+        const giftBoxContainer = document.querySelector('.gift-box-container');
+        const giftArrowContainer = document.getElementById('gift-arrow-container');
+
+        // showGift already declared above
+        
+        // Debug info
+        console.log('Document referrer:', document.referrer);
+        console.log('Current URL:', window.location.href);
+        console.log('Show gift parameter:', showGift);
+        
+        // Check if coming from index.html (referrer check)
+        const isFromIndex = document.referrer.includes('index.html') || 
+                           document.referrer.includes('localhost') || 
+                           document.referrer.includes('127.0.0.1') ||
+                           !document.referrer; // Direct access also shows gift
+        
+        console.log('Is from index:', isFromIndex);
+        
+        // Check if gift box was already clicked in this session
+        const giftClicked = sessionStorage.getItem('giftClicked');
+        console.log('Gift clicked:', giftClicked);
+        
+        // Show gift box if:
+        // 1. Coming from index.html, OR
+        // 2. showGift parameter is true, OR
+        // 3. Not clicked in this session
+        const shouldShowGift = isFromIndex || showGift === 'true' || giftClicked !== 'true';
+        
+        if (!shouldShowGift) {
+            giftBoxContainer.classList.add('hidden');
+            giftArrowContainer.classList.add('hidden'); // Hide arrow too
+            console.log('Hiding gift box - clicked and not from index');
+        } else {
+            console.log('Showing gift box - from index or showGift=true or not clicked');
+        }
+
+        // Gift box click handler
+        giftBox.addEventListener('click', function() {
+            // Mark gift as clicked in this session
+            sessionStorage.setItem('giftClicked', 'true');
+            
+            // Create confetti effect
+            createConfetti();
+            
+            // Hide gift box and arrow immediately
+            giftBoxContainer.classList.add('hidden');
+            giftArrowContainer.classList.add('hidden');
+            
+            // Show modal after delay
+            setTimeout(() => {
+                showGiftModal();
+            }, 500);
+        });
+
+        // Confetti creation
+        function createConfetti() {
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * window.innerWidth + 'px';
+                confetti.style.backgroundColor = ['#ff6b9d', '#8e44ad', '#ffab73', '#ffc2d4'][Math.floor(Math.random() * 4)];
+                confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
+                confetti.style.width = (Math.random() * 8 + 6) + 'px';
+                confetti.style.height = confetti.style.width;
+                document.body.appendChild(confetti);
+                
+                setTimeout(() => confetti.remove(), 2000);
+            }
+        }
+
+        // Show gift modal
+        function showGiftModal() {
+            giftModal.classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Close gift modal
+        giftCloseBtn.addEventListener('click', function() {
+            giftModal.classList.remove('show');
+            document.body.style.overflow = 'auto';
+        });
+
+        // Close modal when clicking outside
+        giftModal.addEventListener('click', function(e) {
+            if (e.target === giftModal) {
+                giftModal.classList.remove('show');
+                document.body.style.overflow = 'auto';
+            }
+        });
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && giftModal.classList.contains('show')) {
+                giftModal.classList.remove('show');
+                document.body.style.overflow = 'auto';
+            }
+        });
+
+        // Go back to index function
+        function goBackToIndex() {
+            // Clear session storage to reset gift box for next visit
+            sessionStorage.removeItem('giftClicked');
+            
+            // Navigate back to index
+            window.location.href = 'index.html';
+        }
+
+        // Make function globally available
+        window.goBackToIndex = goBackToIndex;
+
     </script>
 </body>
 </html>
