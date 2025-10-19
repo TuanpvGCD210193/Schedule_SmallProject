@@ -314,6 +314,7 @@
             position: relative;
             scroll-behavior: smooth;
             -webkit-overflow-scrolling: touch;
+                justify-content: space-around;
         }
 
         .schedule-wrapper::-webkit-scrollbar {
@@ -1046,12 +1047,44 @@
             line-height: 1.2;
         }
 
-        .event-info-row svg {
-            width: 16px;
-            height: 16px;
-            flex-shrink: 0;
-            opacity: 0.8;
-        }
+         .event-info-row svg {
+             width: 16px;
+             height: 16px;
+             flex-shrink: 0;
+             opacity: 0.8;
+         }
+
+         /* Enhanced Event Info Display */
+         .event-classroom {
+             font-weight: 600;
+             color: var(--primary-quynh);
+             background: rgba(194, 24, 91, 0.1);
+             padding: 2px 6px;
+             border-radius: 4px;
+             font-size: 0.75rem;
+         }
+
+         .event-campus {
+             font-weight: 500;
+             color: var(--text-medium);
+             font-size: 0.7rem;
+             opacity: 0.9;
+         }
+
+         .event-location-combined {
+             display: flex;
+             flex-direction: column;
+             gap: 2px;
+             margin-top: 4px;
+         }
+
+         .event-description-text {
+             font-style: italic;
+             color: var(--text-medium);
+             font-size: 0.7rem;
+             margin-top: 4px;
+             line-height: 1.3;
+         }
 
         .event-info-row span {
             flex: 1;
@@ -1079,6 +1112,18 @@
             display: flex;
             align-items: center;
             justify-content: center;
+        }
+
+        .fab-icon {
+            width: 32px;
+            height: 32px;
+            object-fit: cover;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .fab:hover .fab-icon {
+            transform: scale(1.1) rotate(10deg);
         }
 
         .fab:hover {
@@ -1162,6 +1207,17 @@
             color: var(--text-medium);
             cursor: pointer;
             transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .modal-toggle-icon {
+            width: 20px;
+            height: 20px;
+            object-fit: cover;
+            border-radius: 4px;
         }
 
         .modal-toggle-btn.active {
@@ -1229,6 +1285,18 @@
             gap: 6px;
         }
 
+        .category-icon {
+            width: 32px;
+            height: 32px;
+            object-fit: cover;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .category-btn:hover .category-icon {
+            transform: scale(1.1) rotate(5deg);
+        }
+
         .category-btn:hover {
             border-color: var(--primary-quynh);
             background: rgba(194, 24, 91, 0.05);
@@ -1257,6 +1325,24 @@
             font-weight: 700;
             cursor: pointer;
             transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 2px;
+            font-size: 0.8rem;
+        }
+
+        .weekday-icon {
+            width: 16px;
+            height: 16px;
+            object-fit: cover;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .weekday-btn:hover .weekday-icon {
+            transform: scale(1.2) rotate(10deg);
         }
 
         .weekday-btn:hover {
@@ -1333,6 +1419,86 @@
             }
         }
 
+        /* Volleyball Background Animation */
+        .volleyball-bg {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .volleyball {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background: radial-gradient(circle at 30% 30%, #fff, #ffd4e5);
+            border-radius: 50%;
+            opacity: 0.15;
+            animation: float-volleyball 15s infinite ease-in-out;
+        }
+
+        .volleyball::before,
+        .volleyball::after {
+            content: '';
+            position: absolute;
+            background: var(--primary-quynh);
+            opacity: 0.3;
+        }
+
+        .volleyball::before {
+            width: 2px;
+            height: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .volleyball::after {
+            width: 100%;
+            height: 2px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .volleyball:nth-child(1) { left: 10%; top: 20%; animation-delay: 0s; }
+        .volleyball:nth-child(2) { left: 80%; top: 60%; animation-delay: 3s; }
+        .volleyball:nth-child(3) { left: 60%; top: 10%; animation-delay: 6s; }
+        .volleyball:nth-child(4) { left: 20%; top: 70%; animation-delay: 9s; }
+        .volleyball:nth-child(5) { left: 90%; top: 30%; animation-delay: 12s; }
+
+        @keyframes float-volleyball {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+            }
+            25% {
+                transform: translateY(-30px) rotate(90deg);
+            }
+            50% {
+                transform: translateY(-15px) rotate(180deg);
+            }
+            75% {
+                transform: translateY(-40px) rotate(270deg);
+            }
+        }
+
+        /* Net Pattern Background */
+        .net-pattern {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            opacity: 0.03;
+            background-image: 
+                repeating-linear-gradient(0deg, var(--primary-quynh), var(--primary-quynh) 2px, transparent 2px, transparent 20px),
+                repeating-linear-gradient(90deg, var(--primary-quynh), var(--primary-quynh) 2px, transparent 2px, transparent 20px);
+            pointer-events: none;
+            z-index: 0;
+        }
+
         /* Notification */
         .notification {
             position: fixed;
@@ -1347,9 +1513,187 @@
             animation: slideInFromRight 0.3s ease;
         }
 
-        .notification--success { background: linear-gradient(135deg, #4caf50, #66bb6a); }
-        .notification--error { background: linear-gradient(135deg, #e91e63, #f06292); }
-        .notification--info { background: linear-gradient(135deg, #c2185b, #e91e63); }
+         .notification--success { background: linear-gradient(135deg, #4caf50, #66bb6a); }
+         .notification--error { background: linear-gradient(135deg, #e91e63, #f06292); }
+         .notification--info { background: linear-gradient(135deg, #c2185b, #e91e63); }
+
+         /* Event Detail Modal */
+         .event-detail-modal {
+             position: fixed;
+             top: 0;
+             left: 0;
+             width: 100%;
+             height: 100%;
+             background: rgba(194, 24, 91, 0.8);
+             backdrop-filter: blur(12px);
+             display: flex;
+             justify-content: center;
+             align-items: center;
+             z-index: 2000;
+             padding: 20px;
+             opacity: 0;
+             animation: fadeIn 0.3s ease forwards;
+         }
+
+         .event-detail-content {
+             background: linear-gradient(135deg, #fff5f8 0%, #ffe5ec 100%);
+             border-radius: 24px;
+             width: 100%;
+             max-width: 600px;
+             max-height: 90vh;
+             overflow-y: auto;
+             box-shadow: 0 20px 60px rgba(194, 24, 91, 0.4);
+             border: 3px solid var(--primary-quynh);
+             position: relative;
+             transform: scale(0.9);
+             animation: scaleIn 0.3s ease forwards;
+         }
+
+         .event-detail-header {
+             background: linear-gradient(135deg, var(--primary-quynh) 0%, var(--primary-light) 100%);
+             padding: 24px;
+             border-radius: 24px 24px 0 0;
+             position: relative;
+             color: white;
+         }
+
+         .event-detail-title {
+             font-size: 1.8rem;
+             font-weight: 800;
+             margin-bottom: 8px;
+             text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+         }
+
+         .event-detail-type {
+             font-size: 1rem;
+             opacity: 0.9;
+             font-weight: 600;
+         }
+
+         .event-detail-edit-btn {
+             position: absolute;
+             top: 20px;
+             right: 20px;
+             width: 48px;
+             height: 48px;
+             border-radius: 50%;
+             background: rgba(255, 255, 255, 0.2);
+             border: 2px solid rgba(255, 255, 255, 0.3);
+             color: white;
+             display: flex;
+             align-items: center;
+             justify-content: center;
+             cursor: pointer;
+             transition: all 0.3s ease;
+             font-size: 1.2rem;
+         }
+
+         .event-detail-edit-btn:hover {
+             background: rgba(255, 255, 255, 0.3);
+             transform: scale(1.1);
+         }
+
+         .event-detail-body {
+             padding: 32px;
+         }
+
+         .event-detail-section {
+             margin-bottom: 24px;
+         }
+
+         .event-detail-section-title {
+             font-size: 1.1rem;
+             font-weight: 700;
+             color: var(--primary-quynh);
+             margin-bottom: 12px;
+             display: flex;
+             align-items: center;
+             gap: 8px;
+         }
+
+         .event-detail-info {
+             background: white;
+             padding: 16px;
+             border-radius: 12px;
+             border: 1px solid rgba(194, 24, 91, 0.1);
+             box-shadow: 0 2px 8px rgba(194, 24, 91, 0.1);
+         }
+
+         .event-detail-row {
+             display: flex;
+             align-items: center;
+             gap: 12px;
+             margin-bottom: 12px;
+             padding: 8px 0;
+         }
+
+         .event-detail-row:last-child {
+             margin-bottom: 0;
+         }
+
+         .event-detail-icon {
+             width: 20px;
+             height: 20px;
+             color: var(--primary-quynh);
+             flex-shrink: 0;
+         }
+
+         .event-detail-label {
+             font-weight: 600;
+             color: var(--text-dark);
+             min-width: 100px;
+         }
+
+         .event-detail-value {
+             color: var(--text-medium);
+             flex: 1;
+         }
+
+         .event-detail-classroom {
+             background: rgba(194, 24, 91, 0.1);
+             color: var(--primary-quynh);
+             padding: 4px 8px;
+             border-radius: 6px;
+             font-weight: 600;
+             display: inline-block;
+         }
+
+         .event-detail-campus {
+             color: var(--text-medium);
+             font-style: italic;
+         }
+
+         .event-detail-description {
+             background: rgba(194, 24, 91, 0.05);
+             padding: 12px;
+             border-radius: 8px;
+             border-left: 4px solid var(--primary-quynh);
+             font-style: italic;
+             line-height: 1.5;
+         }
+
+         .event-detail-close-btn {
+             position: absolute;
+             top: 20px;
+             right: 80px;
+             width: 40px;
+             height: 40px;
+             border-radius: 50%;
+             background: rgba(255, 255, 255, 0.2);
+             border: 2px solid rgba(255, 255, 255, 0.3);
+             color: white;
+             display: flex;
+             align-items: center;
+             justify-content: center;
+             cursor: pointer;
+             transition: all 0.3s ease;
+             font-size: 1.1rem;
+         }
+
+         .event-detail-close-btn:hover {
+             background: rgba(255, 255, 255, 0.3);
+             transform: scale(1.1);
+         }
 
         @keyframes slideInFromRight {
             from {
@@ -1362,142 +1706,614 @@
             }
         }
 
-        /* iPhone 15 Pro Max - GIỮ NGUYÊN CSS LAPTOP + HORIZONTAL SCROLL */
-        @media (max-width: 430px) {
-            /* Giữ nguyên CSS laptop cho iPhone */
+        /* NEW DAY VIEW STYLING - LAPTOP OPTIMIZED */
+        .day-view-main-new {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            background: linear-gradient(135deg, #ffd4e5 0%, #fce4ec 50%, #f8bbd0 100%);
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(194, 24, 91, 0.2);
+            border: 3px solid var(--primary-quynh);
+        }
+
+        .day-view-header-new {
+            background: linear-gradient(135deg, var(--primary-quynh) 0%, var(--primary-light) 100%);
+            padding: 32px;
+            text-align: center;
+            border-bottom: 3px solid var(--primary-quynh);
+        }
+
+        .day-view-title {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: white;
+            text-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
+            letter-spacing: 1px;
+        }
+
+        .highlight-name {
+            color: #ffeb3b;
+            text-decoration-color: #ff5722;
+            text-decoration-thickness: 3px;
+        }
+
+        .heart-icon {
+            font-size: 2rem;
+            margin-left: 12px;
+            animation: heartbeat 2s ease-in-out infinite;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .day-cards-container {
+            flex: 1;
+            padding: 32px;
+            overflow-y: auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 24px;
+            align-content: start;
+        }
+
+        .day-card {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 6px 20px rgba(194, 24, 91, 0.15);
+            border: 1px solid rgba(194, 24, 91, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .day-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-quynh), var(--primary-light));
+        }
+
+        .day-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 32px rgba(194, 24, 91, 0.25);
+            border-color: var(--primary-quynh);
+        }
+
+        .day-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--primary-quynh);
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .day-separator {
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary-quynh), var(--primary-light));
+            margin-bottom: 16px;
+            border-radius: 2px;
+        }
+
+        .events-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .event-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 0;
+            border-left: 5px solid var(--primary-quynh);
+            padding-left: 16px;
+            background: rgba(194, 24, 91, 0.03);
+            border-radius: 0 12px 12px 0;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .event-item:hover {
+            background: rgba(194, 24, 91, 0.08);
+            transform: translateX(4px);
+            box-shadow: 0 2px 8px rgba(194, 24, 91, 0.1);
+        }
+
+        .event-time {
+            font-weight: 700;
+            color: var(--text-dark);
+            min-width: 140px;
+            font-size: 1rem;
+            background: rgba(194, 24, 91, 0.1);
+            padding: 4px 8px;
+            border-radius: 6px;
+            text-align: center;
+        }
+
+         .event-description {
+             flex: 1;
+             margin-left: 16px;
+             color: var(--text-dark);
+             font-size: 1.1rem;
+             display: flex;
+             flex-direction: column;
+             gap: 8px;
+             font-weight: 500;
+         }
+
+         .event-main-info {
+             display: flex;
+             align-items: center;
+             gap: 12px;
+         }
+
+         .event-details {
+             display: flex;
+             flex-direction: column;
+             gap: 4px;
+             margin-top: 4px;
+         }
+
+         .event-classroom-day {
+             font-weight: 600;
+             color: var(--primary-quynh);
+             background: rgba(194, 24, 91, 0.1);
+             padding: 4px 8px;
+             border-radius: 6px;
+             font-size: 0.9rem;
+             display: inline-block;
+             width: fit-content;
+         }
+
+         .event-campus-day {
+             font-weight: 500;
+             color: var(--text-medium);
+             font-size: 0.85rem;
+             opacity: 0.9;
+         }
+
+         .event-description-day {
+             font-style: italic;
+             color: var(--text-medium);
+             font-size: 0.8rem;
+             line-height: 1.4;
+             margin-top: 4px;
+         }
+
+        .event-indicator {
+            width: 5px;
+            height: 100%;
+            border-radius: 3px;
+            margin-left: 12px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .event-heart {
+            font-size: 1rem;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-2px); }
+        }
+
+        .empty-week-message {
+            text-align: center;
+            padding: 60px 40px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 8px 24px rgba(194, 24, 91, 0.15);
+            grid-column: 1 / -1;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .empty-week-icon {
+            font-size: 4rem;
+            margin-bottom: 24px;
+            animation: bounce 2s ease-in-out infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+
+        .empty-week-text {
+            font-size: 1.3rem;
+            color: var(--primary-quynh);
+            font-weight: 600;
+            line-height: 1.6;
+        }
+
+         /* LAPTOP SPECIFIC IMPROVEMENTS */
+         @media (min-width: 1024px) {
+             /* Enhanced Event Info for Laptop */
+             .event-classroom {
+                 font-size: 0.8rem;
+                 padding: 3px 8px;
+             }
+
+             .event-campus {
+                 font-size: 0.75rem;
+             }
+
+             .event-description-text {
+                 font-size: 0.75rem;
+             }
+
+             .event-classroom-day {
+                 font-size: 1rem;
+                 padding: 6px 12px;
+             }
+
+             .event-campus-day {
+                 font-size: 0.9rem;
+             }
+
+             .event-description-day {
+                 font-size: 0.85rem;
+             }
+
+             .event-details {
+                 gap: 6px;
+             }
+            /* Enhanced hover effects for laptop */
+            .day-card:hover .day-title {
+                color: var(--primary-light);
+                transition: color 0.3s ease;
+            }
+
+            .event-item:hover .event-time {
+                background: rgba(194, 24, 91, 0.2);
+                transform: scale(1.05);
+            }
+
+            .event-item:hover .event-indicator {
+                transform: scaleY(1.2);
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            }
+
+            /* Smooth scrolling for laptop */
+            .day-cards-container {
+                scroll-behavior: smooth;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            /* Custom scrollbar for laptop */
+            .day-cards-container::-webkit-scrollbar {
+                width: 8px;
+            }
+
+            .day-cards-container::-webkit-scrollbar-track {
+                background: rgba(194, 24, 91, 0.1);
+                border-radius: 4px;
+            }
+
+            .day-cards-container::-webkit-scrollbar-thumb {
+                background: linear-gradient(180deg, var(--primary-quynh), var(--primary-light));
+                border-radius: 4px;
+            }
+
+            .day-cards-container::-webkit-scrollbar-thumb:hover {
+                background: linear-gradient(180deg, var(--primary-light), var(--primary-quynh));
+            }
+
+            /* Enhanced animations for laptop */
+            .day-card {
+                animation: slideInUp 0.6s ease-out;
+            }
+
+            @keyframes slideInUp {
+                from {
+                    opacity: 0;
+                    transform: translateY(30px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            /* Staggered animation for multiple cards */
+            .day-card:nth-child(1) { animation-delay: 0.1s; }
+            .day-card:nth-child(2) { animation-delay: 0.2s; }
+            .day-card:nth-child(3) { animation-delay: 0.3s; }
+            .day-card:nth-child(4) { animation-delay: 0.4s; }
+            .day-card:nth-child(5) { animation-delay: 0.5s; }
+            .day-card:nth-child(6) { animation-delay: 0.6s; }
+            .day-card:nth-child(7) { animation-delay: 0.7s; }
+        }
+
+         /* Enhanced Event Info - Mobile Responsive */
+         @media (max-width: 860px) {
+             .event-classroom {
+                 font-size: 0.7rem;
+                 padding: 1px 4px;
+             }
+
+             .event-campus {
+                 font-size: 0.65rem;
+             }
+
+             .event-description-text {
+                 font-size: 0.65rem;
+             }
+
+             .event-classroom-day {
+                 font-size: 0.8rem;
+                 padding: 3px 6px;
+             }
+
+             .event-campus-day {
+                 font-size: 0.75rem;
+             }
+
+             .event-description-day {
+                 font-size: 0.7rem;
+             }
+
+             .event-details {
+                 gap: 3px;
+             }
+
+             /* Event Detail Modal - Mobile */
+             .event-detail-content {
+                 max-width: 95vw;
+                 margin: 10px;
+             }
+
+             .event-detail-header {
+                 padding: 20px;
+             }
+
+             .event-detail-title {
+                 font-size: 1.4rem;
+                 margin-bottom: 6px;
+             }
+
+             .event-detail-type {
+                 font-size: 0.9rem;
+             }
+
+             .event-detail-edit-btn {
+                 width: 40px;
+                 height: 40px;
+                 top: 15px;
+                 right: 15px;
+                 font-size: 1rem;
+             }
+
+             .event-detail-close-btn {
+                 width: 36px;
+                 height: 36px;
+                 top: 15px;
+                 right: 65px;
+                 font-size: 1rem;
+             }
+
+             .event-detail-body {
+                 padding: 24px;
+             }
+
+             .event-detail-section {
+                 margin-bottom: 20px;
+             }
+
+             .event-detail-section-title {
+                 font-size: 1rem;
+                 margin-bottom: 10px;
+             }
+
+             .event-detail-info {
+                 padding: 12px;
+             }
+
+             .event-detail-row {
+                 gap: 8px;
+                 margin-bottom: 10px;
+                 padding: 6px 0;
+             }
+
+             .event-detail-icon {
+                 width: 18px;
+                 height: 18px;
+             }
+
+             .event-detail-label {
+                 min-width: 80px;
+                 font-size: 0.9rem;
+             }
+
+             .event-detail-value {
+                 font-size: 0.9rem;
+             }
+
+             .event-detail-classroom {
+                 font-size: 0.8rem;
+                 padding: 3px 6px;
+             }
+
+             .event-detail-campus {
+                 font-size: 0.8rem;
+             }
+
+             .event-detail-description {
+                 padding: 10px;
+                 font-size: 0.9rem;
+             }
+         }
+
+         /* iPhone tất cả (≤ 860px) - TỐI ƯU UI CHO ĐIỆN THOẠI */
+         @media (max-width: 860px) {
+            /* Tối ưu container cho điện thoại */
             .calendar-container {
-                padding: 24px; /* Giữ nguyên như laptop */
-                max-width: 1600px; /* Giữ nguyên như laptop */
+                padding: 16px; /* Giảm padding cho mobile */
+                max-width: 100%; /* Full width cho mobile */
             }
 
             .schedule-wrapper {
-                border-radius: 24px; /* Giữ nguyên như laptop */
-                max-height: calc(100vh - 280px); /* Giữ nguyên như laptop */
-                overflow-x: auto; /* Chỉ thêm horizontal scroll */
+                border-radius: 16px; /* Giảm border-radius cho mobile */
+                max-height: calc(100vh - 200px); /* Tăng height cho mobile */
+                overflow-x: auto; /* Horizontal scroll */
                 overflow-y: auto;
                 -webkit-overflow-scrolling: touch;
                 scroll-behavior: smooth;
                 scroll-snap-type: x mandatory;
-                height: calc(100vh - 200px); /* Tăng height để chứa grid đã zoom */
-                min-height: 600px; /* Tăng min-height */
+                /* Cho phép người dùng tự zoom */
+                touch-action: manipulation;
+                -webkit-user-select: none;
+                user-select: none;
+                -webkit-text-size-adjust: 100%;
+                text-size-adjust: 100%;
+                /* Tối ưu cho mobile */
+                margin: 0 8px; /* Thêm margin cho mobile */
             }
 
             .week-view-grid {
-                min-width: 100%; /* Giữ nguyên width laptop */
-                width: 100%;
-                transform: scale(0.7); /* ZOOM NHỎ xuống 70% */
-                transform-origin: top left; /* Zoom từ góc trên trái */
+                min-width: 120vw; /* Tăng width để có không gian cho day columns */
+                width: 120vw;
+                /* BỎ scale - giữ nguyên laptop */
             }
 
             .day-headers-container,
             .schedule-grid-container {
-                grid-template-columns: 80px repeat(7, 1fr); /* Giữ nguyên như laptop */
-                min-width: 100%;
-                width: 100%;
+                grid-template-columns: 60px repeat(7, 120px); /* Tăng width day columns */
+                min-width: 120vw; /* Tăng min-width */
+                width: 120vw;
             }
 
             .day-headers-container.day-view,
             .schedule-grid-container.day-view {
-                grid-template-columns: 80px 1fr;
+                grid-template-columns: 60px 1fr;
                 min-width: auto;
                 width: auto;
             }
 
             .day-header,
             .day-column {
-                min-width: auto; /* Giữ nguyên như laptop */
-                width: auto;
-                padding: 20px 12px; /* Giữ nguyên như laptop */
+                min-width: 120px; /* Tăng min-width cho day columns */
+                width: 120px;
+                padding: 12px 8px; /* Tăng padding cho mobile */
             }
 
             .day-header {
-                padding: 24px 12px; /* Tăng padding để bù cho zoom grid */
+                padding: 12px 8px; /* Tăng padding cho mobile */
             }
 
             .time-axis {
-                width: 80px; /* Giữ nguyên như laptop */
+                width: 60px; /* Giảm width cho mobile */
+                background: linear-gradient(135deg, #fce4ec 0%, #f8bbd0 100%);
+                border-right: 2px solid var(--primary-quynh);
             }
 
             .time-axis-header {
-                padding: 20px 12px; /* Giữ nguyên như laptop */
-                font-size: 1.1rem; /* Tăng font size để bù cho zoom grid */
+                padding: 12px 6px; /* Giảm padding cho mobile */
+                font-size: 0.8rem; /* Giảm font size cho mobile */
+                font-weight: 600;
+                color: var(--primary-quynh);
+                text-align: center;
             }
 
             .time-label-line {
-                font-size: 0.95rem; /* Tăng font size để bù cho zoom grid */
-                padding-top: 10px; /* Giữ nguyên như laptop */
+                font-size: 0.75rem; /* Giảm font size cho mobile */
+                padding-top: 6px; /* Giảm padding cho mobile */
+                font-weight: 600;
+                color: var(--primary-quynh);
+                text-align: center;
             }
 
             .day-label {
-                font-size: 0.95rem; /* Tăng font size để bù cho zoom grid */
-                margin-bottom: 8px; /* Giữ nguyên như laptop */
-                letter-spacing: 1px; /* Giữ nguyên như laptop */
+                font-size: 0.75rem; /* Giảm font size cho mobile */
+                margin-bottom: 8px; /* Tăng margin cho mobile */
+                letter-spacing: 1px; /* Tăng letter spacing cho mobile */
+                font-weight: 600;
+                color: var(--primary-quynh);
+                text-align: center;
             }
 
             .date-label {
-                font-size: 2.4rem; /* Tăng font size để bù cho zoom grid */
-                width: 60px; /* Giữ nguyên như laptop */
-                height: 60px;
-                line-height: 60px;
+                font-size: 1.4rem; /* Giảm font size cho mobile */
+                width: 40px; /* Giảm width cho mobile */
+                height: 40px;
+                line-height: 40px;
+                border-radius: 50%;
+                background: rgba(255, 255, 255, 0.2);
+                color: var(--primary-quynh);
+                font-weight: 700;
+                text-align: center;
+                margin: 0 auto;
             }
 
             .date-label.today {
-                font-size: 2.6rem; /* Tăng font size để bù cho zoom grid */
-                width: 65px; /* Giữ nguyên như laptop */
-                height: 65px;
-                line-height: 65px;
+                font-size: 1.5rem; /* Giảm font size cho mobile */
+                width: 45px; /* Giảm width cho mobile */
+                height: 45px;
+                line-height: 45px;
+                background: var(--primary-quynh);
+                color: white;
+                box-shadow: 0 2px 8px rgba(194, 24, 91, 0.3);
             }
 
-            /* Event Boxes - GIỚI HẠN SCALE để text không tràn */
+            /* Event Boxes - TỐI ƯU CHO MOBILE */
             .event-box {
-                font-size: 0.9rem; /* Giữ font size laptop */
-                padding: 12px; /* Giữ padding laptop */
-                min-height: 60px; /* Giữ min-height laptop */
-                border-radius: 12px; /* Giữ border-radius laptop */
-                left: 6px; /* Giữ margin laptop */
-                right: 6px;
-                width: calc(100% - 12px); /* Giữ width laptop */
+                font-size: 0.9rem; /* Tăng font size cho mobile */
+                padding: 8px; /* Giảm padding cho mobile */
+                min-height: 45px; /* Giảm min-height cho mobile */
+                border-radius: 6px; /* Giảm border-radius cho mobile */
+                left: 4px; /* Giảm margin cho mobile */
+                right: 4px;
+                width: calc(100% - 8px); /* Giảm width cho mobile */
                 max-width: none;
                 transform: scale(1.0); /* KHÔNG SCALE - giữ nguyên */
                 z-index: 1;
-                /* Tăng font size để bù cho việc zoom grid */
-                font-size: 1.1rem;
-                padding: 14px;
-                min-height: 70px;
+                /* Tối ưu cho mobile */
+                box-shadow: 0 2px 6px rgba(194, 24, 91, 0.15);
+                border: 1px solid rgba(194, 24, 91, 0.1);
+                /* Text overflow handling */
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
             }
 
             .event-subject {
-                font-size: 1.3rem; /* Tăng font size để bù cho zoom grid */
-                margin-bottom: 10px; /* Tăng margin */
-                line-height: 1.4; /* Giữ line-height laptop */
-                font-weight: 700; /* Giữ font-weight laptop */
+                font-size: 0.9rem; /* Giảm font size cho mobile */
+                margin-bottom: 4px; /* Giảm margin cho mobile */
+                line-height: 1.2; /* Giảm line-height cho mobile */
+                font-weight: 600; /* Giảm font-weight */
                 word-break: break-word;
                 overflow-wrap: break-word;
-                white-space: normal;
+                white-space: nowrap; /* Ngăn text wrap */
                 overflow: hidden; /* GIỚI HẠN overflow */
                 text-overflow: ellipsis; /* Thêm ellipsis nếu text quá dài */
-                display: -webkit-box;
-                -webkit-line-clamp: 2; /* Giới hạn 2 dòng */
-                line-clamp: 2; /* Standard property for compatibility */
-                -webkit-box-orient: vertical;
             }
 
             .event-info {
-                font-size: 0.9rem; /* Tăng font size để bù cho zoom grid */
-                gap: 8px; /* Tăng gap */
+                font-size: 0.7rem; /* Giảm font size cho mobile */
+                gap: 4px; /* Giảm gap cho mobile */
             }
 
             .event-info-row {
-                font-size: 0.85rem; /* Tăng font size để bù cho zoom grid */
-                gap: 10px; /* Tăng gap */
+                font-size: 0.65rem; /* Giảm font size cho mobile */
+                gap: 4px; /* Giảm gap cho mobile */
                 white-space: nowrap; /* Ngăn text wrap */
                 overflow: hidden; /* GIỚI HẠN overflow */
                 text-overflow: ellipsis; /* Thêm ellipsis */
             }
 
             .event-info-row svg {
-                width: 20px; /* Tăng icon size để bù cho zoom grid */
-                height: 20px;
+                width: 14px; /* Giảm icon size cho mobile */
+                height: 14px;
                 flex-shrink: 0;
             }
 
@@ -1511,6 +2327,21 @@
 
             .day-column {
                 scroll-snap-align: start;
+                /* Cải thiện grid lines cho mobile */
+                background-image: linear-gradient(to bottom, 
+                    transparent calc(var(--hour-height) - 1px), 
+                    var(--primary-quynh) calc(var(--hour-height) - 1px),
+                    var(--primary-quynh) var(--hour-height), 
+                    transparent var(--hour-height)
+                );
+                background-size: 100% var(--hour-height);
+                background-repeat: repeat-y;
+                border-right: 1px solid rgba(194, 24, 91, 0.2);
+            }
+
+            .day-header {
+                border-right: 2px solid var(--primary-quynh);
+                background: linear-gradient(135deg, #fce4ec 0%, #f8bbd0 100%);
             }
 
             /* Custom scrollbar */
@@ -1534,22 +2365,21 @@
 
             /* Scroll indicators */
             .schedule-wrapper::after {
-                content: '👆 Vuốt ngang để xem toàn bộ tuần';
+                content: '👆 Vuốt ngang để xem toàn bộ tuần →';
                 position: absolute;
-                bottom: 20px;
+                bottom: 15px;
                 left: 50%;
                 transform: translateX(-50%);
-                background: linear-gradient(135deg, rgba(194, 24, 91, 0.95), rgba(233, 30, 99, 0.95));
+                background: linear-gradient(135deg, var(--primary-quynh), var(--primary-light));
                 color: white;
-                padding: 12px 24px;
+                padding: 10px 20px;
                 border-radius: 25px;
-                font-size: 0.85rem;
-                font-weight: 700;
+                font-size: 0.8rem;
+                font-weight: 600;
                 z-index: 10;
                 pointer-events: none;
+                box-shadow: 0 4px 15px rgba(194, 24, 91, 0.3);
                 animation: fadeInOut 4s ease-in-out;
-                /* Điều chỉnh vị trí để phù hợp với grid đã zoom */
-                bottom: 10px;
             }
 
             @keyframes fadeInOut {
@@ -1650,188 +2480,198 @@
                 font-size: 1rem; /* Giữ nguyên như laptop */
             }
 
-            /* FAB và Modal - Giữ nguyên laptop style */
+            /* FAB và Modal - TỐI ƯU CHO MOBILE */
             .fab {
-                width: 80px; /* Giữ nguyên như laptop */
-                height: 80px;
-                bottom: calc(40px + var(--safe-area-bottom)); /* Giữ nguyên như laptop */
-                right: 40px;
-                font-size: 3rem; /* Giữ nguyên như laptop */
+                width: 60px; /* Giảm size cho mobile */
+                height: 60px;
+                bottom: calc(20px + var(--safe-area-bottom)); /* Giảm bottom cho mobile */
+                right: 20px;
+                font-size: 2.2rem; /* Giảm font size cho mobile */
             }
 
             .modal-content {
-                padding: 40px; /* Giữ nguyên như laptop */
-                max-width: 700px; /* Giữ nguyên như laptop */
-                border-radius: 28px; /* Giữ nguyên như laptop */
+                padding: 24px; /* Giảm padding cho mobile */
+                max-width: 90vw; /* Responsive width cho mobile */
+                border-radius: 20px; /* Giảm border-radius cho mobile */
+                margin: 16px; /* Thêm margin cho mobile */
             }
 
             .modal-title {
-                font-size: 2rem; /* Giữ nguyên như laptop */
-                margin-bottom: 32px; /* Giữ nguyên như laptop */
+                font-size: 1.6rem; /* Giảm font size cho mobile */
+                margin-bottom: 20px; /* Giảm margin cho mobile */
             }
 
             .form-group label {
-                font-size: 1rem; /* Giữ nguyên như laptop */
-                margin-bottom: 12px; /* Giữ nguyên như laptop */
+                font-size: 0.9rem; /* Giảm font size cho mobile */
+                margin-bottom: 8px; /* Giảm margin cho mobile */
             }
 
             .form-group input,
             .form-group select,
             .form-group textarea {
-                padding: 16px 20px; /* Giữ nguyên như laptop */
-                font-size: 1.1rem; /* Giữ nguyên như laptop */
-                border-radius: 16px; /* Giữ nguyên như laptop */
+                padding: 12px 16px; /* Giảm padding cho mobile */
+                font-size: 1rem; /* Giảm font size cho mobile */
+                border-radius: 12px; /* Giảm border-radius cho mobile */
             }
 
             .button {
-                padding: 16px 32px; /* Giữ nguyên như laptop */
-                font-size: 1.1rem; /* Giữ nguyên như laptop */
-                border-radius: 16px; /* Giữ nguyên như laptop */
+                padding: 12px 24px; /* Giảm padding cho mobile */
+                font-size: 1rem; /* Giảm font size cho mobile */
+                border-radius: 12px; /* Giảm border-radius cho mobile */
+                min-height: 44px; /* Touch-friendly height */
             }
 
             .app-header {
-                padding: 20px 32px; /* Giữ nguyên như laptop */
+                padding: 16px 20px; /* Giảm padding cho mobile */
             }
 
             .back-button {
-                padding: 12px 20px; /* Giữ nguyên như laptop */
-                font-size: 1rem; /* Giữ nguyên như laptop */
+                padding: 10px 16px; /* Giảm padding cho mobile */
+                font-size: 0.9rem; /* Giảm font size cho mobile */
             }
 
             .icon-button {
-                width: 48px; /* Giữ nguyên như laptop */
-                height: 48px;
+                width: 44px; /* Giảm size cho mobile */
+                height: 44px;
             }
 
             /* Calendar header - Giữ nguyên laptop style */
             .calendar-header {
-                padding: 28px; /* Giữ nguyên như laptop */
-                border-radius: 24px; /* Giữ nguyên như laptop */
-                margin-bottom: 24px; /* Giữ nguyên như laptop */
+                padding: 20px; /* Giảm padding cho mobile */
+                border-radius: 16px; /* Giảm border-radius cho mobile */
+                margin-bottom: 16px; /* Giảm margin cho mobile */
             }
 
             .calendar-nav {
-                flex-direction: row; /* Giữ nguyên như laptop */
-                justify-content: space-between; /* Giữ nguyên như laptop */
-                align-items: center; /* Giữ nguyên như laptop */
-                gap: 24px; /* Giữ nguyên như laptop */
+                flex-direction: column; /* Stack vertically cho mobile */
+                justify-content: center; /* Center alignment cho mobile */
+                align-items: center; /* Center alignment cho mobile */
+                gap: 16px; /* Giảm gap cho mobile */
             }
 
             .nav-controls {
-                order: 1; /* Giữ nguyên như laptop */
-                gap: 16px; /* Giữ nguyên như laptop */
+                order: 1; /* Giữ nguyên */
+                gap: 12px; /* Giảm gap cho mobile */
             }
 
             .today-button {
-                order: 2; /* Giữ nguyên như laptop */
-                padding: 14px 32px; /* Giữ nguyên như laptop */
-                font-size: 1.1rem; /* Giữ nguyên như laptop */
+                order: 2; /* Giữ nguyên */
+                padding: 12px 24px; /* Giảm padding cho mobile */
+                font-size: 1rem; /* Giảm font size cho mobile */
             }
 
             .view-toggle-nav {
-                order: 3; /* Giữ nguyên như laptop */
-                display: flex; /* Giữ nguyên như laptop */
-                padding: 6px; /* Giữ nguyên như laptop */
-                gap: 6px; /* Giữ nguyên như laptop */
+                order: 3; /* Giữ nguyên */
+                display: flex; /* Giữ nguyên */
+                padding: 4px; /* Giảm padding cho mobile */
+                gap: 4px; /* Giảm gap cho mobile */
             }
 
             .view-toggle-btn {
-                padding: 12px 24px; /* Giữ nguyên như laptop */
-                font-size: 1rem; /* Giữ nguyên như laptop */
+                padding: 10px 16px; /* Giảm padding cho mobile */
+                font-size: 0.9rem; /* Giảm font size cho mobile */
             }
 
             .month-year-header {
-                font-size: 2rem; /* Giữ nguyên như laptop */
-                min-width: 300px; /* Giữ nguyên như laptop */
+                font-size: 1.6rem; /* Giảm font size cho mobile */
+                min-width: 250px; /* Giảm min-width cho mobile */
             }
 
-
-
-        }
-
-        /* iPhone nhỏ - TỐI ƯU TỐI ĐA cho màn hình nhỏ - TRÀN RA NGOÀI */
-        @media (max-width: 375px) {
+            /* Cho phép zoom tự do + Touch-friendly */
             .calendar-container {
-                padding: 8px 0; /* Bỏ padding left/right để tràn ra ngoài */
-                overflow-x: visible; /* Cho phép tràn ra ngoài */
+                touch-action: manipulation;
+                -webkit-user-select: none;
+                user-select: none;
+                -webkit-text-size-adjust: 100%;
+                text-size-adjust: 100%;
             }
 
+            body {
+                touch-action: manipulation;
+                -webkit-user-select: none;
+                user-select: none;
+                -webkit-text-size-adjust: 100%;
+                text-size-adjust: 100%;
+            }
+
+            /* Touch-friendly interactions */
+            .nav-button,
+            .today-button,
+            .view-toggle-btn,
+            .back-button,
+            .icon-button,
+            .button {
+                min-height: 44px; /* Touch-friendly minimum height */
+                min-width: 44px; /* Touch-friendly minimum width */
+                touch-action: manipulation; /* Prevent double-tap zoom */
+                -webkit-tap-highlight-color: transparent; /* Remove tap highlight */
+            }
+
+            /* Improved touch feedback */
+            .nav-button:active,
+            .today-button:active,
+            .view-toggle-btn:active,
+            .back-button:active,
+            .icon-button:active,
+            .button:active {
+                transform: scale(0.95);
+                transition: transform 0.1s ease;
+            }
+
+            /* Better scroll behavior */
             .schedule-wrapper {
-                border-left: none; /* Bỏ border để tràn đẹp */
-                border-right: none;
-                width: 100vw; /* Full viewport width */
-                margin-left: calc(-50vw + 50%); /* Center và tràn ra ngoài */
-                overflow-x: auto !important; /* Force horizontal scroll */
+                scroll-padding: 20px; /* Add padding to scroll snap */
             }
 
-            .week-view-grid,
-            .day-headers-container,
-            .schedule-grid-container {
-                min-width: 400vw; /* SIÊU RỘNG cho iPhone nhỏ */
-                width: 400vw;
+            /* Improved form inputs for mobile */
+            .form-group input,
+            .form-group select,
+            .form-group textarea {
+                font-size: 16px; /* Prevent zoom on iOS */
+                -webkit-appearance: none;
+                appearance: none;
             }
 
-            .day-header,
-            .day-column {
-                min-width: calc((400vw - 80px) / 7); /* SIÊU RỘNG */
-                width: calc((400vw - 80px) / 7);
-                padding: 18px 16px; /* Tăng padding */
+            /* NEW DAY VIEW - Mobile Responsive */
+            .day-view-title {
+                font-size: 1.4rem; /* Giảm font size cho mobile */
             }
 
-            /* Event Boxes - PHÓNG TO TỪNG Ô cho iPhone nhỏ */
-            .event-box {
-                font-size: 1.3rem; /* PHÓNG TO font size */
-                padding: 22px; /* PHÓNG TO padding */
-                min-height: 110px; /* PHÓNG TO min-height */
-                left: 6px; /* Tăng margin để ô rộng hơn */
-                right: 6px;
-                width: calc(100% - 12px); /* Ô SIÊU RỘNG */
-                max-width: none; /* Bỏ max-width */
-                transform: scale(1.12); /* PHÓNG TO toàn bộ ô */
-                z-index: 2; /* Đảm bảo ô phóng to hiển thị trên cùng */
-                border-radius: 20px; /* PHÓNG TO border radius */
-                box-shadow: 0 10px 30px rgba(194, 24, 91, 0.5); /* PHÓNG TO shadow */
+            .day-cards-container {
+                padding: 16px; /* Giảm padding cho mobile */
+                gap: 12px; /* Giảm gap cho mobile */
             }
 
-            .event-subject {
-                font-size: 1.4rem; /* PHÓNG TO font size */
-                line-height: 1.7; /* PHÓNG TO line height */
-                margin-bottom: 12px; /* PHÓNG TO margin */
-                font-weight: 800; /* PHÓNG TO font weight */
-                word-break: break-word;
-                overflow-wrap: break-word;
-                white-space: normal;
-                overflow: visible;
-                text-shadow: 0 3px 6px rgba(0, 0, 0, 0.15); /* PHÓNG TO shadow */
+            .day-card {
+                padding: 12px; /* Giảm padding cho mobile */
             }
 
-            .event-info {
-                font-size: 1.1rem; /* PHÓNG TO font size */
-                gap: 12px; /* PHÓNG TO gap */
+            .day-title {
+                font-size: 1.1rem; /* Giảm font size cho mobile */
             }
 
-            .event-info-row {
-                font-size: 1rem; /* PHÓNG TO font size */
-                gap: 14px; /* PHÓNG TO gap */
-                white-space: normal; /* Cho phép text wrap */
-                overflow: visible; /* Cho phép text hiển thị đầy đủ */
-                margin-bottom: 10px; /* PHÓNG TO margin giữa các rows */
+            .event-time {
+                min-width: 100px; /* Giảm width cho mobile */
+                font-size: 0.8rem; /* Giảm font size cho mobile */
             }
 
-            .event-info-row svg {
-                width: 24px; /* PHÓNG TO icon size */
-                height: 24px;
-                flex-shrink: 0; /* Không cho icon bị co lại */
+            .event-description {
+                font-size: 0.9rem; /* Giảm font size cho mobile */
             }
 
-            .event-info-row span {
-                flex: 1; /* Cho phép text chiếm hết không gian */
-                min-width: 0; /* Cho phép text wrap */
-                word-break: break-word;
-                overflow-wrap: break-word;
-                font-weight: 700; /* PHÓNG TO font weight */
+            .empty-week-message {
+                padding: 30px 16px; /* Giảm padding cho mobile */
+            }
+
+            .empty-week-icon {
+                font-size: 2.5rem; /* Giảm icon size cho mobile */
+            }
+
+            .empty-week-text {
+                font-size: 1rem; /* Giảm font size cho mobile */
             }
         }
+
 
         /* Tablet và mobile lớn */
         @media (max-width: 768px) and (min-width: 431px) {
@@ -2411,6 +3251,46 @@
                 padding: 32px;
             }
 
+            /* NEW DAY VIEW - Large Laptop Optimized */
+            .day-view-title {
+                font-size: 2.5rem; /* Tăng font size cho laptop lớn */
+            }
+
+            .day-cards-container {
+                padding: 40px; /* Tăng padding cho laptop lớn */
+                gap: 32px; /* Tăng gap cho laptop lớn */
+                grid-template-columns: repeat(auto-fit, minmax(450px, 1fr)); /* Tăng min-width */
+            }
+
+            .day-card {
+                padding: 32px; /* Tăng padding cho laptop lớn */
+            }
+
+            .day-title {
+                font-size: 1.6rem; /* Tăng font size cho laptop lớn */
+            }
+
+            .event-time {
+                min-width: 160px; /* Tăng width cho laptop lớn */
+                font-size: 1.1rem; /* Tăng font size cho laptop lớn */
+            }
+
+            .event-description {
+                font-size: 1.2rem; /* Tăng font size cho laptop lớn */
+            }
+
+            .empty-week-message {
+                padding: 80px 50px; /* Tăng padding cho laptop lớn */
+            }
+
+            .empty-week-icon {
+                font-size: 5rem; /* Tăng icon size cho laptop lớn */
+            }
+
+            .empty-week-text {
+                font-size: 1.5rem; /* Tăng font size cho laptop lớn */
+            }
+
             .calendar-header {
                 padding: 32px;
                 border-radius: 28px;
@@ -2576,6 +3456,46 @@
             .calendar-container {
                 max-width: 2000px;
                 padding: 40px;
+            }
+
+            /* NEW DAY VIEW - Ultra Large Desktop Optimized */
+            .day-view-title {
+                font-size: 2.8rem; /* Tăng font size cho desktop rất lớn */
+            }
+
+            .day-cards-container {
+                padding: 48px; /* Tăng padding cho desktop rất lớn */
+                gap: 40px; /* Tăng gap cho desktop rất lớn */
+                grid-template-columns: repeat(auto-fit, minmax(500px, 1fr)); /* Tăng min-width */
+            }
+
+            .day-card {
+                padding: 40px; /* Tăng padding cho desktop rất lớn */
+            }
+
+            .day-title {
+                font-size: 1.8rem; /* Tăng font size cho desktop rất lớn */
+            }
+
+            .event-time {
+                min-width: 180px; /* Tăng width cho desktop rất lớn */
+                font-size: 1.2rem; /* Tăng font size cho desktop rất lớn */
+            }
+
+            .event-description {
+                font-size: 1.3rem; /* Tăng font size cho desktop rất lớn */
+            }
+
+            .empty-week-message {
+                padding: 100px 60px; /* Tăng padding cho desktop rất lớn */
+            }
+
+            .empty-week-icon {
+                font-size: 6rem; /* Tăng icon size cho desktop rất lớn */
+            }
+
+            .empty-week-text {
+                font-size: 1.7rem; /* Tăng font size cho desktop rất lớn */
             }
 
             :root {
@@ -2815,7 +3735,11 @@
         <div class="volleyball"></div>
         <div class="volleyball"></div>
         <div class="volleyball"></div>
+        <div class="volleyball"></div>
     </div>
+
+    <!-- Net Pattern -->
+    <div class="net-pattern"></div>
 
     <div id="app-container">
         <header class="app-header">
@@ -2840,19 +3764,19 @@
             <div class="calendar-header">
                 <div class="calendar-nav">
                     <div class="nav-controls">
-                        <button class="nav-button" id="prev-nav-btn" onclick="navigateWeek(-1)">
+                        <button class="nav-button" id="prev-nav-btn">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
                                 <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
                             </svg>
                         </button>
                         <h2 class="month-year-header" id="month-year-header">Tháng 10 2025</h2>
-                        <button class="nav-button" id="next-nav-btn" onclick="navigateWeek(1)">
+                        <button class="nav-button" id="next-nav-btn">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
                                 <path d="M8.59 16.59L10 18l6-6-6-6-1.41 1.41L13.17 12z"/>
                             </svg>
                         </button>
                     </div>
-                    <button class="today-button" id="today-btn" onclick="goToToday()">Hôm nay</button>
+                    <button class="today-button" id="today-btn">Hôm nay</button>
                 </div>
 
                 <nav class="view-toggle-nav">
@@ -2869,24 +3793,55 @@
                         <!-- Day headers will be inserted here -->
                     </div>
                     <div class="schedule-grid-container" id="schedule-grid-container">
-                        <div class="time-axis" id="time-axis"></div>
+                <div class="time-axis" id="time-axis"></div>
                         <!-- Day columns will be inserted here -->
                     </div>
                 </div>
             </div>
         </div>
 
-        <button class="fab" id="add-event-fab">+</button>
+        <button class="fab" id="add-event-fab">
+            <img src="assets/icon/volleyball.png" alt="Add Event" class="fab-icon">
+        </button>
     </div>
 
-    <!-- Event Modal -->
-    <div id="event-modal" class="modal-overlay hidden">
+     <!-- Event Detail Modal -->
+     <div id="event-detail-modal" class="event-detail-modal hidden">
+         <div class="event-detail-content">
+             <div class="event-detail-header">
+                 <button class="event-detail-close-btn" id="event-detail-close-btn">
+                     <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                         <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+                     </svg>
+                 </button>
+                 <button class="event-detail-edit-btn" id="event-detail-edit-btn">
+                     <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                         <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
+                     </svg>
+                 </button>
+                 <h2 class="event-detail-title" id="event-detail-title">Sự kiện</h2>
+                 <div class="event-detail-type" id="event-detail-type">Sự kiện một lần</div>
+             </div>
+             <div class="event-detail-body" id="event-detail-body">
+                 <!-- Content will be populated by JavaScript -->
+             </div>
+         </div>
+     </div>
+
+     <!-- Event Modal -->
+     <div id="event-modal" class="modal-overlay hidden">
         <div class="modal-content">
             <h2 class="modal-title" id="modal-title">Tạo Sự Kiện Mới</h2>
             
             <div class="modal-toggle">
-                <button type="button" class="modal-toggle-btn active" id="event-mode-btn">📅 Sự kiện</button>
-                <button type="button" class="modal-toggle-btn" id="schedule-mode-btn">📚 Lịch học</button>
+                <button type="button" class="modal-toggle-btn active" id="event-mode-btn">
+                    <img src="assets/icon/kitty.png" alt="Event Icon" class="modal-toggle-icon">
+                    Sự kiện
+                </button>
+                <button type="button" class="modal-toggle-btn" id="schedule-mode-btn">
+                    <img src="assets/icon/lovely.png" alt="Schedule Icon" class="modal-toggle-icon">
+                    Lịch học
+                </button>
             </div>
 
             <form id="event-form">
@@ -2899,15 +3854,15 @@
                     <label>Danh mục</label>
                     <div class="category-selector">
                         <button type="button" class="category-btn active" data-category="personal">
-                            <span style="font-size: 1.5rem;">📌</span>
+                            <img src="assets/icon/cat.png" alt="Personal Icon" class="category-icon">
                             <span>Cá nhân</span>
                         </button>
                         <button type="button" class="category-btn" data-category="study">
-                            <span style="font-size: 1.5rem;">📚</span>
+                            <img src="assets/icon/panda.png" alt="Study Icon" class="category-icon">
                             <span>Học tập</span>
                         </button>
                         <button type="button" class="category-btn" data-category="work">
-                            <span style="font-size: 1.5rem;">💼</span>
+                            <img src="assets/icon/shot.png" alt="Work Icon" class="category-icon">
                             <span>Công việc</span>
                         </button>
                     </div>
@@ -2969,13 +3924,34 @@
                     <div class="form-group">
                         <label>Chọn thứ <span style="color: red;">*</span></label>
                         <div class="weekdays-selector">
-                            <button type="button" class="weekday-btn" data-day="1">T2</button>
-                            <button type="button" class="weekday-btn" data-day="2">T3</button>
-                            <button type="button" class="weekday-btn" data-day="3">T4</button>
-                            <button type="button" class="weekday-btn" data-day="4">T5</button>
-                            <button type="button" class="weekday-btn" data-day="5">T6</button>
-                            <button type="button" class="weekday-btn" data-day="6">T7</button>
-                            <button type="button" class="weekday-btn" data-day="0">CN</button>
+                            <button type="button" class="weekday-btn" data-day="1">
+                                <img src="assets/icon/kitty (1).png" alt="Monday" class="weekday-icon">
+                                T2
+                            </button>
+                            <button type="button" class="weekday-btn" data-day="2">
+                                <img src="assets/icon/kitty.png" alt="Tuesday" class="weekday-icon">
+                                T3
+                            </button>
+                            <button type="button" class="weekday-btn" data-day="3">
+                                <img src="assets/icon/lovely.png" alt="Wednesday" class="weekday-icon">
+                                T4
+                            </button>
+                            <button type="button" class="weekday-btn" data-day="4">
+                                <img src="assets/icon/panda.png" alt="Thursday" class="weekday-icon">
+                                T5
+                            </button>
+                            <button type="button" class="weekday-btn" data-day="5">
+                                <img src="assets/icon/shot.png" alt="Friday" class="weekday-icon">
+                                T6
+                            </button>
+                            <button type="button" class="weekday-btn" data-day="6">
+                                <img src="assets/icon/cat.png" alt="Saturday" class="weekday-icon">
+                                T7
+                            </button>
+                            <button type="button" class="weekday-btn" data-day="0">
+                                <img src="assets/icon/volleyball.png" alt="Sunday" class="weekday-icon">
+                                CN
+                            </button>
                         </div>
                     </div>
 
@@ -3060,36 +4036,52 @@
         const urlParams = new URLSearchParams(window.location.search);
         const currentUser = urlParams.get('user') || 'quynh';
         let currentDate = new Date();
+        console.log('Initial currentDate:', currentDate);
         let currentView = window.innerWidth <= 768 ? 'day' : 'week';
         let userEvents = {};
         let editingEventId = null;
         let currentModalMode = 'event';
         let selectedCategory = 'personal';
+        let isNavigating = false;
 
-        // DOM Elements
-        const monthYearHeader = document.getElementById('month-year-header');
-        const weekGrid = document.getElementById('week-view-grid');
-        const dayHeadersContainer = document.getElementById('day-headers-container');
-        const scheduleGridContainer = document.getElementById('schedule-grid-container');
-        const timeAxis = document.getElementById('time-axis');
-        const scheduleWrapper = document.getElementById('schedule-wrapper');
-        const prevNavBtn = document.getElementById('prev-nav-btn');
-        const nextNavBtn = document.getElementById('next-nav-btn');
-        const todayBtn = document.getElementById('today-btn');
-        const addEventFab = document.getElementById('add-event-fab');
-        const eventModal = document.getElementById('event-modal');
-        const eventForm = document.getElementById('event-form');
-        const deleteBtn = document.getElementById('delete-btn');
-        const eventModeBtn = document.getElementById('event-mode-btn');
-        const scheduleModeBtn = document.getElementById('schedule-mode-btn');
-        const singleEventFields = document.getElementById('single-event-fields');
-        const recurringFields = document.getElementById('recurring-fields');
-        const categoryButtons = document.querySelectorAll('.category-btn');
-        const weekdayButtons = document.querySelectorAll('.weekday-btn');
+         // DOM Elements
+         const monthYearHeader = document.getElementById('month-year-header');
+         const weekGrid = document.getElementById('week-view-grid');
+         const dayHeadersContainer = document.getElementById('day-headers-container');
+         const scheduleGridContainer = document.getElementById('schedule-grid-container');
+         const timeAxis = document.getElementById('time-axis');
+         const scheduleWrapper = document.getElementById('schedule-wrapper');
+         const prevNavBtn = document.getElementById('prev-nav-btn');
+         const nextNavBtn = document.getElementById('next-nav-btn');
+         const todayBtn = document.getElementById('today-btn');
+         const addEventFab = document.getElementById('add-event-fab');
+         const eventModal = document.getElementById('event-modal');
+         const eventForm = document.getElementById('event-form');
+         const deleteBtn = document.getElementById('delete-btn');
+         const eventModeBtn = document.getElementById('event-mode-btn');
+         const scheduleModeBtn = document.getElementById('schedule-mode-btn');
+         const singleEventFields = document.getElementById('single-event-fields');
+         const recurringFields = document.getElementById('recurring-fields');
+         const categoryButtons = document.querySelectorAll('.category-btn');
+         const weekdayButtons = document.querySelectorAll('.weekday-btn');
+         
+         // Event Detail Modal Elements
+         const eventDetailModal = document.getElementById('event-detail-modal');
+         const eventDetailCloseBtn = document.getElementById('event-detail-close-btn');
+         const eventDetailEditBtn = document.getElementById('event-detail-edit-btn');
+         const eventDetailTitle = document.getElementById('event-detail-title');
+         const eventDetailType = document.getElementById('event-detail-type');
+         const eventDetailBody = document.getElementById('event-detail-body');
 
         // Initialize
         async function init() {
             try {
+                // Initialize currentDate if not set
+                if (!currentDate) {
+                    currentDate = new Date();
+                    console.log('Initialized currentDate:', currentDate);
+                }
+                
                 userEvents = await getUserEvents(currentUser);
                 createTimeAxis();
                 updateView();
@@ -3201,66 +4193,108 @@
             });
         }
 
-        // Modal Mode Management
-        function setModalMode(mode) {
-    currentModalMode = mode;
-    const modalTitle = document.getElementById('modal-title');
+         // Modal Mode Management
+         function setModalMode(mode) {
+     currentModalMode = mode;
+     const modalTitle = document.getElementById('modal-title');
 
-    // MỚI: Lấy tất cả các trường input/textarea của cả hai chế độ
-    const singleInputs = singleEventFields.querySelectorAll('input, textarea');
-    const recurringInputs = recurringFields.querySelectorAll('input, textarea');
-    
-    if (mode === 'event') {
-        modalTitle.textContent = editingEventId ? 'Chỉnh sửa Sự kiện' : 'Tạo Sự Kiện Mới';
-        document.getElementById('event-title').placeholder = "VD: Họp nhóm dự án";
-        eventModeBtn.classList.add('active');
-        scheduleModeBtn.classList.remove('active');
-        
-        // Hiển thị "Sự kiện", ẩn "Lịch học"
-        singleEventFields.classList.remove('hidden');
-        recurringFields.classList.add('hidden');
-        
-        // MỚI: Kích hoạt (enable) các trường "Sự kiện"
-        singleInputs.forEach(input => input.disabled = false);
-        
-        // MỚI: Vô hiệu hóa (disable) các trường "Lịch học"
-        recurringInputs.forEach(input => input.disabled = true);
+     // MỚI: Lấy tất cả các trường input/textarea của cả hai chế độ
+     const singleInputs = singleEventFields.querySelectorAll('input, textarea');
+     const recurringInputs = recurringFields.querySelectorAll('input, textarea');
+     
+     if (mode === 'event') {
+         modalTitle.textContent = editingEventId ? 'Chỉnh sửa Sự kiện' : 'Tạo Sự Kiện Mới';
+         document.getElementById('event-title').placeholder = "VD: Họp nhóm dự án";
+         eventModeBtn.classList.add('active');
+         scheduleModeBtn.classList.remove('active');
+         
+         // Hiển thị "Sự kiện", ẩn "Lịch học"
+         singleEventFields.classList.remove('hidden');
+         recurringFields.classList.add('hidden');
+         
+         // MỚI: Kích hoạt (enable) các trường "Sự kiện"
+         singleInputs.forEach(input => input.disabled = false);
+         
+         // MỚI: Vô hiệu hóa (disable) các trường "Lịch học"
+         recurringInputs.forEach(input => input.disabled = true);
 
-    } else { // mode === 'schedule'
-        modalTitle.textContent = editingEventId ? 'Chỉnh sửa Lịch Học' : 'Tạo Lịch Học Mới';
-        document.getElementById('event-title').placeholder = "VD: Phát triển ứng dụng Web";
-        scheduleModeBtn.classList.add('active');
-        eventModeBtn.classList.remove('active');
-        
-        // Hiển thị "Lịch học", ẩn "Sự kiện"
-        recurringFields.classList.remove('hidden');
-        singleEventFields.classList.add('hidden');
-        
-        // MỚI: Vô hiệu hóa (disable) các trường "Sự kiện" (Đây là mấu chốt để fix lỗi)
-        singleInputs.forEach(input => input.disabled = true);
-        
-        // MỚI: Kích hoạt (enable) các trường "Lịch học"
-        recurringInputs.forEach(input => input.disabled = false);
-    }
-}
+     } else { // mode === 'schedule'
+         modalTitle.textContent = editingEventId ? 'Chỉnh sửa Lịch Học' : 'Tạo Lịch Học Mới';
+         document.getElementById('event-title').placeholder = "VD: Phát triển ứng dụng Web";
+         scheduleModeBtn.classList.add('active');
+         eventModeBtn.classList.remove('active');
+         
+         // Hiển thị "Lịch học", ẩn "Sự kiện"
+         recurringFields.classList.remove('hidden');
+         singleEventFields.classList.add('hidden');
+         
+         // MỚI: Vô hiệu hóa (disable) các trường "Sự kiện" (Đây là mấu chốt để fix lỗi)
+         singleInputs.forEach(input => input.disabled = true);
+         
+         // MỚI: Kích hoạt (enable) các trường "Lịch học"
+         recurringInputs.forEach(input => input.disabled = false);
+         
+             // Re-attach weekday button listeners when switching to schedule mode
+             setTimeout(() => {
+                 const freshWeekdayButtons = document.querySelectorAll('.weekday-btn');
+                 console.log('Re-attaching weekday buttons for schedule mode:', freshWeekdayButtons.length);
+                 
+                 freshWeekdayButtons.forEach(btn => {
+                     // Remove existing listeners
+                     btn.replaceWith(btn.cloneNode(true));
+                 });
+                 
+                 // Get fresh references and attach listeners
+                 const newWeekdayButtons = document.querySelectorAll('.weekday-btn');
+                 newWeekdayButtons.forEach(btn => {
+                     btn.addEventListener('click', (e) => {
+                         e.preventDefault();
+                         console.log('Weekday button clicked:', btn.textContent);
+                         btn.classList.toggle('active');
+                     });
+                 });
+                 
+                 // Also re-attach category button listeners
+                 const freshCategoryButtons = document.querySelectorAll('.category-btn');
+                 console.log('Re-attaching category buttons for schedule mode:', freshCategoryButtons.length);
+                 
+                 freshCategoryButtons.forEach(btn => {
+                     btn.addEventListener('click', () => {
+                         freshCategoryButtons.forEach(b => b.classList.remove('active'));
+                         btn.classList.add('active');
+                         selectedCategory = btn.dataset.category;
+                         console.log('Category changed to:', selectedCategory);
+                     });
+                 });
+             }, 50);
+     }
+ }
 
         // Get week days
         function getWeekDays(date) {
-            const startOfWeek = new Date(date);
-            const dayOfWeek = startOfWeek.getDay();
-            startOfWeek.setDate(date.getDate() - dayOfWeek);
+            console.log('getWeekDays called with date:', date);
+            const dayOfWeek = date.getDay();
+            console.log('Day of week:', dayOfWeek);
+            
+            // Calculate the start of the week (Sunday = 0)
+            const startDate = new Date(date);
+            startDate.setTime(date.getTime() - (dayOfWeek * 24 * 60 * 60 * 1000));
+            console.log('Start date calculated:', startDate);
+            console.log('Start date formatted:', startDate.getDate() + '/' + (startDate.getMonth() + 1) + '/' + startDate.getFullYear());
             
             const week = [];
             for (let i = 0; i < 7; i++) {
-                const day = new Date(startOfWeek);
-                day.setDate(startOfWeek.getDate() + i);
+                const day = new Date(startDate);
+                day.setTime(startDate.getTime() + (i * 24 * 60 * 60 * 1000));
                 week.push(day);
             }
+            console.log('Week days calculated:', week.map(d => d.getDate() + '/' + (d.getMonth() + 1) + '/' + d.getFullYear()));
             return week;
         }
 
         // Update View
         function updateView() {
+            console.log('Updating view, currentView:', currentView, 'currentDate:', currentDate);
             if (currentView === 'day') {
                 renderDayView(currentDate);
             } else {
@@ -3287,103 +4321,243 @@
                 const todayButton = document.querySelector('.today-button');
                 if (navControls) navControls.style.display = 'flex';
                 if (todayButton) todayButton.style.display = 'block';
-                const weekDays = getWeekDays(currentDate);
-                const firstDay = weekDays[0];
-                const lastDay = weekDays[6];
-                
-                if (firstDay.getMonth() !== lastDay.getMonth()) {
-                    monthYearHeader.textContent = `Thg ${firstDay.getMonth() + 1} - Thg ${lastDay.getMonth() + 1}, ${lastDay.getFullYear()}`;
-                } else {
-                    monthYearHeader.textContent = `Tháng ${firstDay.getMonth() + 1}, ${firstDay.getFullYear()}`;
+            const weekDays = getWeekDays(currentDate);
+            const firstDay = weekDays[0];
+            const lastDay = weekDays[6];
+            
+            console.log('Week days for header:', weekDays);
+            console.log('First day:', firstDay);
+            console.log('Last day:', lastDay);
+            
+            if (firstDay.getMonth() !== lastDay.getMonth()) {
+                monthYearHeader.textContent = `Tuần ${firstDay.getDate()}/${firstDay.getMonth() + 1} - ${lastDay.getDate()}/${lastDay.getMonth() + 1}, ${lastDay.getFullYear()}`;
+            } else {
+                monthYearHeader.textContent = `Tuần ${firstDay.getDate()}-${lastDay.getDate()} Tháng ${firstDay.getMonth() + 1}, ${firstDay.getFullYear()}`;
                 }
             }
         }
 
         // Render Day View - SIMILAR TO WEEK VIEW
         function renderDayView(date) {
-            const today = new Date();
-            const dayLabels = ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'];
-            const fullDayLabels = ['Chủ Nhật', 'Thứ Hai', 'Thứ Ba', 'Thứ Tư', 'Thứ Năm', 'Thứ Sáu', 'Thứ Bảy'];
-            const isToday = date.toDateString() === today.toDateString();
+            console.log('Rendering NEW day view for:', date);
             
-            // Clear everything and create week-like structure for day view
-            scheduleWrapper.innerHTML = `
-                <div class="week-view-grid" id="week-view-grid">
-                    <div class="day-headers-container" id="day-headers-container">
-                        <div class="time-axis-header"></div>
+            // Clear existing content
+            scheduleWrapper.innerHTML = '';
+            
+            // Create day view structure - NEW LAYOUT
+            const dayViewMain = document.createElement('div');
+            dayViewMain.className = 'day-view-main-new';
+            
+            // Header với "Lịch Tuần của Khanh iu"
+            const dayViewHeader = document.createElement('div');
+            dayViewHeader.className = 'day-view-header-new';
+            
+            const headerTitle = document.createElement('div');
+            headerTitle.className = 'day-view-title';
+            headerTitle.innerHTML = 'Lịch tuần này của <span class="highlight-name">_uynhq</span> <span class="heart-icon">💕</span>';
+            
+            dayViewHeader.appendChild(headerTitle);
+            
+            // Get week days
+            const weekDays = getWeekDays(date);
+            const hasAnyEvents = checkWeekHasEvents(weekDays);
+            
+            // Day cards container
+            const dayCardsContainer = document.createElement('div');
+            dayCardsContainer.className = 'day-cards-container';
+            
+            if (!hasAnyEvents) {
+                // Empty state message
+                const emptyWeek = document.createElement('div');
+                emptyWeek.className = 'empty-week-message';
+                emptyWeek.innerHTML = `
+                    <div class="empty-week-icon">💕</div>
+                    <div class="empty-week-text">
+                        Quynh tuần này không có sự kiện gì cả<br>
+                        liên hệ anh Tuân đẹp trai để anh add nhé =))
                     </div>
-                    <div class="schedule-grid-container" id="schedule-grid-container">
-                        <div class="time-axis" id="time-axis"></div>
-                    </div>
-                </div>
-            `;
-            
-            // Get fresh references
-            const dayHeadersContainer = document.getElementById('day-headers-container');
-            const scheduleGridContainer = document.getElementById('schedule-grid-container');
-            const timeAxis = document.getElementById('time-axis');
-            
-            // Add day-view class for single column layout
-            dayHeadersContainer.classList.add('day-view');
-            scheduleGridContainer.classList.add('day-view');
-            
-            // Create day header (similar to week view)
-            const dayHeader = document.createElement('div');
-            dayHeader.className = 'day-header day-view';
-            dayHeader.innerHTML = `
-                <div class="day-label">${dayLabels[date.getDay()]}</div>
-                <div class="date-label ${isToday ? 'today' : ''}">${date.getDate()}</div>
-                <div class="day-nav-controls">
-                    <button class="day-nav-arrow-small" onclick="navigateDay(-1)" title="Ngày trước">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
-                        </svg>
-                    </button>
-                    <button class="day-nav-arrow-small" onclick="navigateDay(1)" title="Ngày sau">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M8.59 16.59L10 18l6-6-6-6-1.41 1.41L13.17 12z"/>
-                        </svg>
-                    </button>
-                </div>
-            `;
-            dayHeadersContainer.appendChild(dayHeader);
-            
-            // Create time labels
-            createTimeAxis();
-            
-            // Create day column (similar to week view)
-            const dayColumn = document.createElement('div');
-            dayColumn.className = 'day-column';
-            dayColumn.dataset.date = date.toISOString().split('T')[0];
-            scheduleGridContainer.appendChild(dayColumn);
-            
-            // Render events for the day
-            const hasEvents = renderEventsForDay(dayColumn, date);
-            
-            // Add empty state if no events
-            if (!hasEvents) {
-                addEmptyState(dayColumn);
+                `;
+                dayCardsContainer.appendChild(emptyWeek);
+            } else {
+                // Render day cards for each day
+                weekDays.forEach(day => {
+                    const dayCard = createDayCard(day);
+                    if (dayCard) {
+                        dayCardsContainer.appendChild(dayCard);
+                    }
+                });
             }
             
-            // Add current time indicator if today
-            if (isToday) {
-                addCurrentTimeIndicator(dayColumn);
-            }
+            dayViewMain.appendChild(dayViewHeader);
+            dayViewMain.appendChild(dayCardsContainer);
             
-            // Add click to create event functionality
-            addClickToCreateEvent(dayColumn, date);
+            scheduleWrapper.appendChild(dayViewMain);
+        }
 
-            console.log('Day View rendered like Week View:', {
-                date: date.toDateString(),
-                dayLabel: dayLabels[date.getDay()],
-                dayNumber: date.getDate(),
-                isToday: isToday
+        // Helper function to check if week has any events
+        function checkWeekHasEvents(weekDays) {
+            for (const day of weekDays) {
+                const dayEvents = getEventsForDay(day);
+                if (dayEvents.length > 0) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        // Helper function to get events for a specific day
+        function getEventsForDay(date) {
+            const dateStr = date.toISOString().split('T')[0];
+            const dayOfWeek = date.getDay();
+            const events = [];
+            
+            Object.entries(userEvents).forEach(([eventId, event]) => {
+                if (event.type === 'single' && event.date === dateStr) {
+                    events.push({...event, eventId});
+                } else if (event.type === 'recurring' && event.daysOfWeek && event.daysOfWeek.includes(dayOfWeek)) {
+                    events.push({...event, eventId});
+                }
             });
+            
+            // Sort events by start time
+            events.sort((a, b) => {
+                const timeA = a.startTime.split(':').map(Number);
+                const timeB = b.startTime.split(':').map(Number);
+                return (timeA[0] * 60 + timeA[1]) - (timeB[0] * 60 + timeB[1]);
+            });
+            
+            return events;
+        }
+
+        // Create day card for new day view
+        function createDayCard(date) {
+            const events = getEventsForDay(date);
+            if (events.length === 0) return null;
+            
+            const dayLabels = ['Chủ Nhật', 'Thứ Hai', 'Thứ Ba', 'Thứ Tư', 'Thứ Năm', 'Thứ Sáu', 'Thứ Bảy'];
+            const dayName = dayLabels[date.getDay()];
+            
+            const dayCard = document.createElement('div');
+            dayCard.className = 'day-card';
+            
+            // Day title
+            const dayTitle = document.createElement('div');
+            dayTitle.className = 'day-title';
+            dayTitle.textContent = dayName;
+            
+            // Separator line
+            const separator = document.createElement('div');
+            separator.className = 'day-separator';
+            
+            // Events list
+            const eventsList = document.createElement('div');
+            eventsList.className = 'events-list';
+            
+            events.forEach(event => {
+                const eventItem = createEventItem(event);
+                eventsList.appendChild(eventItem);
+            });
+            
+            dayCard.appendChild(dayTitle);
+            dayCard.appendChild(separator);
+            dayCard.appendChild(eventsList);
+            
+            return dayCard;
+        }
+
+         // Create event item for day card
+         function createEventItem(event) {
+             const eventItem = document.createElement('div');
+             eventItem.className = 'event-item';
+             eventItem.dataset.eventId = event.eventId;
+             
+             // Event time
+             const eventTime = document.createElement('div');
+             eventTime.className = 'event-time';
+             eventTime.textContent = `${event.startTime} - ${event.endTime}`;
+             
+             // Event description container
+             const eventDescription = document.createElement('div');
+             eventDescription.className = 'event-description';
+             
+             // Main event info (title + heart)
+             const eventMainInfo = document.createElement('div');
+             eventMainInfo.className = 'event-main-info';
+             
+             const eventTitle = document.createElement('span');
+             eventTitle.textContent = event.subjectName || event.title || 'Không có tiêu đề';
+             eventMainInfo.appendChild(eventTitle);
+             
+             // Add heart icon for special events
+             if (event.category === 'personal' || event.title?.includes('Kèm')) {
+                 const heartIcon = document.createElement('span');
+                 heartIcon.className = 'event-heart';
+                 heartIcon.textContent = '💕';
+                 eventMainInfo.appendChild(heartIcon);
+             }
+             
+             // Event details (classroom, campus, description)
+             const eventDetails = document.createElement('div');
+             eventDetails.className = 'event-details';
+             
+             // Classroom
+             if (event.classroom) {
+                 const classroomEl = document.createElement('div');
+                 classroomEl.className = 'event-classroom-day';
+                 classroomEl.textContent = event.classroom;
+                 eventDetails.appendChild(classroomEl);
+             }
+             
+             // Campus
+             if (event.campus) {
+                 const campusEl = document.createElement('div');
+                 campusEl.className = 'event-campus-day';
+                 campusEl.textContent = event.campus;
+                 eventDetails.appendChild(campusEl);
+             }
+             
+             // Description
+             if (event.description) {
+                 const descriptionEl = document.createElement('div');
+                 descriptionEl.className = 'event-description-day';
+                 descriptionEl.textContent = event.description;
+                 eventDetails.appendChild(descriptionEl);
+             }
+             
+             // Event indicator (colored line)
+             const eventIndicator = document.createElement('div');
+             eventIndicator.className = 'event-indicator';
+             eventIndicator.style.backgroundColor = getEventColor(event.category);
+             
+             // Assemble the event item
+             eventDescription.appendChild(eventMainInfo);
+             if (eventDetails.children.length > 0) {
+                 eventDescription.appendChild(eventDetails);
+             }
+             
+             eventItem.appendChild(eventTime);
+             eventItem.appendChild(eventDescription);
+             eventItem.appendChild(eventIndicator);
+             
+             return eventItem;
+         }
+
+        // Get event color based on category
+        function getEventColor(category) {
+            const colors = {
+                'study': '#4caf50',      // Green
+                'work': '#ff9800',       // Orange
+                'personal': '#e91e63',   // Pink
+                'other': '#9c27b0'       // Purple
+            };
+            return colors[category] || '#e91e63';
         }
 
         // Render Week View - ORIGINAL WEEK VIEW
         function renderWeekView(dateInWeek) {
+            console.log('Rendering week view for date:', dateInWeek);
             const weekDays = getWeekDays(dateInWeek);
+            console.log('Week days in renderWeekView:', weekDays);
             const today = new Date();
             const dayLabels = ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'];
             
@@ -3410,8 +4584,8 @@
                 const dayHeader = document.createElement('div');
                 dayHeader.className = 'day-header';
                 dayHeader.innerHTML = `
-                    <div class="day-label">${dayLabels[day.getDay()]}</div>
-                    <div class="date-label ${isToday ? 'today' : ''}">${day.getDate()}</div>
+                        <div class="day-label">${dayLabels[day.getDay()]}</div>
+                        <div class="date-label ${isToday ? 'today' : ''}">${day.getDate()}</div>
                 `;
                 dayHeadersContainer.appendChild(dayHeader);
             });
@@ -3532,56 +4706,235 @@
             eventEl.style.top = `${top}px`;
             eventEl.style.height = `${height}px`;
 
-            const title = event.subjectName || event.title || 'Không có tiêu đề';
-            const timeStr = `${event.startTime} - ${event.endTime}`;
-            const location = event.classroom || event.campus || '';
-            
-            eventEl.innerHTML = `
-                <div class="event-subject">${title}</div>
-                <div class="event-info">
-                    <div class="event-info-row">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <circle cx="12" cy="12" r="10"></circle>
-                            <polyline points="12 6 12 12 16 14"></polyline>
-                        </svg>
-                        <span>${timeStr}</span>
-                    </div>
-                    ${location ? `
-                    <div class="event-info-row">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                            <circle cx="12" cy="10" r="3"></circle>
-                        </svg>
-                        <span>${location}</span>
-                    </div>
-                    ` : ''}
-                </div>
-            `;
+             const title = event.subjectName || event.title || 'Không có tiêu đề';
+             const timeStr = `${event.startTime} - ${event.endTime}`;
+             const classroom = event.classroom || '';
+             const campus = event.campus || '';
+             const description = event.description || '';
+             
+             eventEl.innerHTML = `
+                 <div class="event-subject">${title}</div>
+                 <div class="event-info">
+                     <div class="event-info-row">
+                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                             <circle cx="12" cy="12" r="10"></circle>
+                             <polyline points="12 6 12 12 16 14"></polyline>
+                         </svg>
+                         <span>${timeStr}</span>
+                     </div>
+                     ${classroom || campus ? `
+                     <div class="event-info-row">
+                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                             <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                             <circle cx="12" cy="10" r="3"></circle>
+                         </svg>
+                         <div class="event-location-combined">
+                             ${classroom ? `<span class="event-classroom">${classroom}</span>` : ''}
+                             ${campus ? `<span class="event-campus">${campus}</span>` : ''}
+                         </div>
+                     </div>
+                     ` : ''}
+                     ${description ? `
+                     <div class="event-description-text">${description}</div>
+                     ` : ''}
+                 </div>
+             `;
 
-            eventEl.addEventListener('click', () => openModal(eventId));
+             eventEl.addEventListener('click', () => openEventDetailModal(eventId));
 
             return eventEl;
         }
 
-        // Open Modal
-        function openModal(eventId = null) {
-            editingEventId = eventId;
-            
-            if (eventId && userEvents[eventId]) {
-                const event = userEvents[eventId];
-                setModalMode(event.type === 'single' ? 'event' : 'schedule');
-                populateForm(event);
-                deleteBtn.classList.remove('hidden');
-            } else {
-                setModalMode('event');
-                eventForm.reset();
-                setDefaultDates();
-                deleteBtn.classList.add('hidden');
-            }
-            
-            eventModal.classList.remove('hidden');
-            document.body.style.overflow = 'hidden';
-        }
+         // Open Event Detail Modal
+         function openEventDetailModal(eventId) {
+             if (!eventId || !userEvents[eventId]) return;
+             
+             const event = userEvents[eventId];
+             editingEventId = eventId;
+             
+             // Set title and type
+             eventDetailTitle.textContent = event.subjectName || event.title || 'Không có tiêu đề';
+             eventDetailType.textContent = event.type === 'single' ? 'Sự kiện một lần' : 'Lịch học định kỳ';
+             
+             // Populate body content
+             populateEventDetailBody(event);
+             
+             // Show modal
+             eventDetailModal.classList.remove('hidden');
+             document.body.style.overflow = 'hidden';
+         }
+
+         // Populate Event Detail Body
+         function populateEventDetailBody(event) {
+             eventDetailBody.innerHTML = '';
+             
+             // Basic Info Section
+             const basicInfoSection = createDetailSection('📋 Thông tin cơ bản', [
+                 { icon: '⏰', label: 'Thời gian', value: `${event.startTime} - ${event.endTime}` },
+                 { icon: '📅', label: 'Ngày', value: event.date ? formatDate(event.date) : 'Định kỳ' },
+                 { icon: '🏷️', label: 'Danh mục', value: getCategoryName(event.category) }
+             ]);
+             
+             // Location Section
+             const locationInfo = [];
+             if (event.classroom) {
+                 locationInfo.push({ icon: '🏫', label: 'Phòng học', value: `<span class="event-detail-classroom">${event.classroom}</span>` });
+             }
+             if (event.campus) {
+                 locationInfo.push({ icon: '🏢', label: 'Cơ sở', value: `<span class="event-detail-campus">${event.campus}</span>` });
+             }
+             if (event.classroom || event.campus) {
+                 const locationSection = createDetailSection('📍 Địa điểm', locationInfo);
+                 eventDetailBody.appendChild(locationSection);
+             }
+             
+             // Recurring Info Section (for recurring events)
+             if (event.type === 'recurring') {
+                 const recurringInfo = [];
+                 if (event.daysOfWeek && event.daysOfWeek.length > 0) {
+                     const dayNames = ['Chủ Nhật', 'Thứ Hai', 'Thứ Ba', 'Thứ Tư', 'Thứ Năm', 'Thứ Sáu', 'Thứ Bảy'];
+                     const selectedDays = event.daysOfWeek.map(day => dayNames[day]).join(', ');
+                     recurringInfo.push({ icon: '📅', label: 'Các ngày', value: selectedDays });
+                 }
+                 if (event.startDate) {
+                     recurringInfo.push({ icon: '📆', label: 'Từ ngày', value: formatDate(event.startDate) });
+                 }
+                 if (event.endDate) {
+                     recurringInfo.push({ icon: '📆', label: 'Đến ngày', value: formatDate(event.endDate) });
+                 }
+                 
+                 if (recurringInfo.length > 0) {
+                     const recurringSection = createDetailSection('🔄 Lịch định kỳ', recurringInfo);
+                     eventDetailBody.appendChild(recurringSection);
+                 }
+             }
+             
+             // Description Section
+             if (event.description) {
+                 const descriptionSection = document.createElement('div');
+                 descriptionSection.className = 'event-detail-section';
+                 descriptionSection.innerHTML = `
+                     <div class="event-detail-section-title">
+                         <span>📝</span>
+                         <span>Mô tả</span>
+                     </div>
+                     <div class="event-detail-description">${event.description}</div>
+                 `;
+                 eventDetailBody.appendChild(descriptionSection);
+             }
+             
+             eventDetailBody.appendChild(basicInfoSection);
+         }
+
+         // Create Detail Section
+         function createDetailSection(title, items) {
+             const section = document.createElement('div');
+             section.className = 'event-detail-section';
+             
+             const sectionTitle = document.createElement('div');
+             sectionTitle.className = 'event-detail-section-title';
+             sectionTitle.innerHTML = `<span>${title}</span>`;
+             
+             const sectionInfo = document.createElement('div');
+             sectionInfo.className = 'event-detail-info';
+             
+             items.forEach(item => {
+                 const row = document.createElement('div');
+                 row.className = 'event-detail-row';
+                 row.innerHTML = `
+                     <span class="event-detail-icon">${item.icon}</span>
+                     <span class="event-detail-label">${item.label}:</span>
+                     <span class="event-detail-value">${item.value}</span>
+                 `;
+                 sectionInfo.appendChild(row);
+             });
+             
+             section.appendChild(sectionTitle);
+             section.appendChild(sectionInfo);
+             
+             return section;
+         }
+
+         // Helper Functions
+         function getCategoryName(category) {
+             const categories = {
+                 'personal': 'Cá nhân',
+                 'study': 'Học tập',
+                 'work': 'Công việc',
+                 'other': 'Khác'
+             };
+             return categories[category] || 'Cá nhân';
+         }
+
+         function formatDate(dateString) {
+             const date = new Date(dateString);
+             return date.toLocaleDateString('vi-VN', {
+                 weekday: 'long',
+                 year: 'numeric',
+                 month: 'long',
+                 day: 'numeric'
+             });
+         }
+
+         // Close Event Detail Modal
+         function closeEventDetailModal() {
+             eventDetailModal.classList.add('hidden');
+             document.body.style.overflow = '';
+         }
+
+         // Open Modal (for editing)
+         function openModal(eventId = null) {
+             editingEventId = eventId;
+             
+             if (eventId && userEvents[eventId]) {
+                 const event = userEvents[eventId];
+                 setModalMode(event.type === 'single' ? 'event' : 'schedule');
+                 populateForm(event);
+                 deleteBtn.classList.remove('hidden');
+             } else {
+                 setModalMode('event');
+                 eventForm.reset();
+                 setDefaultDates();
+                 deleteBtn.classList.add('hidden');
+             }
+             
+             eventModal.classList.remove('hidden');
+             document.body.style.overflow = 'hidden';
+             
+             // Re-attach weekday button listeners after modal is shown
+             setTimeout(() => {
+                 const freshWeekdayButtons = document.querySelectorAll('.weekday-btn');
+                 console.log('Re-attaching weekday buttons:', freshWeekdayButtons.length);
+                 
+                 freshWeekdayButtons.forEach(btn => {
+                     // Remove existing listeners
+                     btn.replaceWith(btn.cloneNode(true));
+                 });
+                 
+                 // Get fresh references and attach listeners
+                 const newWeekdayButtons = document.querySelectorAll('.weekday-btn');
+                 newWeekdayButtons.forEach(btn => {
+                     btn.addEventListener('click', (e) => {
+                         e.preventDefault();
+                         console.log('Weekday button clicked:', btn.textContent);
+                         btn.classList.toggle('active');
+                     });
+                 });
+                 
+                 // Also re-attach category button listeners
+                 const freshCategoryButtons = document.querySelectorAll('.category-btn');
+                 console.log('Re-attaching category buttons:', freshCategoryButtons.length);
+                 
+                 freshCategoryButtons.forEach(btn => {
+                     btn.addEventListener('click', () => {
+                         freshCategoryButtons.forEach(b => b.classList.remove('active'));
+                         btn.classList.add('active');
+                         selectedCategory = btn.dataset.category;
+                         console.log('Category changed to:', selectedCategory);
+                     });
+                 });
+             }, 100);
+         }
 
         // Populate Form
         function populateForm(event) {
@@ -3642,6 +4995,10 @@
             e.preventDefault();
             
             const title = document.getElementById('event-title').value;
+            console.log('Form submitted with title:', title);
+            console.log('Current modal mode:', currentModalMode);
+            console.log('Selected category:', selectedCategory);
+            
             let eventData = {};
             
             if (currentModalMode === 'event') {
@@ -3664,9 +5021,14 @@
                     description: document.getElementById('event-description').value
                 };
             } else {
-                const selectedDays = Array.from(weekdayButtons)
+                const freshWeekdayButtons = document.querySelectorAll('.weekday-btn');
+                console.log('Found weekday buttons:', freshWeekdayButtons.length);
+                
+                const selectedDays = Array.from(freshWeekdayButtons)
                     .filter(btn => btn.classList.contains('active'))
                     .map(btn => parseInt(btn.dataset.day));
+                
+                console.log('Selected days:', selectedDays);
                 
                 if (selectedDays.length === 0) {
                     showNotification('Vui lòng chọn ít nhất một ngày trong tuần!', 'error');
@@ -3681,28 +5043,54 @@
                     return;
                 }
                 
+                const classroom = document.getElementById('event-classroom').value;
+                const campus = document.getElementById('event-campus').value;
+                const startDate = document.getElementById('start-date').value;
+                const endDate = document.getElementById('end-date').value;
+                const description = document.getElementById('recurring-description').value;
+                
+                console.log('Form data:', {
+                    title,
+                    classroom,
+                    campus,
+                    startTime,
+                    endTime,
+                    startDate,
+                    endDate,
+                    selectedDays,
+                    selectedCategory,
+                    description
+                });
+                
                 eventData = {
                     type: 'recurring',
                     subjectName: title,
-                    classroom: document.getElementById('event-classroom').value,
-                    campus: document.getElementById('event-campus').value,
+                    classroom: classroom,
+                    campus: campus,
                     startTime: startTime,
                     endTime: endTime,
-                    startDate: document.getElementById('start-date').value,
-                    endDate: document.getElementById('end-date').value,
+                    startDate: startDate,
+                    endDate: endDate,
                     daysOfWeek: selectedDays,
                     category: selectedCategory,
-                    description: document.getElementById('recurring-description').value
+                    description: description
                 };
             }
             
             try {
+                console.log('Saving event data:', eventData);
+                console.log('Current user:', currentUser);
+                console.log('Editing event ID:', editingEventId);
+                
                 if (editingEventId) {
+                    console.log('Updating existing event...');
                     await updateEvent(currentUser, editingEventId, eventData);
                     userEvents[editingEventId] = eventData;
                     showNotification('Cập nhật thành công! ✨', 'success');
                 } else {
+                    console.log('Adding new event...');
                     const newEventRef = await addEvent(currentUser, eventData);
+                    console.log('New event reference:', newEventRef);
                     userEvents[newEventRef.key] = eventData;
                     showNotification('Thêm thành công! 🎉', 'success');
                 }
@@ -3754,36 +5142,30 @@
             if (freshPrevBtn) {
                 freshPrevBtn.addEventListener('click', (e) => {
                     e.preventDefault();
-                    console.log('Previous week clicked');
-                    currentDate.setDate(currentDate.getDate() - 7);
-                    updateView();
+                    console.log('Previous week clicked via addEventListener');
+                    navigateWeek(-1);
                 });
             }
 
             if (freshNextBtn) {
                 freshNextBtn.addEventListener('click', (e) => {
                     e.preventDefault();
-                    console.log('Next week clicked');
-                    currentDate.setDate(currentDate.getDate() + 7);
-                    updateView();
+                    console.log('Next week clicked via addEventListener');
+                    navigateWeek(1);
                 });
             }
 
             if (freshTodayBtn) {
                 freshTodayBtn.addEventListener('click', (e) => {
                     e.preventDefault();
-                    console.log('Today clicked');
-                    currentDate = new Date();
-                    updateView();
-                    if (window.innerWidth <= 768) {
-                        setTimeout(scrollToCurrentTime, 300);
-                    }
+                    console.log('Today clicked via addEventListener');
+                    goToToday();
                 });
             }
 
             // Other event listeners
             if (addEventFab) {
-                addEventFab.addEventListener('click', () => openModal());
+            addEventFab.addEventListener('click', () => openModal());
             }
             
             const cancelBtn = document.getElementById('cancel-btn');
@@ -3792,10 +5174,10 @@
             }
             
             if (eventModeBtn) {
-                eventModeBtn.addEventListener('click', () => setModalMode('event'));
+            eventModeBtn.addEventListener('click', () => setModalMode('event'));
             }
             if (scheduleModeBtn) {
-                scheduleModeBtn.addEventListener('click', () => setModalMode('schedule'));
+            scheduleModeBtn.addEventListener('click', () => setModalMode('schedule'));
             }
 
             // View toggle buttons
@@ -3818,22 +5200,66 @@
                     categoryButtons.forEach(b => b.classList.remove('active'));
                     btn.classList.add('active');
                     selectedCategory = btn.dataset.category;
+                    console.log('Category changed to:', selectedCategory);
                 });
             });
 
-            weekdayButtons.forEach(btn => {
-                btn.addEventListener('click', () => btn.classList.toggle('active'));
-            });
+             // Re-query weekday buttons to ensure they exist
+             const freshWeekdayButtons = document.querySelectorAll('.weekday-btn');
+             console.log('Found weekday buttons:', freshWeekdayButtons.length);
+             
+             freshWeekdayButtons.forEach(btn => {
+                 btn.addEventListener('click', (e) => {
+                     e.preventDefault();
+                     console.log('Weekday button clicked:', btn.textContent);
+                     btn.classList.toggle('active');
+                 });
+             });
+             
+             // Also re-query category buttons to ensure they exist
+             const freshCategoryButtons = document.querySelectorAll('.category-btn');
+             console.log('Found category buttons:', freshCategoryButtons.length);
+             
+             freshCategoryButtons.forEach(btn => {
+                 btn.addEventListener('click', () => {
+                     freshCategoryButtons.forEach(b => b.classList.remove('active'));
+                     btn.classList.add('active');
+                     selectedCategory = btn.dataset.category;
+                     console.log('Category changed to:', selectedCategory);
+                 });
+             });
 
-            if (eventModal) {
-                eventModal.addEventListener('click', (e) => {
-                    if (e.target === eventModal) closeModal();
-                });
-            }
+             if (eventModal) {
+             eventModal.addEventListener('click', (e) => {
+                 if (e.target === eventModal) closeModal();
+             });
+             }
+
+             // Event Detail Modal Listeners
+             if (eventDetailCloseBtn) {
+                 eventDetailCloseBtn.addEventListener('click', closeEventDetailModal);
+             }
+
+             if (eventDetailEditBtn) {
+                 eventDetailEditBtn.addEventListener('click', () => {
+                     closeEventDetailModal();
+                     openModal(editingEventId);
+                 });
+             }
+
+             if (eventDetailModal) {
+                 eventDetailModal.addEventListener('click', (e) => {
+                     if (e.target === eventDetailModal) closeEventDetailModal();
+                 });
+             }
 
             document.addEventListener('keydown', (e) => {
-                if (e.key === 'Escape' && !eventModal.classList.contains('hidden')) {
-                    closeModal();
+                if (e.key === 'Escape') {
+                    if (!eventModal.classList.contains('hidden')) {
+                        closeModal();
+                    } else if (!eventDetailModal.classList.contains('hidden')) {
+                        closeEventDetailModal();
+                    }
                 }
             });
         }
@@ -3851,7 +5277,7 @@
 
         // Scroll to Upcoming Event on Mobile - UPDATED FOR NEW WIDTHS
         function scrollToUpcomingEvent() {
-            if (window.innerWidth > 430) return; // Only for iPhone
+            if (window.innerWidth > 860) return; // Only for mobile devices
             
             const now = new Date();
             const today = now.getDay();
@@ -3916,13 +5342,8 @@
                 const eventDate = upcomingEvent.date || now.toISOString().split('T')[0];
                 const eventDay = new Date(eventDate).getDay();
                 
-                // Tính toán width dựa trên viewport size - UPDATED FOR OVERFLOW
-                let dayWidth;
-                if (window.innerWidth <= 375) {
-                    dayWidth = (window.innerWidth * 0.7 - 80) / 7; // 70% scale - 80px cho iPhone nhỏ
-                } else {
-                    dayWidth = (window.innerWidth * 0.7 - 80) / 7; // 70% scale - 80px cho iPhone thường
-                }
+                // Tính toán width cho mobile với day columns 120px
+                const dayWidth = 120; // Fixed width cho day columns
                 
                 const horizontalScroll = dayWidth * eventDay;
                 scheduleWrapper.scrollLeft = horizontalScroll;
@@ -3930,13 +5351,8 @@
                 // No upcoming events, scroll to current time and today
                 scrollToCurrentTime();
                 
-                // Tính toán width cho today scroll - UPDATED FOR OVERFLOW
-                let dayWidth;
-                if (window.innerWidth <= 375) {
-                    dayWidth = (window.innerWidth * 0.7 - 80) / 7; // 70% scale - 80px cho iPhone nhỏ
-                } else {
-                    dayWidth = (window.innerWidth * 0.7 - 80) / 7; // 70% scale - 80px cho iPhone thường
-                }
+                // Tính toán width cho today scroll - Fixed width
+                const dayWidth = 120; // Fixed width cho day columns
                 
                 const todayScroll = dayWidth * today;
                 scheduleWrapper.scrollLeft = todayScroll;
@@ -4016,24 +5432,43 @@
 
         // Global navigation functions for onclick handlers
         window.navigateWeek = function(direction) {
-            console.log('Navigate week:', direction);
-            if (currentView === 'day') {
-                currentDate.setDate(currentDate.getDate() + direction);
-            } else {
-                currentDate.setDate(currentDate.getDate() + (direction * 7));
+            if (isNavigating) {
+                console.log('Navigation already in progress, ignoring...');
+                return;
             }
+            
+            isNavigating = true;
+            console.log('Navigate week:', direction);
+            console.log('Current date before:', currentDate);
+            
+            // Simply add/subtract 7 days from current date
+            const newDate = new Date(currentDate);
+            newDate.setTime(currentDate.getTime() + (direction * 7 * 24 * 60 * 60 * 1000));
+            currentDate = newDate;
+            
+            console.log('Current date after:', currentDate);
+            console.log('New week days:', getWeekDays(currentDate).map(d => d.getDate() + '/' + (d.getMonth() + 1)));
+            
             updateView();
+            
+            // Reset flag after a short delay
+            setTimeout(() => {
+                isNavigating = false;
+            }, 100);
         };
 
         window.navigateDay = function(direction) {
             console.log('Navigate day:', direction);
-            currentDate.setDate(currentDate.getDate() + direction);
+            const newDate = new Date(currentDate);
+            newDate.setTime(currentDate.getTime() + (direction * 24 * 60 * 60 * 1000));
+            currentDate = newDate;
             updateView();
         };
 
         window.goToToday = function() {
             console.log('Go to today');
             currentDate = new Date();
+            console.log('Current date set to today:', currentDate);
             updateView();
             if (window.innerWidth <= 768) {
                 setTimeout(scrollToCurrentTime, 300);
