@@ -994,6 +994,12 @@
             position: relative;
             overflow: hidden;
             animation: buttonPulse 3s infinite ease-in-out;
+            /* iOS fixes */
+            -webkit-tap-highlight-color: rgba(255, 107, 157, 0.3);
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            user-select: none;
+            touch-action: manipulation;
         }
 
         @keyframes buttonPulse {
@@ -3248,6 +3254,29 @@
                 }
             }
         });
+
+        // iOS touch fix for drink button
+        const drinkButton = document.getElementById('drinkButton');
+        if (drinkButton) {
+            // Add touchstart event for iOS
+            drinkButton.addEventListener('touchstart', function(e) {
+                // Prevent default to avoid 300ms delay
+                e.preventDefault();
+                // Trigger the click
+                drinkWater();
+            }, { passive: false });
+            
+            // Also keep click event for desktop
+            drinkButton.addEventListener('click', function(e) {
+                // Only trigger if not from touch (to avoid double trigger)
+                if (e.pointerType !== 'touch') {
+                    drinkWater();
+                }
+            });
+            
+            // Remove inline onclick to avoid conflict
+            drinkButton.removeAttribute('onclick');
+        }
 
         // Make functions globally available
         window.goBackToFunctions = goBackToFunctions;

@@ -591,7 +591,7 @@
                 <!-- EmailJS Config -->
                 <div class="form-group">
                     <label class="form-label">EmailJS Public Key:</label>
-                    <input type="text" class="form-input" id="emailjsKey" placeholder="Nhập Public Key từ EmailJS">
+                    <input type="text" class="form-input" id="emailjsKey" placeholder="Nhập Public Key từ EmailJS" value="ImtCj0ncism-01z07">
                 </div>
 
                 <!-- Add Recipient Form -->
@@ -1338,10 +1338,16 @@
             loadWeather();
             loadRecipients(); // Load recipients list
             
-            // Load saved EmailJS key if exists
+            // Load saved EmailJS key if exists, or use default
             const savedKey = localStorage.getItem('emailjs_key');
+            const defaultKey = 'ImtCj0ncism-01z07';
+
             if (savedKey) {
                 document.getElementById('emailjsKey').value = savedKey;
+            } else {
+                // Set default key if no saved key exists
+                document.getElementById('emailjsKey').value = defaultKey;
+                localStorage.setItem('emailjs_key', defaultKey);
             }
 
             // Save EmailJS key on change

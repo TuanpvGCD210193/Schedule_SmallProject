@@ -867,7 +867,7 @@
             }
         }
 
-        /* Weather Widget */
+        /* Weather Widget - Enhanced with 24h Chart */
         .weather-widget {
             background: linear-gradient(135deg, #ffe5ec 0%, #fff0f6 100%);
             border-radius: 20px;
@@ -894,87 +894,218 @@
             gap: 8px;
         }
 
-        .weather-widget-refresh {
-            background: white;
-            border: 2px solid var(--primary-pink);
-            border-radius: 50%;
-            width: 32px;
-            height: 32px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
+        /* Weather Stats Grid */
+        .weather-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .weather-stat-item {
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 12px;
+            padding: 12px 10px;
+            text-align: center;
+            border: 2px solid rgba(255, 107, 157, 0.1);
             transition: all 0.3s ease;
-            font-size: 16px;
         }
 
-        .weather-widget-refresh:hover {
-            background: var(--primary-pink);
-            color: white;
-            transform: rotate(180deg);
+        .weather-stat-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 107, 157, 0.2);
         }
 
-        .weather-widget-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .weather-temp-display {
-            font-size: 2.5rem;
+        .weather-stat-value {
+            font-size: 1.3rem;
             font-weight: 800;
             color: var(--primary-pink);
+            margin-bottom: 3px;
         }
 
-        .weather-desc-display {
-            font-size: 1rem;
+        .weather-stat-label {
+            font-size: 0.75rem;
             color: var(--text-dark);
-            margin-top: 5px;
             font-weight: 600;
         }
 
-        .weather-icon-display {
-            font-size: 3rem;
-            animation: float-icon 3s infinite ease-in-out;
-        }
-
-        .weather-ai-tip {
+        /* Mini Chart Container */
+        .weather-chart-container {
             background: rgba(255, 255, 255, 0.8);
             border-radius: 12px;
             padding: 15px;
-            margin-top: 15px;
-            font-size: 0.95rem;
-            line-height: 1.7;
-            color: var(--text-dark);
-            border-left: 4px solid var(--primary-pink);
-            box-shadow: 0 2px 8px rgba(255, 107, 157, 0.1);
-            max-height: none;
-            overflow: visible;
-            word-wrap: break-word;
-            white-space: pre-wrap;
+            margin-bottom: 15px;
+            border: 2px solid rgba(255, 107, 157, 0.15);
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            cursor: grab;
         }
 
-        .weather-ai-tip::before {
-            content: '🤖 ';
-            font-size: 1.1rem;
-            margin-right: 5px;
+        .weather-chart-container:active {
+            cursor: grabbing;
+        }
+
+        .weather-chart-container::-webkit-scrollbar {
+            height: 6px;
+        }
+
+        .weather-chart-container::-webkit-scrollbar-track {
+            background: rgba(255, 107, 157, 0.1);
+            border-radius: 3px;
+        }
+
+        .weather-chart-container::-webkit-scrollbar-thumb {
+            background: var(--primary-pink);
+            border-radius: 3px;
+        }
+
+        .weather-chart-header {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--primary-pink);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .weather-chart {
+            display: flex;
+            gap: 8px;
+            min-width: max-content;
+            padding: 10px 0;
+        }
+
+        .weather-chart-bar {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+            min-width: 50px;
+        }
+
+        .chart-bar-wrapper {
+            position: relative;
+            width: 30px;
+            height: 80px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+        }
+
+        .chart-bar-temp {
+            width: 100%;
+            background: linear-gradient(180deg, var(--accent-orange) 0%, var(--primary-pink) 100%);
+            border-radius: 8px 8px 4px 4px;
+            transition: all 0.3s ease;
+            position: relative;
+            box-shadow: 0 2px 6px rgba(255, 107, 157, 0.3);
+        }
+
+        .chart-bar-rain {
+            width: 100%;
+            background: linear-gradient(180deg, #4fc3f7 0%, #0288d1 100%);
+            border-radius: 4px 4px 8px 8px;
+            margin-top: 2px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 6px rgba(2, 136, 209, 0.3);
+        }
+
+        .chart-bar-temp:hover,
+        .chart-bar-rain:hover {
+            opacity: 0.8;
+            transform: scaleX(1.1);
+        }
+
+        .chart-time {
+            font-size: 0.7rem;
+            color: var(--text-dark);
+            font-weight: 600;
+        }
+
+        .chart-value {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--primary-pink);
+        }
+
+        .chart-rain-value {
+            font-size: 0.7rem;
+            color: #0288d1;
+            font-weight: 600;
+        }
+
+        /* Weather Footer */
+        .weather-widget-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.75rem;
+            color: #666;
+            padding-top: 10px;
+            border-top: 2px solid rgba(255, 107, 157, 0.1);
+        }
+
+        .weather-auto-refresh {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .refresh-indicator {
+            width: 8px;
+            height: 8px;
+            background: #4caf50;
+            border-radius: 50%;
+            animation: pulse-refresh 2s infinite;
+        }
+
+        @keyframes pulse-refresh {
+            0%, 100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 0.5;
+                transform: scale(1.2);
+            }
+        }
+
+        .weather-last-update {
+            font-weight: 600;
+            color: var(--primary-pink);
         }
 
         @media (max-width: 768px) {
             .weather-widget {
                 padding: 15px;
             }
-
-            .weather-temp-display {
-                font-size: 2rem;
+            
+            .weather-stats-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 8px;
             }
-
-            .weather-icon-display {
-                font-size: 2.5rem;
+            
+            .weather-stat-value {
+                font-size: 1.1rem;
             }
-
-            .weather-ai-tip {
-                font-size: 0.85rem;
+            
+            .weather-stat-label {
+                font-size: 0.7rem;
+            }
+            
+            .weather-chart-bar {
+                min-width: 40px;
+                gap: 3px;
+            }
+            
+            .chart-bar-wrapper {
+                height: 60px;
+                width: 25px;
+            }
+            
+            .weather-widget-footer {
+                font-size: 0.7rem;
             }
         }
     </style>
@@ -1246,33 +1377,49 @@
 
         // ===== WEATHER WIDGET =====
         
-        // Load weather widget
+        // Load weather widget with 24h forecast chart
         async function loadWeatherWidget() {
             const weatherWidget = document.getElementById('weatherWidget');
             
             try {
                 // Import weather service
-                const { fetchWeatherData, getAIWeatherTip, formatWeatherDisplay, getWeatherEmoji } = await import('./js/weather-service.js');
+                const { fetchWeatherData, fetchWeatherForecast, getHourlyForecast, formatWeatherDisplay } = await import('./js/weather-service.js');
                 
-                // Fetch weather data
-                const weatherData = await fetchWeatherData();
+                // Fetch both current weather and forecast
+                const [weatherData, forecastData] = await Promise.all([
+                    fetchWeatherData(),
+                    fetchWeatherForecast()
+                ]);
+                
                 const weather = formatWeatherDisplay(weatherData);
+                const hourlyData = getHourlyForecast(forecastData);
                 
-                // Get AI tip (full version - no truncation)
-                let aiTip = 'Đang tải lời khuyên AI...';
-                getAIWeatherTip(weatherData).then(tip => {
-                    const aiTipElement = document.getElementById('weatherAiTip');
-                    if (aiTipElement) {
-                        // Display full tip (no shortening)
-                        aiTipElement.textContent = tip;
-                    }
-                }).catch(error => {
-                    console.error('AI tip error:', error);
-                    const aiTipElement = document.getElementById('weatherAiTip');
-                    if (aiTipElement) {
-                        aiTipElement.textContent = 'Hôm nay hãy chú ý thời tiết nhé! 💕';
-                    }
-                });
+                // Get current time
+                const now = new Date();
+                const currentTime = now.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' });
+                
+                // Find max values for chart scaling
+                const maxTemp = Math.max(...hourlyData.map(h => h.temp), 30); // Min 30 to ensure visibility
+                const maxRain = Math.max(...hourlyData.map(h => h.rain), 1); // Min 1 to avoid division by zero
+                
+                // Generate chart HTML
+                const chartHTML = hourlyData.map(hour => {
+                    const tempHeight = (hour.temp / maxTemp) * 80; // 80px max height
+                    const rainHeight = (hour.rain / maxRain) * 40; // 40px max height for rain
+                    const timeStr = hour.time.toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' });
+                    
+                    return `
+                        <div class="weather-chart-bar">
+                            <div class="chart-value">${hour.temp}°</div>
+                            <div class="chart-bar-wrapper">
+                                <div class="chart-bar-temp" style="height: ${tempHeight}px;" title="${hour.temp}°C - ${hour.description}"></div>
+                                ${hour.rain > 0 ? `<div class="chart-bar-rain" style="height: ${rainHeight}px;" title="Mưa: ${hour.rain}mm"></div>` : ''}
+                            </div>
+                            ${hour.rain > 0 ? `<div class="chart-rain-value">💧${hour.rain.toFixed(1)}mm</div>` : '<div style="height: 14px;"></div>'}
+                            <div class="chart-time">${timeStr}</div>
+                        </div>
+                    `;
+                }).join('');
                 
                 // Display weather widget
                 weatherWidget.innerHTML = `
@@ -1281,24 +1428,97 @@
                             <span>🌤️</span>
                             <span>Thời Tiết Đà Nẵng</span>
                         </div>
-                        <div class="weather-widget-refresh" onclick="loadWeatherWidget()" title="Làm mới">
-                            🔄
+                    </div>
+                    
+                    <div class="weather-stats-grid">
+                        <div class="weather-stat-item">
+                            <div class="weather-stat-value">${weather.emoji} ${weather.temp}°C</div>
+                            <div class="weather-stat-label">${weather.description}</div>
+                        </div>
+                        <div class="weather-stat-item">
+                            <div class="weather-stat-value">💧 ${weatherData.main.humidity}%</div>
+                            <div class="weather-stat-label">Độ ẩm</div>
+                        </div>
+                        <div class="weather-stat-item">
+                            <div class="weather-stat-value">💨 ${weatherData.wind.speed}m/s</div>
+                            <div class="weather-stat-label">Gió</div>
                         </div>
                     </div>
-                    <div class="weather-widget-content">
-                        <div>
-                            <div class="weather-temp-display">${weather.temp}°C</div>
-                            <div class="weather-desc-display">${weather.description}</div>
+                    
+                    ${hourlyData.length > 0 ? `
+                    <div class="weather-chart-container" id="weatherChart">
+                        <div class="weather-chart-header">
+                            <span>📊</span>
+                            <span>Dự báo 24h tới (kéo để xem)</span>
                         </div>
-                        <div class="weather-icon-display">${weather.emoji}</div>
+                        <div class="weather-chart">
+                            ${chartHTML}
+                        </div>
                     </div>
-                    <div class="weather-ai-tip" id="weatherAiTip">
-                        ${aiTip}
+                    ` : ''}
+                    
+                    <div class="weather-widget-footer">
+                        <div class="weather-auto-refresh">
+                            <span class="refresh-indicator"></span>
+                            <span>Auto-refresh: 30 phút</span>
+                        </div>
+                        <div class="weather-last-update">
+                            ⏰ ${currentTime}
+                        </div>
                     </div>
                 `;
                 
                 weatherWidget.style.display = 'block';
-                console.log('✅ Weather widget loaded');
+                
+                // Add drag scroll functionality
+                const chartContainer = document.getElementById('weatherChart');
+                if (chartContainer) {
+                    let isDown = false;
+                    let startX;
+                    let scrollLeft;
+                    
+                    chartContainer.addEventListener('mousedown', (e) => {
+                        isDown = true;
+                        chartContainer.style.cursor = 'grabbing';
+                        startX = e.pageX - chartContainer.offsetLeft;
+                        scrollLeft = chartContainer.scrollLeft;
+                    });
+                    
+                    chartContainer.addEventListener('mouseleave', () => {
+                        isDown = false;
+                        chartContainer.style.cursor = 'grab';
+                    });
+                    
+                    chartContainer.addEventListener('mouseup', () => {
+                        isDown = false;
+                        chartContainer.style.cursor = 'grab';
+                    });
+                    
+                    chartContainer.addEventListener('mousemove', (e) => {
+                        if (!isDown) return;
+                        e.preventDefault();
+                        const x = e.pageX - chartContainer.offsetLeft;
+                        const walk = (x - startX) * 2;
+                        chartContainer.scrollLeft = scrollLeft - walk;
+                    });
+                    
+                    // Touch support for mobile
+                    let touchStartX;
+                    let touchScrollLeft;
+                    
+                    chartContainer.addEventListener('touchstart', (e) => {
+                        touchStartX = e.touches[0].pageX - chartContainer.offsetLeft;
+                        touchScrollLeft = chartContainer.scrollLeft;
+                    }, { passive: true });
+                    
+                    chartContainer.addEventListener('touchmove', (e) => {
+                        const x = e.touches[0].pageX - chartContainer.offsetLeft;
+                        const walk = (touchStartX - x) * 1.5;
+                        chartContainer.scrollLeft = touchScrollLeft + walk;
+                    }, { passive: true });
+                }
+                
+                console.log('✅ Weather widget loaded with 24h forecast chart');
                 
             } catch (error) {
                 console.error('❌ Error loading weather widget:', error);
@@ -1314,6 +1534,12 @@
         setTimeout(() => {
             loadWeatherWidget();
         }, 500);
+
+        // Auto-refresh every 30 minutes
+        setInterval(() => {
+            console.log('🔄 Auto-refreshing weather widget...');
+            loadWeatherWidget();
+        }, 30 * 60 * 1000);
 
     </script>
 </body>

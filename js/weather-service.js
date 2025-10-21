@@ -22,7 +22,9 @@ let weatherCache = {
     data: null,
     timestamp: null,
     aiTip: null,
-    aiTimestamp: null
+    aiTimestamp: null,
+    forecastData: null,
+    forecastTimestamp: null
 };
 
 /**
@@ -94,6 +96,80 @@ export async function fetchWeatherData() {
 
         return getDefaultWeatherData();
     }
+}
+
+/**
+ * Fetch 5-day weather forecast (3-hour intervals)
+ */
+export async function fetchWeatherForecast() {
+    const FORECAST_URL = 'https://api.openweathermap.org/data/2.5/forecast';
+    
+    // Check cache
+    if (weatherCache.forecastData && 
+        weatherCache.forecastTimestamp && 
+        (Date.now() - weatherCache.forecastTimestamp) < WEATHER_CONFIG.CACHE_TTL) {
+        console.log('✅ Using cached forecast data');
+        return weatherCache.forecastData;
+    }
+
+    try {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 8000);
+
+        const url = `${FORECAST_URL}?q=${WEATHER_CONFIG.CITY}&appid=${WEATHER_CONFIG.API_KEY}&units=metric&lang=vi`;
+        
+        const response = await fetch(url, {
+            signal: controller.signal
+        });
+
+        clearTimeout(timeoutId);
+
+        if (!response.ok) {
+            throw new Error(`Forecast API Error: ${response.status}`);
+        }
+
+        const data = await response.json();
+        
+        // Cache forecast data
+        weatherCache.forecastData = data;
+        weatherCache.forecastTimestamp = Date.now();
+        
+        console.log('✅ Forecast data fetched');
+        return data;
+
+    } catch (error) {
+        console.error('❌ Forecast API Error:', error.message);
+        
+        // Return cached data or null
+        if (weatherCache.forecastData) {
+            console.log('🔄 Using stale cached forecast data');
+            return weatherCache.forecastData;
+        }
+        
+        return null;
+    }
+}
+
+/**
+ * Get hourly forecast for next 24 hours
+ */
+export function getHourlyForecast(forecastData) {
+    if (!forecastData || !forecastData.list) return [];
+    
+    const now = Date.now() / 1000;
+    const next24Hours = now + (24 * 60 * 60);
+    
+    return forecastData.list
+        .filter(item => item.dt >= now && item.dt <= next24Hours)
+        .map(item => ({
+            time: new Date(item.dt * 1000),
+            temp: Math.round(item.main.temp),
+            rain: item.rain ? item.rain['3h'] || 0 : 0,
+            humidity: item.main.humidity,
+            wind: item.wind.speed,
+            description: item.weather[0].description,
+            icon: item.weather[0].icon
+        }));
 }
 
 /**
