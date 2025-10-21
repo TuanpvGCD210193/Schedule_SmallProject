@@ -1071,6 +1071,12 @@
             box-shadow: var(--shadow-soft);
             z-index: 100;
             animation: slideInRight 0.6s ease-out;
+            /* iOS fixes */
+            -webkit-tap-highlight-color: rgba(255, 107, 157, 0.3);
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            user-select: none;
+            touch-action: manipulation;
         }
 
         @keyframes slideInRight {
@@ -1281,6 +1287,21 @@
             transform: scale(1.05);
         }
 
+        /* iOS touch fixes for all buttons */
+        button,
+        .notification-close,
+        .notification-item,
+        .reminder-manage-btn,
+        .recovery-btn,
+        .warning-close,
+        .info-close {
+            -webkit-tap-highlight-color: rgba(255, 107, 157, 0.3);
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            user-select: none;
+            touch-action: manipulation;
+        }
+
         /* Back Button */
         .back-button {
             position: fixed;
@@ -1301,6 +1322,12 @@
             box-shadow: var(--shadow-soft);
             z-index: 100;
             animation: slideInLeft 0.6s ease-out;
+            /* iOS fixes */
+            -webkit-tap-highlight-color: rgba(255, 107, 157, 0.3);
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            user-select: none;
+            touch-action: manipulation;
         }
 
         @keyframes slideInLeft {
@@ -3276,6 +3303,52 @@
             
             // Remove inline onclick to avoid conflict
             drinkButton.removeAttribute('onclick');
+        }
+
+        // iOS touch fix for notification bell
+        const notificationBell = document.getElementById('notificationBell');
+        if (notificationBell) {
+            // Add touchstart event for iOS
+            notificationBell.addEventListener('touchstart', function(e) {
+                // Prevent default to avoid 300ms delay
+                e.preventDefault();
+                // Trigger the toggle
+                toggleNotificationPanel();
+            }, { passive: false });
+            
+            // Also keep click event for desktop
+            notificationBell.addEventListener('click', function(e) {
+                // Only trigger if not from touch (to avoid double trigger)
+                if (e.pointerType !== 'touch') {
+                    toggleNotificationPanel();
+                }
+            });
+            
+            // Remove inline onclick to avoid conflict
+            notificationBell.removeAttribute('onclick');
+        }
+
+        // iOS touch fix for back button
+        const backButton = document.querySelector('.back-button');
+        if (backButton) {
+            // Add touchstart event for iOS
+            backButton.addEventListener('touchstart', function(e) {
+                // Prevent default to avoid 300ms delay
+                e.preventDefault();
+                // Trigger the navigation
+                goBackToFunctions();
+            }, { passive: false });
+            
+            // Also keep click event for desktop
+            backButton.addEventListener('click', function(e) {
+                // Only trigger if not from touch (to avoid double trigger)
+                if (e.pointerType !== 'touch') {
+                    goBackToFunctions();
+                }
+            });
+            
+            // Remove inline onclick to avoid conflict
+            backButton.removeAttribute('onclick');
         }
 
         // Make functions globally available
