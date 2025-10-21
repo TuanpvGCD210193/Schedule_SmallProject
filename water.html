@@ -397,6 +397,306 @@
             border: 2px solid rgba(255, 255, 255, 0.5);
         }
 
+        /* Recovery Status */
+        .recovery-status {
+            background: rgba(255, 193, 7, 0.2);
+            border-radius: 15px;
+            padding: 15px;
+            margin-top: 10px;
+            color: white;
+            font-weight: 600;
+            position: relative;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .recovery-icon {
+            font-size: 1.5rem;
+            margin-right: 10px;
+            animation: recoveryPulse 2s infinite ease-in-out;
+        }
+
+        @keyframes recoveryPulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+        }
+
+        .recovery-btn {
+            background: linear-gradient(135deg, #ffc107 0%, #ff8f00 100%);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(255, 193, 7, 0.3);
+        }
+
+        .recovery-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 193, 7, 0.4);
+        }
+
+        .recovery-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* Reminder Management */
+        .reminder-management {
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        .reminder-manage-btn {
+            background: linear-gradient(135deg, #8e44ad 0%, #9b59b6 100%);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 15px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin: 0 auto;
+            box-shadow: 0 4px 15px rgba(142, 68, 173, 0.3);
+        }
+
+        .reminder-manage-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(142, 68, 173, 0.4);
+        }
+
+        .reminder-manage-btn img {
+            width: 16px;
+            height: 16px;
+            object-fit: cover;
+        }
+
+        /* Reminder Modal */
+        .reminder-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 107, 157, 0.95);
+            backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 3000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.5s ease;
+        }
+
+        .reminder-modal.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .reminder-modal-content {
+            background: white;
+            border-radius: 24px;
+            padding: 30px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            box-shadow: 0 20px 60px rgba(255, 107, 157, 0.3);
+            transform: translateY(50px);
+            transition: transform 0.5s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .reminder-modal.show .reminder-modal-content {
+            transform: translateY(0);
+        }
+
+        .reminder-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light-pink);
+        }
+
+        .reminder-modal-title {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--primary-pink);
+            margin: 0;
+        }
+
+        .reminder-modal-close {
+            background: none;
+            border: none;
+            font-size: 2rem;
+            color: var(--text-light);
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .reminder-modal-close:hover {
+            color: var(--primary-pink);
+        }
+
+        .reminder-list {
+            max-height: 300px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+        }
+
+        .reminder-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px;
+            margin-bottom: 10px;
+            background: var(--light-pink);
+            border-radius: 15px;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .reminder-item:hover {
+            border-color: var(--primary-pink);
+            transform: translateY(-2px);
+        }
+
+        .reminder-time-input {
+            flex: 1;
+            padding: 8px 12px;
+            border: 2px solid var(--light-pink);
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-right: 10px;
+        }
+
+        .reminder-time-input:focus {
+            outline: none;
+            border-color: var(--primary-pink);
+        }
+
+        .reminder-label-input {
+            flex: 2;
+            padding: 8px 12px;
+            border: 2px solid var(--light-pink);
+            border-radius: 10px;
+            font-size: 1rem;
+            color: var(--text-dark);
+            margin-right: 10px;
+        }
+
+        .reminder-label-input:focus {
+            outline: none;
+            border-color: var(--primary-pink);
+        }
+
+        .reminder-delete-btn {
+            background: linear-gradient(135deg, #ff4757 0%, #ff3742 100%);
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .reminder-delete-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(255, 71, 87, 0.4);
+        }
+
+        .reminder-actions {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .reminder-add-btn, .reminder-reset-btn {
+            flex: 1;
+            padding: 12px 16px;
+            border: none;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .reminder-add-btn {
+            background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+            color: white;
+        }
+
+        .reminder-reset-btn {
+            background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+            color: white;
+        }
+
+        .reminder-add-btn:hover, .reminder-reset-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .reminder-modal-footer {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .reminder-save-btn, .reminder-cancel-btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 15px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .reminder-save-btn {
+            background: linear-gradient(135deg, var(--primary-pink) 0%, var(--accent-purple) 100%);
+            color: white;
+        }
+
+        .reminder-cancel-btn {
+            background: linear-gradient(135deg, #95a5a6 0%, #7f8c8d 100%);
+            color: white;
+        }
+
+        .reminder-save-btn:hover, .reminder-cancel-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
         .freeze-icon {
             font-size: 1.5rem;
             margin-right: 10px;
@@ -652,6 +952,27 @@
 
         .reminder-item.current .reminder-status {
             color: var(--white);
+        }
+
+        .reminder-item.missed {
+            background: linear-gradient(135deg, #ff4757 0%, #ff3742 100%);
+            color: var(--white);
+            border-color: #ff3742;
+            animation: missedPulse 2s infinite ease-in-out;
+        }
+
+        @keyframes missedPulse {
+            0%, 100% {
+                box-shadow: 0 0 10px rgba(255, 71, 87, 0.3);
+            }
+            50% {
+                box-shadow: 0 0 20px rgba(255, 71, 87, 0.6);
+            }
+        }
+
+        .reminder-item.missed .reminder-status {
+            color: var(--white);
+            font-weight: 700;
         }
 
         /* Drink Button */
@@ -1232,6 +1553,150 @@
                 font-size: 0.9rem;
             }
         }
+
+        /* Info Modal Styles */
+        .info-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 3000;
+            animation: infoFadeIn 0.3s ease-out;
+        }
+
+        @keyframes infoFadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .info-content {
+            background: linear-gradient(135deg, #007aff 0%, #5ac8fa 50%, #34c759 100%);
+            color: white;
+            border-radius: 25px;
+            padding: 40px;
+            text-align: center;
+            max-width: 500px;
+            box-shadow: 0 25px 80px rgba(0, 122, 255, 0.4);
+            animation: infoSlideIn 0.3s ease-out;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .info-content::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+            animation: infoShine 2s infinite ease-in-out;
+        }
+
+        @keyframes infoShine {
+            0%, 100% {
+                transform: rotate(0deg);
+                opacity: 0.3;
+            }
+            50% {
+                transform: rotate(180deg);
+                opacity: 0.1;
+            }
+        }
+
+        @keyframes infoSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(50px) scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .info-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            animation: infoBounce 2s infinite ease-in-out;
+        }
+
+        @keyframes infoBounce {
+            0%, 100% {
+                transform: translateY(0) scale(1);
+            }
+            50% {
+                transform: translateY(-10px) scale(1.1);
+            }
+        }
+
+        .info-message {
+            font-size: 1.4rem;
+            font-weight: 800;
+            margin-bottom: 15px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            position: relative;
+            z-index: 1;
+        }
+
+        .info-details {
+            font-size: 1rem;
+            margin-bottom: 25px;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+
+        .info-close {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 1;
+            backdrop-filter: blur(10px);
+        }
+
+        .info-close:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 8px 25px rgba(255, 255, 255, 0.2);
+        }
+
+        .info-close:active {
+            transform: translateY(0) scale(0.98);
+        }
+
+        @media (max-width: 768px) {
+            .info-content {
+                padding: 30px 20px;
+                margin: 20px;
+            }
+
+            .info-message {
+                font-size: 1.2rem;
+            }
+
+            .info-details {
+                font-size: 0.9rem;
+            }
+        }
     </style>
 </head>
 <body>
@@ -1296,6 +1761,23 @@
                     <span class="freeze-icon">❄️</span>
                     <span id="freezeText">Streak đang hoạt động</span>
                 </div>
+                
+                <!-- Recovery Status -->
+                <div class="recovery-status" id="recoveryStatus">
+                    <span class="recovery-icon">🔄</span>
+                    <span id="recoveryText">Khôi phục: 3/3</span>
+                    <button class="recovery-btn" id="recoveryBtn" onclick="recoverStreak()" style="display: none;">
+                        Khôi phục chuỗi
+                    </button>
+                </div>
+                
+                <!-- Reminder Management -->
+                <div class="reminder-management">
+                    <button class="reminder-manage-btn" id="reminderManageBtn" onclick="openReminderManagement()">
+                        <img src="assets/icon/panda.png" alt="Manage" style="width: 16px; height: 16px;">
+                        Quản lý nhắc nhở
+                    </button>
+                </div>
             </div>
 
             <!-- Water Progress -->
@@ -1349,6 +1831,44 @@
         </div>
     </div>
 
+    <!-- Reminder Management Modal -->
+    <div class="reminder-modal" id="reminderModal">
+        <div class="reminder-modal-content">
+            <div class="reminder-modal-header">
+                <h2 class="reminder-modal-title">⏰ Quản Lý Nhắc Nhở</h2>
+                <button class="reminder-modal-close" onclick="closeReminderManagement()">×</button>
+            </div>
+            
+            <div class="reminder-modal-body">
+                <div class="reminder-list" id="reminderList">
+                    <!-- Reminder times will be loaded here -->
+                </div>
+                
+                <div class="reminder-actions">
+                    <button class="reminder-add-btn" onclick="addReminderTime()">
+                        <img src="assets/icon/kitty.png" alt="Add" style="width: 16px; height: 16px;">
+                        Thêm nhắc nhở
+                    </button>
+                    <button class="reminder-reset-btn" onclick="resetReminderTimes()">
+                        <img src="assets/icon/volleyball.png" alt="Reset" style="width: 16px; height: 16px;">
+                        Đặt lại mặc định
+                    </button>
+                </div>
+            </div>
+            
+            <div class="reminder-modal-footer">
+                <button class="reminder-save-btn" onclick="saveReminderChanges()">
+                    <img src="assets/icon/lovely.png" alt="Save" style="width: 16px; height: 16px;">
+                    Lưu thay đổi
+                </button>
+                <button class="reminder-cancel-btn" onclick="closeReminderManagement()">
+                    <img src="assets/icon/shot.png" alt="Cancel" style="width: 16px; height: 16px;">
+                    Hủy
+                </button>
+            </div>
+        </div>
+    </div>
+
     <script type="module">
         // Get user from URL
         const urlParams = new URLSearchParams(window.location.search);
@@ -1362,6 +1882,13 @@
         let completedGlasses = 0;
         let totalGlasses = 8;
         let notifications = [];
+        let reminderStatus = {}; // Track reminder status for each time slot
+        let lastFreezeUpdate = new Date().toDateString(); // Track last freeze update date
+        
+        // Streak recovery system
+        let streakRecoveryCount = 3; // 3 recoveries per week
+        let lastRecoveryReset = new Date().toDateString();
+        let weeklyRecoveryUsed = 0;
         let reminderTimes = [
             { time: '06:00', label: '6:00 Sáng' },
             { time: '08:00', label: '8:00 Sáng' },
@@ -1389,6 +1916,7 @@
         let maxClicksPerSession = 10; // Maximum clicks per session
         let sessionClicks = 0;
         let windowStreaks = {}; // Track streaks per 2-hour window
+        let lastStreakDate = new Date().toDateString(); // Track last streak date
 
         // Funny warning messages array
         const funnyWarnings = {
@@ -1528,42 +2056,42 @@
             
             // New warning types for 2-hour window logic
             timeRestriction: [
-                "Em ơi, chỉ được uống trong khung giờ 6h-22h thôi! ⏰",
-                "Anh thấy em đang cố gắng uống ngoài giờ! 😅",
-                "Em ơi, chờ đến khung giờ tiếp theo nhé! ⏳",
-                "Anh biết em muốn uống nước nhưng chưa đến giờ! 🌅",
+                "Em ơi, uống ngoài khung giờ streak thì không được tính streak đâu! ⏰",
+                "Anh thấy em uống ngoài giờ streak rồi! 😅",
+                "Em ơi, uống ngoài khung giờ thì không có streak nhé! ⏳",
+                "Anh biết em muốn uống nước nhưng ngoài giờ streak! 🌅",
                 "Em nghĩ anh không biết em đang làm gì à? 🤔",
                 "Anh đã lập trình để chống em rồi! 🛡️",
                 "Em ơi, anh thấy em đang cố gắng hack rồi! 💻",
                 "Anh thương em nên mới set khung giờ đấy! 💝",
-                "Too early or too late, sweetie! Wait for the right time! ⏰",
+                "Outside streak time, sweetie! No streak earned! ⏰",
                 "Anh đã tính toán kỹ rồi, em không thể cheat được! 📊"
             ],
             
             tooEarly: [
-                "Em ơi, chờ 40 phút nữa mới được uống lần 2! ⏰",
-                "Anh thấy em đang vội vàng! Chờ một chút nhé! 😅",
-                "Em ơi, patience is key! Chờ 40 phút nữa! ⏳",
-                "Anh biết em muốn uống nước nhưng chưa đủ thời gian! 💧",
-                "Em nghĩ anh không biết em đang làm gì à? 🤔",
-                "Anh đã lập trình để chống em rồi! 🛡️",
-                "Em ơi, anh thấy em đang cố gắng hack rồi! 💻",
-                "Anh thương em nên mới set thời gian đấy! 💝",
-                "Too soon, little one! Wait 40 minutes! ⏰",
-                "Anh đã tính toán kỹ rồi, em không thể cheat được! 📊"
+                "Em ơi, chờ 40 phút nữa mới được streak lần 2! ⏰ (Vẫn tính nước nhé!)",
+                "Anh thấy em đang vội vàng! Chờ một chút nhé! 😅 (Nước vẫn được tính!)",
+                "Em ơi, patience is key! Chờ 40 phút nữa! ⏳ (Uống nước vẫn OK!)",
+                "Anh biết em muốn streak nhưng chưa đủ thời gian! 💧 (Nước vẫn được tính!)",
+                "Em nghĩ anh không biết em đang làm gì à? 🤔 (Nước vẫn được tính!)",
+                "Anh đã lập trình để chống em rồi! 🛡️ (Nhưng nước vẫn được tính!)",
+                "Em ơi, anh thấy em đang cố gắng hack rồi! 💻 (Nước vẫn được tính!)",
+                "Anh thương em nên mới set thời gian đấy! 💝 (Nước vẫn được tính!)",
+                "Too soon for streak, little one! Wait 40 minutes! ⏰ (Water still counts!)",
+                "Anh đã tính toán kỹ rồi, em không thể cheat được! 📊 (Nước vẫn được tính!)"
             ],
             
             tooManyInWindow: [
-                "Em ơi, trong 1 khung 2h chỉ được uống 2 lần thôi! 🚫",
-                "Anh thấy em đang cố gắng hack rồi! 💻",
-                "Em ơi, chờ khung giờ tiếp theo nhé! ⏰",
-                "Anh biết em thích uống nước nhưng đã đủ rồi! 💧",
-                "Em nghĩ anh không biết em đang làm gì à? 🤔",
-                "Anh đã lập trình để chống em rồi! 🛡️",
-                "Em ơi, anh thấy em đang cố gắng spam rồi! 🔄",
-                "Anh thương em nên mới set limit đấy! 💝",
-                "Too many drinks, water lover! Wait for next window! ⏰",
-                "Anh đã tính toán kỹ rồi, em không thể cheat được! 📊"
+                "Em ơi, trong 1 khung 2h chỉ được streak 2 lần thôi! 🚫 (Nước vẫn được tính!)",
+                "Anh thấy em đang cố gắng hack rồi! 💻 (Nước vẫn được tính!)",
+                "Em ơi, chờ khung giờ tiếp theo nhé! ⏰ (Nước vẫn được tính!)",
+                "Anh biết em thích uống nước nhưng đã đủ rồi! 💧 (Nước vẫn được tính!)",
+                "Em nghĩ anh không biết em đang làm gì à? 🤔 (Nước vẫn được tính!)",
+                "Anh đã lập trình để chống em rồi! 🛡️ (Nước vẫn được tính!)",
+                "Em ơi, anh thấy em đang cố gắng spam rồi! 🔄 (Nước vẫn được tính!)",
+                "Anh thương em nên mới set limit đấy! 💝 (Nước vẫn được tính!)",
+                "Too many drinks, water lover! Wait for next window! ⏰ (Water still counts!)",
+                "Anh đã tính toán kỹ rồi, em không thể cheat được! 📊 (Nước vẫn được tính!)"
             ]
         };
 
@@ -1572,11 +2100,51 @@
             console.log('🚀 Initializing water reminder app...');
             loadUserProfile();
             loadWaterData();
+            updateDailyFreeze();
+            updateWeeklyRecovery();
             setupReminderSchedule();
             setupNotificationSystem();
             setupAntiCheatSystem();
             console.log('✅ Initialization complete');
         });
+
+        // Update daily freeze count
+        function updateDailyFreeze() {
+            const today = new Date().toDateString();
+            
+            if (lastFreezeUpdate !== today) {
+                // New day - add 2 freeze, max 4
+                freezeCount = Math.min(freezeCount + 2, 4);
+                lastFreezeUpdate = today;
+                
+                // Reset reminder status for new day
+                reminderStatus = {};
+                
+                console.log(`🔄 New day - freeze count updated to ${freezeCount}`);
+                
+                // Save updated data
+                saveWaterData();
+            }
+        }
+
+        // Update weekly recovery count
+        function updateWeeklyRecovery() {
+            const today = new Date();
+            const startOfWeek = new Date(today.setDate(today.getDate() - today.getDay()));
+            const startOfWeekString = startOfWeek.toDateString();
+            
+            if (lastRecoveryReset !== startOfWeekString) {
+                // New week - reset recovery count
+                streakRecoveryCount = 3;
+                weeklyRecoveryUsed = 0;
+                lastRecoveryReset = startOfWeekString;
+                
+                console.log(`🔄 New week - recovery count reset to ${streakRecoveryCount}`);
+                
+                // Save updated data
+                saveWaterData();
+            }
+        }
 
         // Load user profile
         function loadUserProfile() {
@@ -1603,7 +2171,17 @@
                     freezeExpires = data.freeze_expires || null;
                     completedGlasses = data.completed_glasses || 0;
                     totalGlasses = data.total_glasses || 8;
+                    lastStreakDate = data.last_streak_date || new Date().toDateString();
+                    windowStreaks = data.window_streaks || {};
+                    reminderStatus = data.reminder_status || {};
+                    lastFreezeUpdate = data.last_freeze_update || new Date().toDateString();
+                    streakRecoveryCount = data.streak_recovery_count || 3;
+                    lastRecoveryReset = data.last_recovery_reset || new Date().toDateString();
+                    weeklyRecoveryUsed = data.weekly_recovery_used || 0;
                 }
+                
+                // Load reminder times
+                await loadReminderTimes();
                 
                 updateStreakDisplay();
                 updateWaterProgress();
@@ -1626,11 +2204,92 @@
                 freezeExpires = data.freeze_expires || null;
                 completedGlasses = data.completed_glasses || 0;
                 totalGlasses = data.total_glasses || 8;
+                lastStreakDate = data.last_streak_date || new Date().toDateString();
+                windowStreaks = data.window_streaks || {};
+                reminderStatus = data.reminder_status || {};
+                lastFreezeUpdate = data.last_freeze_update || new Date().toDateString();
+                streakRecoveryCount = data.streak_recovery_count || 3;
+                lastRecoveryReset = data.last_recovery_reset || new Date().toDateString();
+                weeklyRecoveryUsed = data.weekly_recovery_used || 0;
                 console.log('📥 Loaded from localStorage');
             }
+            
+            // Load reminder times from localStorage
+            loadReminderTimesFromLocalStorage();
+            
             updateStreakDisplay();
             updateWaterProgress();
             updateNotificationBadge();
+        }
+
+        // Load reminder times from Firebase
+        async function loadReminderTimes() {
+            try {
+                console.log('📥 Loading reminder times from Firebase...');
+                const response = await fetch(`https://unisched-app-11368-default-rtdb.asia-southeast1.firebasedatabase.app/users/${currentUser}/reminder_times.json`);
+                const data = await response.json();
+                
+                if (data && Array.isArray(data) && data.length > 0) {
+                    reminderTimes = data;
+                    console.log('✅ Reminder times loaded from Firebase:', reminderTimes.length);
+                } else {
+                    // If no data in Firebase, save default reminder times
+                    await saveReminderTimes();
+                    console.log('📝 Saved default reminder times to Firebase');
+                }
+                
+                // Update reminder schedule with new times
+                setupReminderSchedule();
+                
+            } catch (error) {
+                console.error('❌ Error loading reminder times:', error);
+                loadReminderTimesFromLocalStorage();
+            }
+        }
+
+        // Load reminder times from localStorage fallback
+        function loadReminderTimesFromLocalStorage() {
+            const storedReminderTimes = localStorage.getItem('reminder_times_' + currentUser);
+            if (storedReminderTimes) {
+                reminderTimes = JSON.parse(storedReminderTimes);
+                console.log('📥 Reminder times loaded from localStorage:', reminderTimes.length);
+            } else {
+                // Use default reminder times
+                console.log('📝 Using default reminder times');
+            }
+            
+            // Update reminder schedule
+            setupReminderSchedule();
+        }
+
+        // Save reminder times to Firebase
+        async function saveReminderTimes() {
+            try {
+                const response = await fetch(`https://unisched-app-11368-default-rtdb.asia-southeast1.firebasedatabase.app/users/${currentUser}/reminder_times.json`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(reminderTimes)
+                });
+                
+                if (response.ok) {
+                    console.log('✅ Reminder times saved to Firebase');
+                    return true;
+                } else {
+                    throw new Error('Failed to save reminder times to Firebase');
+                }
+            } catch (error) {
+                console.error('❌ Error saving reminder times:', error);
+                saveReminderTimesToLocalStorage();
+                return false;
+            }
+        }
+
+        // Save reminder times to localStorage fallback
+        function saveReminderTimesToLocalStorage() {
+            localStorage.setItem('reminder_times_' + currentUser, JSON.stringify(reminderTimes));
+            console.log('💾 Reminder times saved to localStorage');
         }
 
         // Update streak display
@@ -1654,6 +2313,19 @@
                 streakContainer.classList.remove('frozen');
                 freezeStatus.classList.remove('frozen');
                 freezeText.textContent = `Streak đang hoạt động (Còn ${freezeCount} lần đóng băng)`;
+            }
+            
+            // Update recovery status
+            const recoveryText = document.getElementById('recoveryText');
+            const recoveryBtn = document.getElementById('recoveryBtn');
+            
+            recoveryText.textContent = `Khôi phục: ${streakRecoveryCount}/3`;
+            
+            // Show recovery button only if streak is 0 and recovery is available
+            if (currentStreak === 0 && streakRecoveryCount > 0) {
+                recoveryBtn.style.display = 'block';
+            } else {
+                recoveryBtn.style.display = 'none';
             }
         }
 
@@ -1710,16 +2382,130 @@
             const currentTimeString = `${currentHour.toString().padStart(2, '0')}:${currentMinute.toString().padStart(2, '0')}`;
             
             reminderList.innerHTML = reminderTimes.map(reminder => {
-                const isCompleted = completedGlasses > 0; // Simplified logic
+                const reminderKey = reminder.time;
+                const reminderData = reminderStatus[reminderKey] || { status: 'pending', completed: false, missed: false };
+                
+                // Check if reminder time has passed
+                const reminderHour = parseInt(reminder.time.split(':')[0]);
+                const reminderMinute = parseInt(reminder.time.split(':')[1]);
+                const reminderDateTime = new Date();
+                reminderDateTime.setHours(reminderHour, reminderMinute, 0, 0);
+                
+                const isPastTime = currentTime > reminderDateTime;
                 const isCurrent = reminder.time === currentTimeString;
                 
+                let statusText = '';
+                let statusClass = '';
+                
+                if (reminderData.completed) {
+                    statusText = '✅ Đã uống';
+                    statusClass = 'completed';
+                } else if (reminderData.missed) {
+                    statusText = '❌ Đã bỏ lỡ';
+                    statusClass = 'missed';
+                } else if (isCurrent) {
+                    statusText = '⏰ Đang nhắc';
+                    statusClass = 'current';
+                } else if (isPastTime) {
+                    // Mark as missed if time has passed and not completed
+                    if (!reminderData.missed) {
+                        markReminderAsMissed(reminderKey);
+                    }
+                    statusText = '❌ Đã bỏ lỡ';
+                    statusClass = 'missed';
+                } else {
+                    statusText = '⏳ Chờ';
+                    statusClass = 'pending';
+                }
+                
                 return `
-                    <div class="reminder-item ${isCompleted ? 'completed' : ''} ${isCurrent ? 'current' : ''}">
+                    <div class="reminder-item ${statusClass}">
                         <div class="reminder-time">${reminder.label}</div>
-                        <div class="reminder-status">${isCompleted ? '✅ Đã uống' : isCurrent ? '⏰ Đang nhắc' : '⏳ Chờ'}</div>
+                        <div class="reminder-status">${statusText}</div>
                     </div>
                 `;
             }).join('');
+        }
+
+        // Mark reminder as missed and deduct freeze
+        function markReminderAsMissed(reminderKey) {
+            if (!reminderStatus[reminderKey] || !reminderStatus[reminderKey].missed) {
+                reminderStatus[reminderKey] = {
+                    status: 'missed',
+                    completed: false,
+                    missed: true,
+                    missedAt: new Date().toISOString()
+                };
+                
+                // Deduct 1 freeze if available
+                if (freezeCount > 0) {
+                    freezeCount--;
+                    console.log(`❌ Reminder ${reminderKey} missed - freeze deducted. Remaining: ${freezeCount}`);
+                    
+                    // Show notification
+                    createNotification(
+                        'Đã bỏ lỡ nhắc nhở! ❌', 
+                        `Bạn đã bỏ lỡ nhắc nhở uống nước lúc ${reminderKey}. Đã trừ 1 freeze. Còn lại: ${freezeCount} freeze.`
+                    );
+                } else {
+                    console.log(`❌ Reminder ${reminderKey} missed - no freeze available`);
+                    
+                    // Check if streak should be lost
+                    if (currentStreak > 0) {
+                        currentStreak = 0;
+                        console.log(`💔 Streak lost due to missed reminder without freeze`);
+                        
+                        // Show notification about streak loss
+                        createNotification(
+                            'Chuỗi bị mất! 💔', 
+                            `Bạn đã bỏ lỡ nhắc nhở uống nước lúc ${reminderKey} và không còn freeze. Chuỗi đã bị mất! Bạn có thể khôi phục chuỗi ${streakRecoveryCount} lần trong tuần này.`
+                        );
+                    } else {
+                        // Show notification
+                        createNotification(
+                            'Đã bỏ lỡ nhắc nhở! ❌', 
+                            `Bạn đã bỏ lỡ nhắc nhở uống nước lúc ${reminderKey}. Không còn freeze để trừ!`
+                        );
+                    }
+                }
+                
+                // Save data
+                saveWaterData();
+            }
+        }
+
+        // Recover streak function
+        function recoverStreak() {
+            if (streakRecoveryCount > 0 && weeklyRecoveryUsed < 3) {
+                const previousStreak = currentStreak;
+                currentStreak = Math.max(currentStreak, 1); // At least 1 streak
+                weeklyRecoveryUsed++;
+                streakRecoveryCount--;
+                
+                console.log(`🔄 Streak recovered! Previous: ${previousStreak}, New: ${currentStreak}`);
+                
+                // Show notification
+                createNotification(
+                    'Chuỗi đã được khôi phục! 🔄', 
+                    `Chuỗi của bạn đã được khôi phục! Còn lại ${streakRecoveryCount} lần khôi phục trong tuần này.`
+                );
+                
+                // Update UI
+                updateStreakDisplay();
+                
+                // Save data
+                saveWaterData();
+                
+                return true;
+            } else {
+                // Show notification
+                createNotification(
+                    'Không thể khôi phục chuỗi! ❌', 
+                    `Bạn đã sử dụng hết ${weeklyRecoveryUsed}/3 lần khôi phục chuỗi trong tuần này. Hãy đợi tuần sau!`
+                );
+                
+                return false;
+            }
         }
 
         // Setup notification systemUniSchedule
@@ -1874,6 +2660,31 @@
             // This allows users to read and enjoy the funny messages!
         }
 
+        function showInfoMessage(type) {
+            const message = getRandomWarning(type);
+            const infoModal = document.createElement('div');
+            infoModal.className = 'info-modal';
+            infoModal.innerHTML = `
+                <div class="info-content">
+                    <div class="info-icon">
+                        ℹ️
+                    </div>
+                    <div class="info-message">${message}</div>
+                    <div class="info-details">Uống nước vẫn được tính nhưng không có streak nhé! 💧</div>
+                    <button class="info-close" onclick="closeInfo()">Đã hiểu rồiiiii! 😊</button>
+                </div>
+            `;
+            
+            document.body.appendChild(infoModal);
+            
+            // Auto close after 3 seconds
+            setTimeout(() => {
+                if (infoModal.parentNode) {
+                    infoModal.remove();
+                }
+            }, 3000);
+        }
+
         function getWarningIcon(type) {
             switch(type) {
                 case 'early': return '😴';
@@ -1911,6 +2722,13 @@
             }
         }
 
+        function closeInfo() {
+            const infoModal = document.querySelector('.info-modal');
+            if (infoModal) {
+                infoModal.remove();
+            }
+        }
+
         // Show streak message
         function showStreakMessage() {
             const streakModal = document.createElement('div');
@@ -1930,7 +2748,7 @@
             }, 2000);
         }
 
-        // Enhanced drink water function with anti-cheat
+        // Enhanced drink water function with improved anti-cheat logic
         async function drinkWater() {
             const now = Date.now();
             const currentTime = new Date();
@@ -1941,13 +2759,13 @@
             clickCount++;
             sessionClicks++;
             
-            // Check if too many clicks
+            // Check if too many clicks in session
             if (sessionClicks > maxClicksPerSession) {
                 showWarning('tooManyClicks');
                 return;
             }
             
-            // Check click cooldown
+            // Check click cooldown (prevent spam clicking)
             if (now - lastClickTime < clickCooldown) {
                 showWarning('clickTooFast');
                 return;
@@ -1955,25 +2773,32 @@
             
             lastClickTime = now;
             
-            // Reset counters
+            // Reset hourly counters
             if (currentHourNow !== currentHour) {
                 drinksThisHour = 0;
                 currentHour = currentHourNow;
             }
             
+            // Reset 2-hour counters
             if (currentTwoHourNow !== currentTwoHour) {
                 drinksThisTwoHour = 0;
                 streakEarnedThisTwoHour = false;
                 currentTwoHour = currentTwoHourNow;
             }
             
-            // Check if already completed today
+            // Check if already completed daily goal
             if (completedGlasses >= totalGlasses) {
                 showWarning('completed');
                 return;
             }
             
-            // Check time validation (basic check - detailed check in processDrink)
+            // Check streak freeze status
+            if (streakFrozen) {
+                showWarning('frozen');
+                return;
+            }
+            
+            // Check time validation - only allow drinking between 6 AM and 10 PM
             if (currentHourNow < 6) {
                 showWarning('early');
                 return; // Không tính uống nước
@@ -1984,19 +2809,13 @@
                 return; // Không tính uống nước
             }
             
-            // Check 1-hour limit (basic check - detailed check in processDrink)
+            // Check 1-hour limit - max 2 drinks per hour
             if (drinksThisHour >= 2) {
                 showWarning('cheat');
                 return; // Không tính uống nước
             }
             
-            // Check streak freeze
-            if (streakFrozen) {
-                showWarning('frozen');
-                return; // Không tính uống nước
-            }
-            
-            // All checks passed - proceed with drinking
+            // All basic checks passed - proceed with detailed processing
             await processDrink();
         }
 
@@ -2005,30 +2824,92 @@
             const currentTime = new Date();
             const currentHour = currentTime.getHours();
             
-            // Check if current time is within streak windows (6h, 8h, 10h, 12h, 14h, 16h, 18h, 20h, 22h)
+            // Define streak windows (exact hours when streak can be earned)
             const streakWindows = [6, 8, 10, 12, 14, 16, 18, 20, 22];
             const isInStreakWindow = streakWindows.includes(currentHour);
             
-            if (!isInStreakWindow) {
-                // Outside streak windows - no drink counted, no streak
-                showWarning('timeRestriction');
-                return; // Không tính uống nước
+            // Mark current reminder as completed regardless of streak window
+            // Find the closest reminder time slot (within 1 hour)
+            const currentTimeString = `${currentTime.getHours().toString().padStart(2, '0')}:00`;
+            const currentReminder = reminderTimes.find(reminder => reminder.time === currentTimeString);
+            
+            if (currentReminder) {
+                reminderStatus[currentReminder.time] = {
+                    status: 'completed',
+                    completed: true,
+                    missed: false,
+                    completedAt: new Date().toISOString()
+                };
+                console.log(`✅ Marked reminder ${currentReminder.time} as completed`);
+            } else {
+                // If no exact match, find the closest reminder time
+                const currentHour = currentTime.getHours();
+                const closestReminder = reminderTimes.find(reminder => {
+                    const reminderHour = parseInt(reminder.time.split(':')[0]);
+                    return Math.abs(reminderHour - currentHour) <= 1;
+                });
+                
+                if (closestReminder) {
+                    reminderStatus[closestReminder.time] = {
+                        status: 'completed',
+                        completed: true,
+                        missed: false,
+                        completedAt: new Date().toISOString()
+                    };
+                    console.log(`✅ Marked closest reminder ${closestReminder.time} as completed`);
+                }
             }
             
-            // Check if this is the first drink in this 2-hour window
-            const windowKey = `${Math.floor(currentHour / 2) * 2}h-${Math.floor(currentHour / 2) * 2 + 2}h`;
+            // If not in streak window, still allow drinking but no streak earned
+            if (!isInStreakWindow) {
+                // Outside streak windows - drink counted but no streak
+                completedGlasses++;
+                lastDrinkTime = now;
+                drinksThisHour++;
+                
+                // Update display
+                updateWaterProgress();
+                setupReminderSchedule();
+                
+                // Save to Firebase
+                await saveWaterData();
+                
+                // Show info message instead of warning
+                showInfoMessage('timeRestriction');
+                
+                // Show celebration
+                showCelebration();
+                
+                console.log('✅ Water consumed (outside streak window - no streak earned)');
+                return;
+            }
             
-            if (!windowStreaks[windowKey]) {
+            // Get current 2-hour window
+            const windowStart = Math.floor(currentHour / 2) * 2;
+            const windowKey = `${windowStart}h-${windowStart + 2}h`;
+            
+            // Check if this is a new day - reset window streaks
+            const today = currentTime.toDateString();
+            if (lastStreakDate !== today) {
+                windowStreaks = {};
+                lastStreakDate = today;
+                console.log('🔄 New day - resetting window streaks');
+            }
+            
+            // Check if this is a new window - reset window data
+            if (!windowStreaks[windowKey] || windowStreaks[windowKey].date !== today) {
                 windowStreaks[windowKey] = {
                     firstDrink: now,
                     drinkCount: 0,
-                    streakEarned: false
+                    streakEarned: false,
+                    date: today
                 };
+                console.log(`🆕 New window: ${windowKey}`);
             }
             
             windowStreaks[windowKey].drinkCount++;
             
-            // Only count first 2 drinks in each window
+            // Process drinks within 2-hour window
             if (windowStreaks[windowKey].drinkCount <= 2) {
                 // First drink in window = +1 Streak + +1 Glass
                 if (windowStreaks[windowKey].drinkCount === 1) {
@@ -2036,6 +2917,7 @@
                     completedGlasses++;
                     windowStreaks[windowKey].streakEarned = true;
                     showStreakMessage();
+                    console.log(`✅ First drink in ${windowKey}: +1 Streak, +1 Glass`);
                 }
                 // Second drink after 40 minutes = +1 Streak + +1 Glass
                 else if (windowStreaks[windowKey].drinkCount === 2 && 
@@ -2043,16 +2925,20 @@
                     currentStreak++;
                     completedGlasses++;
                     showStreakMessage();
+                    console.log(`✅ Second drink in ${windowKey} (after 40min): +1 Streak, +1 Glass`);
                 }
-                // Second drink before 40 minutes = No streak, no glass
+                // Second drink before 40 minutes = Warning but still count as water
                 else if (windowStreaks[windowKey].drinkCount === 2) {
+                    // Still count as water but no streak
+                    completedGlasses++;
                     showWarning('tooEarly');
-                    return; // Không tính uống nước
+                    console.log(`⚠️ Second drink in ${windowKey} too early (before 40min) - counted as water only`);
                 }
             } else {
-                // More than 2 drinks in same window = No streak, no glass
+                // More than 2 drinks in same window = Warning but still count as water
+                completedGlasses++;
                 showWarning('tooManyInWindow');
-                return; // Không tính uống nước
+                console.log(`⚠️ Too many drinks in ${windowKey} (${windowStreaks[windowKey].drinkCount} drinks) - counted as water only`);
             }
             
             // Update tracking variables
@@ -2109,6 +2995,13 @@
                     freeze_expires: freezeExpires,
                     completed_glasses: completedGlasses,
                     total_glasses: totalGlasses,
+                    last_streak_date: lastStreakDate,
+                    window_streaks: windowStreaks,
+                    reminder_status: reminderStatus,
+                    last_freeze_update: lastFreezeUpdate,
+                    streak_recovery_count: streakRecoveryCount,
+                    last_recovery_reset: lastRecoveryReset,
+                    weekly_recovery_used: weeklyRecoveryUsed,
                     last_drink: new Date().toISOString(),
                     last_updated: new Date().toISOString()
                 };
@@ -2137,6 +3030,13 @@
                 freeze_expires: freezeExpires,
                 completed_glasses: completedGlasses,
                 total_glasses: totalGlasses,
+                last_streak_date: lastStreakDate,
+                window_streaks: windowStreaks,
+                reminder_status: reminderStatus,
+                last_freeze_update: lastFreezeUpdate,
+                streak_recovery_count: streakRecoveryCount,
+                last_recovery_reset: lastRecoveryReset,
+                weekly_recovery_used: weeklyRecoveryUsed,
                 last_drink: new Date().toISOString(),
                 last_updated: new Date().toISOString()
             };
@@ -2154,6 +3054,132 @@
             Notification.requestPermission();
         }
 
+        // Reminder Management Functions
+        function openReminderManagement() {
+            const modal = document.getElementById('reminderModal');
+            modal.classList.add('show');
+            document.body.style.overflow = 'hidden';
+            loadReminderList();
+        }
+
+        function closeReminderManagement() {
+            const modal = document.getElementById('reminderModal');
+            modal.classList.remove('show');
+            document.body.style.overflow = 'auto';
+        }
+
+        function loadReminderList() {
+            const reminderList = document.getElementById('reminderList');
+            
+            if (reminderTimes.length === 0) {
+                reminderList.innerHTML = '<div style="text-align: center; padding: 20px; color: var(--text-light);">Chưa có nhắc nhở nào</div>';
+                return;
+            }
+
+            reminderList.innerHTML = reminderTimes.map((reminder, index) => `
+                <div class="reminder-item">
+                    <input type="time" class="reminder-time-input" value="${reminder.time}" data-index="${index}">
+                    <input type="text" class="reminder-label-input" value="${reminder.label}" data-index="${index}" placeholder="Nhãn nhắc nhở">
+                    <button class="reminder-delete-btn" onclick="deleteReminderTime(${index})">
+                        <img src="assets/icon/volleyball.png" alt="Delete" style="width: 12px; height: 12px;">
+                        Xóa
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        function addReminderTime() {
+            const newReminder = {
+                time: '12:00',
+                label: 'Nhắc nhở mới'
+            };
+            reminderTimes.push(newReminder);
+            loadReminderList();
+        }
+
+        function deleteReminderTime(index) {
+            if (reminderTimes.length > 1) {
+                reminderTimes.splice(index, 1);
+                loadReminderList();
+            } else {
+                alert('Phải có ít nhất 1 nhắc nhở!');
+            }
+        }
+
+        function resetReminderTimes() {
+            if (confirm('Bạn có chắc muốn đặt lại nhắc nhở về mặc định?')) {
+                reminderTimes = [
+                    { time: '06:00', label: '6:00 Sáng' },
+                    { time: '08:00', label: '8:00 Sáng' },
+                    { time: '10:00', label: '10:00 Sáng' },
+                    { time: '12:00', label: '12:00 Trưa' },
+                    { time: '14:00', label: '2:00 Chiều' },
+                    { time: '16:00', label: '4:00 Chiều' },
+                    { time: '18:00', label: '6:00 Tối' },
+                    { time: '20:00', label: '8:00 Tối' },
+                    { time: '22:00', label: '10:00 Tối' }
+                ];
+                loadReminderList();
+            }
+        }
+
+        async function saveReminderChanges() {
+            // Update reminder times from inputs
+            const timeInputs = document.querySelectorAll('.reminder-time-input');
+            const labelInputs = document.querySelectorAll('.reminder-label-input');
+            
+            timeInputs.forEach((input, index) => {
+                if (reminderTimes[index]) {
+                    reminderTimes[index].time = input.value;
+                }
+            });
+            
+            labelInputs.forEach((input, index) => {
+                if (reminderTimes[index]) {
+                    reminderTimes[index].label = input.value;
+                }
+            });
+
+            // Sort by time
+            reminderTimes.sort((a, b) => a.time.localeCompare(b.time));
+
+            // Save to Firebase
+            const success = await saveReminderTimes();
+            
+            if (success) {
+                // Update reminder schedule
+                setupReminderSchedule();
+                
+                // Show success message
+                createNotification(
+                    'Lưu thành công! ✅',
+                    'Các thay đổi nhắc nhở đã được lưu thành công!'
+                );
+                
+                closeReminderManagement();
+            } else {
+                alert('Lỗi khi lưu thay đổi! Vui lòng thử lại.');
+            }
+        }
+
+        // Close modal when clicking outside
+        document.addEventListener('click', function(e) {
+            const modal = document.getElementById('reminderModal');
+            if (e.target === modal) {
+                closeReminderManagement();
+            }
+        });
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                const modal = document.getElementById('reminderModal');
+                if (modal.classList.contains('show')) {
+                    closeReminderManagement();
+                }
+            }
+        });
+
         // Make functions globally available
         window.goBackToFunctions = goBackToFunctions;
         window.drinkWater = drinkWater;
@@ -2161,6 +3187,14 @@
         window.markAsRead = markAsRead;
         window.dismissNotification = dismissNotification;
         window.closeWarning = closeWarning;
+        window.closeInfo = closeInfo;
+        window.recoverStreak = recoverStreak;
+        window.openReminderManagement = openReminderManagement;
+        window.closeReminderManagement = closeReminderManagement;
+        window.addReminderTime = addReminderTime;
+        window.deleteReminderTime = deleteReminderTime;
+        window.resetReminderTimes = resetReminderTimes;
+        window.saveReminderChanges = saveReminderChanges;
     </script>
 </body>
 </html>
