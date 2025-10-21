@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🧪 Test Water Data Persistence Fix</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        h1 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 2rem;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 0.95rem;
+        }
+
+        .test-section {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-left: 4px solid #667eea;
+        }
+
+        .test-section h2 {
+            color: #764ba2;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .feature {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: start;
+            gap: 10px;
+        }
+
+        .feature-icon {
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .feature-content h3 {
+            color: #333;
+            font-size: 1rem;
+            margin-bottom: 5px;
+        }
+
+        .feature-content p {
+            color: #666;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .code-block {
+            background: #2d3748;
+            color: #68d391;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+            overflow-x: auto;
+            margin-top: 10px;
+        }
+
+        .test-steps {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .test-steps h2 {
+            color: #856404;
+            margin-bottom: 15px;
+        }
+
+        .step {
+            background: white;
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            display: flex;
+            gap: 15px;
+            align-items: start;
+        }
+
+        .step-number {
+            background: #667eea;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .step-content {
+            flex: 1;
+        }
+
+        .step-content strong {
+            color: #667eea;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .expected-result {
+            background: #d4edda;
+            border: 2px solid #28a745;
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .expected-result h2 {
+            color: #155724;
+            margin-bottom: 15px;
+        }
+
+        .result-item {
+            background: white;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .open-btn {
+            display: block;
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 30px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .open-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+        }
+
+        .open-btn:active {
+            transform: translateY(0);
+        }
+
+        .badge {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            margin-left: 8px;
+        }
+
+        .warning {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        .warning strong {
+            color: #856404;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧪 Water Data Persistence Fix - Test Guide</h1>
+        <p class="subtitle">Hướng dẫn test fix cho bug mất dữ liệu sau khi reload</p>
+
+        <div class="test-section">
+            <h2>🛠️ Các Fix Đã Implement</h2>
+            
+            <div class="feature">
+                <div class="feature-icon">🔄</div>
+                <div class="feature-content">
+                    <h3>Retry Logic với Exponential Backoff</h3>
+                    <p>Tự động thử lại 3 lần nếu save thất bại, với khoảng thời gian chờ tăng dần (1s, 2s, 3s)</p>
+                    <div class="code-block">maxRetries = 3<br>await setTimeout(1000 * retryCount)</div>
+                </div>
+            </div>
+
+            <div class="feature">
+                <div class="feature-icon">✅</div>
+                <div class="feature-content">
+                    <h3>Save Verification</h3>
+                    <p>Sau khi save, đọc lại data từ Firebase để verify rằng data đã được lưu thành công</p>
+                    <div class="code-block">if (savedData.save_timestamp === data.save_timestamp) ✅</div>
+                </div>
+            </div>
+
+            <div class="feature">
+                <div class="feature-icon">⏱️</div>
+                <div class="feature-content">
+                    <h3>Timestamp Tracking</h3>
+                    <p>Thêm <code>save_timestamp</code> để track version của data và so sánh giữa Firebase vs localStorage</p>
+                    <div class="code-block">save_timestamp: Date.now()</div>
+                </div>
+            </div>
+
+            <div class="feature">
+                <div class="feature-icon">💾</div>
+                <div class="feature-content">
+                    <h3>Dual Save Strategy</h3>
+                    <p>Luôn save đồng thời cả Firebase VÀ localStorage. Khi load, so sánh timestamp và dùng data mới nhất</p>
+                    <div class="code-block">saveWaterToLocalStorage(data) // Backup<br>if (localTimestamp > firebaseTimestamp) sync()</div>
+                </div>
+            </div>
+
+            <div class="feature">
+                <div class="feature-icon">⏳</div>
+                <div class="feature-content">
+                    <h3>Post-Save Delay</h3>
+                    <p>Đợi 500ms sau khi save để đảm bảo transaction hoàn tất trước khi cho phép reload</p>
+                    <div class="code-block">await new Promise(resolve => setTimeout(resolve, 500))</div>
+                </div>
+            </div>
+
+            <div class="feature">
+                <div class="feature-icon">🚫</div>
+                <div class="feature-content">
+                    <h3>Increased Click Cooldown</h3>
+                    <p>Tăng cooldown từ 1 giây lên 2 giây để ngăn spam click và race conditions</p>
+                    <div class="code-block">if (now - lastClickTime < 2000) showWarning()</div>
+                </div>
+            </div>
+
+            <div class="feature">
+                <div class="feature-icon">🔀</div>
+                <div class="feature-content">
+                    <h3>Smart Data Sync</h3>
+                    <p>Khi load, tự động sync data mới nhất từ localStorage lên Firebase nếu local có version mới hơn</p>
+                    <div class="code-block">console.log('⚠️ localStorage has newer data - syncing...')</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="test-steps">
+            <h2>📋 Các Bước Test</h2>
+            
+            <div class="step">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <strong>Mở water.html</strong>
+                    Mở Console DevTools (F12) để xem logs
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <strong>Click "Đã uống nước"</strong>
+                    Xem console logs để verify save process
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <strong>Reload ngay lập tức (Ctrl+R hoặc F5)</strong>
+                    Kiểm tra xem data có bị mất không
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-number">4</div>
+                <div class="step-content">
+                    <strong>Reload lại lần 2</strong>
+                    Data vẫn phải còn nguyên
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-number">5</div>
+                <div class="step-content">
+                    <strong>Reload lại lần 3</strong>
+                    Đây là lần gây lỗi trước đây - bây giờ phải ổn
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-number">6</div>
+                <div class="step-content">
+                    <strong>Kiểm tra streak & completed glasses</strong>
+                    Tất cả số liệu phải khớp với trước khi reload
+                </div>
+            </div>
+
+            <div class="step">
+                <div class="step-number">7</div>
+                <div class="step-content">
+                    <strong>Test spam click</strong>
+                    Click "Đã uống nước" liên tục - phải có warning "Bạn đang click quá nhanh"
+                </div>
+            </div>
+        </div>
+
+        <div class="expected-result">
+            <h2>✅ Kết Quả Mong Đợi</h2>
+            
+            <div class="result-item">
+                <span style="font-size: 1.5rem;">✅</span>
+                <div>
+                    <strong>Console logs hiện:</strong>
+                    <div style="font-family: monospace; color: #28a745; margin-top: 5px;">
+                        💾 Saving water data to Firebase... (attempt 1)<br>
+                        ✅ Water data saved and verified on Firebase<br>
+                        💾 Saved to localStorage with timestamp: [timestamp]
+                    </div>
+                </div>
+            </div>
+
+            <div class="result-item">
+                <span style="font-size: 1.5rem;">✅</span>
+                <div>
+                    <strong>Sau reload, console logs hiện:</strong>
+                    <div style="font-family: monospace; color: #28a745; margin-top: 5px;">
+                        📥 Loading water data from Firebase...<br>
+                        ✅ Loaded data with timestamp: [timestamp]<br>
+                        ✅ Water data loaded successfully
+                    </div>
+                </div>
+            </div>
+
+            <div class="result-item">
+                <span style="font-size: 1.5rem;">🔢</span>
+                <div>
+                    <strong>Dữ liệu không mất sau 3+ lần reload:</strong>
+                    Streak, completed glasses, và tất cả thông tin khác vẫn còn nguyên
+                </div>
+            </div>
+
+            <div class="result-item">
+                <span style="font-size: 1.5rem;">🚫</span>
+                <div>
+                    <strong>Anti-cheat vẫn hoạt động:</strong>
+                    Không thể spam click, không thể cheat bằng cách reload liên tục
+                </div>
+            </div>
+
+            <div class="result-item">
+                <span style="font-size: 1.5rem;">💪</span>
+                <div>
+                    <strong>Data sync tự động:</strong>
+                    Nếu có conflict giữa Firebase & localStorage, tự động chọn version mới nhất
+                </div>
+            </div>
+        </div>
+
+        <div class="warning">
+            <strong>⚠️ Lưu ý:</strong> Nếu vẫn thấy lỗi, check console logs để xem có message nào về Firebase connection errors không. Có thể do network lag - trong trường hợp đó localStorage sẽ backup data.
+        </div>
+
+        <button class="open-btn" onclick="window.open('water.html?user=quynh', '_blank')">
+            🚀 Mở water.html để Test
+        </button>
+    </div>
+
+    <script>
+        console.log('🧪 Test guide loaded');
+        console.log('💡 Tip: Mở DevTools Console (F12) khi test để xem detailed logs');
+    </script>
+</body>
+</html>
+

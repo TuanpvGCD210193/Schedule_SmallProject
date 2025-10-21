@@ -13,16 +13,24 @@
         }
 
         :root {
-            --primary-quynh: #c2185b;
-            --primary-light: #fff0f5;
+            /* Quynh-functions.html pink theme */
+            --primary-pink: #ff6b9d;
+            --secondary-pink: #ffc2d4;
+            --light-pink: #ffe5ec;
+            --accent-orange: #ffab73;
+            --white: #ffffff;
+            --text-dark: #4a4a4a;
+            
+            /* Calendar specific - adjusted to pink theme */
+            --primary-quynh: #ff6b9d;
+            --primary-light: #ffe5ec;
             --bg-light: #fff5f8;
-            --text-dark: #8e0e4f;
-            --text-medium: #c2185b;
-            --text-light: #e91e63;
+            --text-medium: #ff6b9d;
+            --text-light: #ffc2d4;
             --border-light: #ffd4e5;
-            --shadow-sm: 0 2px 8px rgba(194, 24, 91, 0.08);
-            --shadow-md: 0 4px 20px rgba(194, 24, 91, 0.12);
-            --shadow-lg: 0 8px 32px rgba(194, 24, 91, 0.2);
+            --shadow-sm: 0 2px 8px rgba(255, 107, 157, 0.08);
+            --shadow-md: 0 4px 20px rgba(255, 107, 157, 0.12);
+            --shadow-lg: 0 8px 32px rgba(255, 107, 157, 0.2);
             --hour-height: 80px;
             --safe-area-top: env(safe-area-inset-top, 0px);
             --safe-area-bottom: env(safe-area-inset-bottom, 0px);
@@ -32,7 +40,7 @@
 
         body {
             font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #f966a1 0%, #fce4ec 50%, #f8bbd0 100%);
+            background: linear-gradient(135deg, #ffeef2 0%, #fff0f6 50%, #ffe5ec 100%);
             color: var(--text-dark);
             overflow-x: hidden;
             padding-top: var(--safe-area-top);
@@ -1047,10 +1055,10 @@
             line-height: 1.2;
         }
 
-         .event-info-row svg {
+        .event-info-row svg {
              width: 16px;
              height: 16px;
-             flex-shrink: 0;
+            flex-shrink: 0;
              opacity: 0.8;
          }
 
@@ -3727,6 +3735,70 @@
                 outline-offset: 3px;
             }
         }
+
+        /* ==================== CUTE FLOATING ICONS (QUYNH STYLE) ==================== */
+        .floating-icons-container {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .floating-icon {
+            position: absolute;
+            width: 70px;
+            height: 70px;
+            opacity: 0.2;
+            filter: drop-shadow(0 4px 12px rgba(255, 107, 157, 0.25));
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .floating-icon:hover {
+            opacity: 0.5;
+            transform: scale(1.3) rotate(15deg);
+            filter: drop-shadow(0 8px 20px rgba(255, 107, 157, 0.4));
+        }
+
+        .floating-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        @keyframes float1 { 0%,100%{transform:translateY(0)translateX(0)rotate(0)} 50%{transform:translateY(-20px)translateX(15px)rotate(5deg)} }
+        @keyframes float2 { 0%,100%{transform:translateY(0)translateX(0)rotate(0)} 50%{transform:translateY(-25px)translateX(-15px)rotate(-5deg)} }
+        @keyframes float3 { 0%,100%{transform:translateY(0)translateX(0)rotate(0)} 50%{transform:translateY(-15px)translateX(20px)rotate(8deg)} }
+        @keyframes float4 { 0%,100%{transform:translateY(0)translateX(0)rotate(0)} 50%{transform:translateY(-30px)translateX(-20px)rotate(-8deg)} }
+        @keyframes float5 { 0%,100%{transform:translateY(0)translateX(0)rotate(0)} 50%{transform:translateY(-20px)translateX(10px)rotate(3deg)} }
+        @keyframes float6 { 0%,100%{transform:translateY(0)translateX(0)rotate(0)} 50%{transform:translateY(-25px)translateX(-10px)rotate(-3deg)} }
+        @keyframes float7 { 0%,100%{transform:translateY(0)translateX(0)rotate(0)} 50%{transform:translateY(-18px)translateX(12px)rotate(6deg)} }
+
+        /* Net pattern background - Quynh style */
+        .net-pattern-pink {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            opacity: 0.03;
+            background-image: 
+                repeating-linear-gradient(0deg, var(--primary-pink), var(--primary-pink) 2px, transparent 2px, transparent 20px),
+                repeating-linear-gradient(90deg, var(--primary-pink), var(--primary-pink) 2px, transparent 2px, transparent 20px);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        @media (max-width: 768px) {
+            .floating-icon { width: 50px; height: 50px; opacity: 0.15; }
+        }
+
+        @media (max-width: 480px) {
+            .floating-icon { width: 40px; height: 40px; opacity: 0.1; }
+        }
     </style>
 </head>
 <body>
@@ -3736,6 +3808,34 @@
         <div class="volleyball"></div>
         <div class="volleyball"></div>
         <div class="volleyball"></div>
+    </div>
+
+    <!-- Net Pattern Pink (Quynh Style) -->
+    <div class="net-pattern-pink"></div>
+
+    <!-- Cute Floating Icons -->
+    <div class="floating-icons-container">
+        <div class="floating-icon" style="left: 8%; top: 12%; animation: float1 13s infinite ease-in-out;">
+            <img src="assets/icon/kitty.png" alt="">
+        </div>
+        <div class="floating-icon" style="left: 82%; top: 18%; animation: float2 15s infinite ease-in-out;">
+            <img src="assets/icon/cat.png" alt="">
+        </div>
+        <div class="floating-icon" style="left: 18%; top: 68%; animation: float3 17s infinite ease-in-out;">
+            <img src="assets/icon/lovely.png" alt="">
+        </div>
+        <div class="floating-icon" style="left: 72%; top: 72%; animation: float4 14s infinite ease-in-out;">
+            <img src="assets/icon/panda.png" alt="">
+        </div>
+        <div class="floating-icon" style="left: 48%; top: 8%; animation: float5 16s infinite ease-in-out;">
+            <img src="assets/icon/volleyball.png" alt="">
+        </div>
+        <div class="floating-icon" style="left: 88%; top: 48%; animation: float6 18s infinite ease-in-out;">
+            <img src="assets/icon/shot.png" alt="">
+        </div>
+        <div class="floating-icon" style="left: 12%; top: 42%; animation: float7 15s infinite ease-in-out;">
+            <img src="assets/icon/kitty (1).png" alt="">
+        </div>
     </div>
 
     <!-- Net Pattern -->
@@ -3826,10 +3926,10 @@
                  <!-- Content will be populated by JavaScript -->
              </div>
          </div>
-     </div>
+    </div>
 
-     <!-- Event Modal -->
-     <div id="event-modal" class="modal-overlay hidden">
+    <!-- Event Modal -->
+    <div id="event-modal" class="modal-overlay hidden">
         <div class="modal-content">
             <h2 class="modal-title" id="modal-title">Tạo Sự Kiện Mới</h2>
             
@@ -4044,26 +4144,26 @@
         let selectedCategory = 'personal';
         let isNavigating = false;
 
-         // DOM Elements
-         const monthYearHeader = document.getElementById('month-year-header');
-         const weekGrid = document.getElementById('week-view-grid');
+        // DOM Elements
+        const monthYearHeader = document.getElementById('month-year-header');
+        const weekGrid = document.getElementById('week-view-grid');
          const dayHeadersContainer = document.getElementById('day-headers-container');
          const scheduleGridContainer = document.getElementById('schedule-grid-container');
-         const timeAxis = document.getElementById('time-axis');
-         const scheduleWrapper = document.getElementById('schedule-wrapper');
-         const prevNavBtn = document.getElementById('prev-nav-btn');
-         const nextNavBtn = document.getElementById('next-nav-btn');
-         const todayBtn = document.getElementById('today-btn');
-         const addEventFab = document.getElementById('add-event-fab');
-         const eventModal = document.getElementById('event-modal');
-         const eventForm = document.getElementById('event-form');
-         const deleteBtn = document.getElementById('delete-btn');
-         const eventModeBtn = document.getElementById('event-mode-btn');
-         const scheduleModeBtn = document.getElementById('schedule-mode-btn');
-         const singleEventFields = document.getElementById('single-event-fields');
-         const recurringFields = document.getElementById('recurring-fields');
-         const categoryButtons = document.querySelectorAll('.category-btn');
-         const weekdayButtons = document.querySelectorAll('.weekday-btn');
+        const timeAxis = document.getElementById('time-axis');
+        const scheduleWrapper = document.getElementById('schedule-wrapper');
+        const prevNavBtn = document.getElementById('prev-nav-btn');
+        const nextNavBtn = document.getElementById('next-nav-btn');
+        const todayBtn = document.getElementById('today-btn');
+        const addEventFab = document.getElementById('add-event-fab');
+        const eventModal = document.getElementById('event-modal');
+        const eventForm = document.getElementById('event-form');
+        const deleteBtn = document.getElementById('delete-btn');
+        const eventModeBtn = document.getElementById('event-mode-btn');
+        const scheduleModeBtn = document.getElementById('schedule-mode-btn');
+        const singleEventFields = document.getElementById('single-event-fields');
+        const recurringFields = document.getElementById('recurring-fields');
+        const categoryButtons = document.querySelectorAll('.category-btn');
+        const weekdayButtons = document.querySelectorAll('.weekday-btn');
          
          // Event Detail Modal Elements
          const eventDetailModal = document.getElementById('event-detail-modal');
@@ -4193,46 +4293,46 @@
             });
         }
 
-         // Modal Mode Management
-         function setModalMode(mode) {
-     currentModalMode = mode;
-     const modalTitle = document.getElementById('modal-title');
+        // Modal Mode Management
+        function setModalMode(mode) {
+    currentModalMode = mode;
+    const modalTitle = document.getElementById('modal-title');
 
-     // MỚI: Lấy tất cả các trường input/textarea của cả hai chế độ
-     const singleInputs = singleEventFields.querySelectorAll('input, textarea');
-     const recurringInputs = recurringFields.querySelectorAll('input, textarea');
-     
-     if (mode === 'event') {
-         modalTitle.textContent = editingEventId ? 'Chỉnh sửa Sự kiện' : 'Tạo Sự Kiện Mới';
-         document.getElementById('event-title').placeholder = "VD: Họp nhóm dự án";
-         eventModeBtn.classList.add('active');
-         scheduleModeBtn.classList.remove('active');
-         
-         // Hiển thị "Sự kiện", ẩn "Lịch học"
-         singleEventFields.classList.remove('hidden');
-         recurringFields.classList.add('hidden');
-         
-         // MỚI: Kích hoạt (enable) các trường "Sự kiện"
-         singleInputs.forEach(input => input.disabled = false);
-         
-         // MỚI: Vô hiệu hóa (disable) các trường "Lịch học"
-         recurringInputs.forEach(input => input.disabled = true);
+    // MỚI: Lấy tất cả các trường input/textarea của cả hai chế độ
+    const singleInputs = singleEventFields.querySelectorAll('input, textarea');
+    const recurringInputs = recurringFields.querySelectorAll('input, textarea');
+    
+    if (mode === 'event') {
+        modalTitle.textContent = editingEventId ? 'Chỉnh sửa Sự kiện' : 'Tạo Sự Kiện Mới';
+        document.getElementById('event-title').placeholder = "VD: Họp nhóm dự án";
+        eventModeBtn.classList.add('active');
+        scheduleModeBtn.classList.remove('active');
+        
+        // Hiển thị "Sự kiện", ẩn "Lịch học"
+        singleEventFields.classList.remove('hidden');
+        recurringFields.classList.add('hidden');
+        
+        // MỚI: Kích hoạt (enable) các trường "Sự kiện"
+        singleInputs.forEach(input => input.disabled = false);
+        
+        // MỚI: Vô hiệu hóa (disable) các trường "Lịch học"
+        recurringInputs.forEach(input => input.disabled = true);
 
-     } else { // mode === 'schedule'
-         modalTitle.textContent = editingEventId ? 'Chỉnh sửa Lịch Học' : 'Tạo Lịch Học Mới';
-         document.getElementById('event-title').placeholder = "VD: Phát triển ứng dụng Web";
-         scheduleModeBtn.classList.add('active');
-         eventModeBtn.classList.remove('active');
-         
-         // Hiển thị "Lịch học", ẩn "Sự kiện"
-         recurringFields.classList.remove('hidden');
-         singleEventFields.classList.add('hidden');
-         
-         // MỚI: Vô hiệu hóa (disable) các trường "Sự kiện" (Đây là mấu chốt để fix lỗi)
-         singleInputs.forEach(input => input.disabled = true);
-         
-         // MỚI: Kích hoạt (enable) các trường "Lịch học"
-         recurringInputs.forEach(input => input.disabled = false);
+    } else { // mode === 'schedule'
+        modalTitle.textContent = editingEventId ? 'Chỉnh sửa Lịch Học' : 'Tạo Lịch Học Mới';
+        document.getElementById('event-title').placeholder = "VD: Phát triển ứng dụng Web";
+        scheduleModeBtn.classList.add('active');
+        eventModeBtn.classList.remove('active');
+        
+        // Hiển thị "Lịch học", ẩn "Sự kiện"
+        recurringFields.classList.remove('hidden');
+        singleEventFields.classList.add('hidden');
+        
+        // MỚI: Vô hiệu hóa (disable) các trường "Sự kiện" (Đây là mấu chốt để fix lỗi)
+        singleInputs.forEach(input => input.disabled = true);
+        
+        // MỚI: Kích hoạt (enable) các trường "Lịch học"
+        recurringInputs.forEach(input => input.disabled = false);
          
              // Re-attach weekday button listeners when switching to schedule mode
              setTimeout(() => {
@@ -4267,8 +4367,8 @@
                      });
                  });
              }, 50);
-     }
- }
+    }
+}
 
         // Get week days
         function getWeekDays(date) {
@@ -4298,7 +4398,7 @@
             if (currentView === 'day') {
                 renderDayView(currentDate);
             } else {
-                renderWeekView(currentDate);
+            renderWeekView(currentDate);
             }
             updateHeader();
         }
@@ -4706,39 +4806,39 @@
             eventEl.style.top = `${top}px`;
             eventEl.style.height = `${height}px`;
 
-             const title = event.subjectName || event.title || 'Không có tiêu đề';
-             const timeStr = `${event.startTime} - ${event.endTime}`;
+            const title = event.subjectName || event.title || 'Không có tiêu đề';
+            const timeStr = `${event.startTime} - ${event.endTime}`;
              const classroom = event.classroom || '';
              const campus = event.campus || '';
              const description = event.description || '';
-             
-             eventEl.innerHTML = `
-                 <div class="event-subject">${title}</div>
-                 <div class="event-info">
-                     <div class="event-info-row">
-                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                             <circle cx="12" cy="12" r="10"></circle>
-                             <polyline points="12 6 12 12 16 14"></polyline>
-                         </svg>
-                         <span>${timeStr}</span>
-                     </div>
+            
+            eventEl.innerHTML = `
+                <div class="event-subject">${title}</div>
+                <div class="event-info">
+                    <div class="event-info-row">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <polyline points="12 6 12 12 16 14"></polyline>
+                        </svg>
+                        <span>${timeStr}</span>
+                    </div>
                      ${classroom || campus ? `
-                     <div class="event-info-row">
-                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                             <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                             <circle cx="12" cy="10" r="3"></circle>
-                         </svg>
+                    <div class="event-info-row">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                            <circle cx="12" cy="10" r="3"></circle>
+                        </svg>
                          <div class="event-location-combined">
                              ${classroom ? `<span class="event-classroom">${classroom}</span>` : ''}
                              ${campus ? `<span class="event-campus">${campus}</span>` : ''}
                          </div>
-                     </div>
-                     ` : ''}
+                    </div>
+                    ` : ''}
                      ${description ? `
                      <div class="event-description-text">${description}</div>
-                     ` : ''}
-                 </div>
-             `;
+                    ` : ''}
+                </div>
+            `;
 
              eventEl.addEventListener('click', () => openEventDetailModal(eventId));
 
@@ -4883,23 +4983,23 @@
          }
 
          // Open Modal (for editing)
-         function openModal(eventId = null) {
-             editingEventId = eventId;
-             
-             if (eventId && userEvents[eventId]) {
-                 const event = userEvents[eventId];
-                 setModalMode(event.type === 'single' ? 'event' : 'schedule');
-                 populateForm(event);
-                 deleteBtn.classList.remove('hidden');
-             } else {
-                 setModalMode('event');
-                 eventForm.reset();
-                 setDefaultDates();
-                 deleteBtn.classList.add('hidden');
-             }
-             
-             eventModal.classList.remove('hidden');
-             document.body.style.overflow = 'hidden';
+        function openModal(eventId = null) {
+            editingEventId = eventId;
+            
+            if (eventId && userEvents[eventId]) {
+                const event = userEvents[eventId];
+                setModalMode(event.type === 'single' ? 'event' : 'schedule');
+                populateForm(event);
+                deleteBtn.classList.remove('hidden');
+            } else {
+                setModalMode('event');
+                eventForm.reset();
+                setDefaultDates();
+                deleteBtn.classList.add('hidden');
+            }
+            
+            eventModal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
              
              // Re-attach weekday button listeners after modal is shown
              setTimeout(() => {
@@ -4934,7 +5034,7 @@
                      });
                  });
              }, 100);
-         }
+        }
 
         // Populate Form
         function populateForm(event) {
@@ -5230,9 +5330,9 @@
              });
 
              if (eventModal) {
-             eventModal.addEventListener('click', (e) => {
-                 if (e.target === eventModal) closeModal();
-             });
+            eventModal.addEventListener('click', (e) => {
+                if (e.target === eventModal) closeModal();
+            });
              }
 
              // Event Detail Modal Listeners
@@ -5256,7 +5356,7 @@
             document.addEventListener('keydown', (e) => {
                 if (e.key === 'Escape') {
                     if (!eventModal.classList.contains('hidden')) {
-                        closeModal();
+                    closeModal();
                     } else if (!eventDetailModal.classList.contains('hidden')) {
                         closeEventDetailModal();
                     }

@@ -1,0 +1,1362 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Admin Dashboard | UniSchedule</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- EmailJS SDK v4 -->
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-blue: #007aff;
+            --secondary-blue: #5ac8fa;
+            --light-blue: #e3f2fd;
+            --primary-pink: #ff6b9d;
+            --white: #ffffff;
+            --text-dark: #4a4a4a;
+            --shadow-soft: 0 8px 32px rgba(0, 122, 255, 0.15);
+        }
+
+        body {
+            font-family: 'Quicksand', 'Inter', sans-serif;
+            background: linear-gradient(135deg, #e3f2fd 0%, #f0f8ff 50%, #e1f5fe 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .admin-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .admin-header {
+            background: white;
+            border-radius: 30px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow-soft);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .admin-title {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--primary-blue);
+        }
+
+        .back-btn {
+            padding: 12px 24px;
+            background: var(--primary-blue);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 122, 255, 0.3);
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 24px;
+            padding: 30px;
+            box-shadow: var(--shadow-soft);
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--primary-blue);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .weather-display {
+            background: linear-gradient(135deg, #e3f2fd 0%, #f0f8ff 100%);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 20px;
+        }
+
+        .weather-temp {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--primary-blue);
+        }
+
+        .weather-desc {
+            font-size: 1.2rem;
+            color: #666;
+            margin-top: 10px;
+        }
+
+        .weather-details {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .weather-detail-item {
+            background: white;
+            padding: 15px;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .ai-box {
+            background: linear-gradient(135deg, #fff0f6 0%, #ffe5ec 100%);
+            border-radius: 20px;
+            padding: 25px;
+            margin-top: 20px;
+            border-left: 5px solid var(--primary-pink);
+        }
+
+        .ai-box-title {
+            font-weight: 700;
+            color: var(--primary-pink);
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+
+        .ai-text {
+            line-height: 1.8;
+            color: #333;
+            white-space: pre-line;
+        }
+
+        .action-btn {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 15px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-blue) 0%, #00d4ff 100%);
+            color: white;
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+        }
+
+        .btn-warning {
+            background: linear-gradient(135deg, #ffab73 0%, #ffd700 100%);
+            color: white;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .email-form {
+            margin-top: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1);
+        }
+
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: #999;
+        }
+
+        .status-message {
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .status-success {
+            background: #d4edda;
+            color: #155724;
+            border: 2px solid #c3e6cb;
+        }
+
+        .status-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 2px solid #f5c6cb;
+        }
+
+        .status-info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 2px solid #bee5eb;
+        }
+
+        /* Status Dashboard */
+        .status-overview {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .status-card {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: var(--shadow-soft);
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .status-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(0, 122, 255, 0.2);
+        }
+
+        .status-icon {
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+
+        .status-label {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        .status-value {
+            font-size: 1.8rem;
+            font-weight: 800;
+            margin-bottom: 5px;
+        }
+
+        .status-value.success {
+            color: #28a745;
+        }
+
+        .status-value.warning {
+            color: #ffc107;
+        }
+
+        .status-value.error {
+            color: #dc3545;
+        }
+
+        .status-detail {
+            font-size: 0.8rem;
+            color: #999;
+        }
+
+        /* Error Detail Box */
+        .error-detail-box {
+            background: #fff3cd;
+            border-left: 5px solid #ffc107;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 8px;
+            font-size: 0.9rem;
+        }
+
+        .error-detail-box strong {
+            display: block;
+            margin-bottom: 8px;
+            color: #856404;
+        }
+
+        .error-detail-box code {
+            background: #f8f9fa;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+        }
+
+        .quick-fix-btn {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 8px 16px;
+            background: var(--primary-blue);
+            color: white;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .quick-fix-btn:hover {
+            background: #0056b3;
+            transform: translateY(-2px);
+        }
+
+        /* Recipients Management */
+        .recipients-list {
+            margin-top: 20px;
+        }
+
+        .recipient-item {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .recipient-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+            border-color: var(--primary-blue);
+        }
+
+        .recipient-item.inactive {
+            opacity: 0.6;
+            background: linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%);
+        }
+
+        .recipient-info {
+            flex: 1;
+        }
+
+        .recipient-email {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 5px;
+        }
+
+        .recipient-status {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .recipient-status.active {
+            background: #28a745;
+            box-shadow: 0 0 8px #28a745;
+        }
+
+        .recipient-status.inactive {
+            background: #dc3545;
+        }
+
+        .recipient-meta {
+            font-size: 0.85rem;
+            color: #666;
+        }
+
+        .recipient-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .recipient-btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 10px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .recipient-btn-test {
+            background: var(--primary-blue);
+            color: white;
+        }
+
+        .recipient-btn-test:hover {
+            background: #0056b3;
+            transform: translateY(-2px);
+        }
+
+        .recipient-btn-toggle {
+            background: #ffc107;
+            color: white;
+        }
+
+        .recipient-btn-toggle:hover {
+            background: #e0a800;
+            transform: translateY(-2px);
+        }
+
+        .recipient-btn-remove {
+            background: #dc3545;
+            color: white;
+        }
+
+        .recipient-btn-remove:hover {
+            background: #c82333;
+            transform: translateY(-2px);
+        }
+
+        .add-recipient-form {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .add-recipient-input {
+            flex: 1;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .add-recipient-input:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1);
+        }
+
+        .add-recipient-input.error {
+            border-color: #dc3545;
+        }
+
+        .add-recipient-btn {
+            padding: 12px 24px;
+            background: var(--primary-blue);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .add-recipient-btn:hover {
+            background: #0056b3;
+            transform: translateY(-2px);
+        }
+
+        .add-recipient-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .recipients-empty {
+            text-align: center;
+            padding: 40px;
+            color: #999;
+            font-style: italic;
+        }
+
+        .recipients-count {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 15px;
+            text-align: right;
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .admin-header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-container">
+        <!-- Header -->
+        <div class="admin-header">
+            <h1 class="admin-title">🌤️ Weather Admin Dashboard</h1>
+            <button class="back-btn" onclick="goBack()">← Quay lại</button>
+        </div>
+
+        <!-- Status Overview -->
+        <div class="status-overview">
+            <div class="status-card">
+                <div class="status-icon" id="weatherStatusIcon">🌤️</div>
+                <div class="status-label">Weather API</div>
+                <div class="status-value" id="weatherStatusValue">---</div>
+                <div class="status-detail" id="weatherStatusDetail">Loading...</div>
+            </div>
+
+            <div class="status-card">
+                <div class="status-icon" id="aiStatusIcon">🤖</div>
+                <div class="status-label">AI Service</div>
+                <div class="status-value" id="aiStatusValue">---</div>
+                <div class="status-detail" id="aiStatusDetail">Not tested</div>
+            </div>
+
+            <div class="status-card">
+                <div class="status-icon" id="emailStatusIcon">📧</div>
+                <div class="status-label">Email Service</div>
+                <div class="status-value" id="emailStatusValue">---</div>
+                <div class="status-detail" id="emailStatusDetail">Not configured</div>
+            </div>
+        </div>
+
+        <!-- Dashboard Grid -->
+        <div class="dashboard-grid">
+            <!-- Weather Card -->
+            <div class="card">
+                <h2 class="card-title">
+                    <span>🌤️</span>
+                    <span>Thời Tiết Đà Nẵng</span>
+                </h2>
+
+                <div id="weatherDisplay" class="loading">Đang tải thời tiết...</div>
+
+                <button class="action-btn btn-primary" onclick="refreshWeather()">
+                    🔄 Làm mới thời tiết
+                </button>
+
+                <button class="action-btn btn-success" onclick="analyzeWeather()">
+                    🤖 Phân tích bằng AI
+                </button>
+            </div>
+
+            <!-- Email Recipients Management Card -->
+            <div class="card">
+                <h2 class="card-title">
+                    <span>📧</span>
+                    <span>Recipients Management</span>
+                </h2>
+
+                <div id="statusMessage"></div>
+
+                <!-- EmailJS Config -->
+                <div class="form-group">
+                    <label class="form-label">EmailJS Public Key:</label>
+                    <input type="text" class="form-input" id="emailjsKey" placeholder="Nhập Public Key từ EmailJS">
+                </div>
+
+                <!-- Add Recipient Form -->
+                <div class="add-recipient-form">
+                    <input 
+                        type="email" 
+                        class="add-recipient-input" 
+                        id="newRecipientEmail" 
+                        placeholder="Enter email address (e.g., quynh@example.com)"
+                    >
+                    <button class="add-recipient-btn" onclick="addNewRecipient()">
+                        ➕ Add
+                    </button>
+                </div>
+
+                <!-- Recipients List -->
+                <div id="recipientsList" class="recipients-list">
+                    <div class="recipients-empty">No recipients yet. Add one above!</div>
+                </div>
+
+                <div class="recipients-count" id="recipientsCount">
+                    Total: 0 recipients
+                </div>
+
+                <button class="action-btn btn-warning" onclick="viewEmailTemplate()" style="margin-top: 20px;">
+                    📝 Xem Template Email
+                </button>
+
+                <button class="action-btn btn-success" onclick="sendDailyWeatherNow()" style="margin-top: 15px;">
+                    ☀️ Gửi Email Thời Tiết Ngay
+                </button>
+
+                <button class="action-btn btn-primary" onclick="startAutoSchedule()" style="margin-top: 10px;">
+                    ⏰ Bật Gửi Tự Động (6 AM hàng ngày)
+                </button>
+            </div>
+        </div>
+
+        <!-- AI Analysis Card (full width) -->
+        <div class="card">
+            <h2 class="card-title">
+                <span>🤖</span>
+                <span>Kết Quả Phân Tích AI</span>
+            </h2>
+
+            <div id="aiAnalysis" class="loading">Chưa có phân tích. Click "Phân tích bằng AI" để bắt đầu.</div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { fetchWeatherData, getAIWeatherTip, formatWeatherDisplay } from './js/weather-service.js';
+        import { initEmailJS, sendTestEmail as sendEmail, sendDailyWeatherEmail, scheduleDailyWeatherEmail, sendScheduleWeatherEmail } from './js/email-service.js';
+        import { addRecipient, getRecipients, updateRecipient, deleteRecipient, getUserEvents } from './js/data/database.js';
+
+        let currentWeatherData = null;
+        let recipients = {};
+
+        // Go back
+        function goBack() {
+            window.location.href = 'tuan-functions.html?user=tuan';
+        }
+        window.goBack = goBack;
+
+        // Update status card
+        function updateStatusCard(type, status, detail, value = '---') {
+            const icon = document.getElementById(`${type}StatusIcon`);
+            const valueEl = document.getElementById(`${type}StatusValue`);
+            const detailEl = document.getElementById(`${type}StatusDetail`);
+            
+            valueEl.className = `status-value ${status}`;
+            valueEl.textContent = value;
+            detailEl.textContent = detail;
+            
+            // Update icon based on status
+            if (status === 'success') {
+                icon.textContent = type === 'weather' ? '✅' : type === 'ai' ? '🤖✅' : '📧✅';
+            } else if (status === 'warning') {
+                icon.textContent = type === 'weather' ? '⚠️' : type === 'ai' ? '🤖⚠️' : '📧⚠️';
+            } else if (status === 'error') {
+                icon.textContent = type === 'weather' ? '❌' : type === 'ai' ? '🤖❌' : '📧❌';
+            }
+        }
+
+        // Load weather on page load
+        async function loadWeather() {
+            const weatherDisplay = document.getElementById('weatherDisplay');
+            
+            try {
+                weatherDisplay.innerHTML = '<div class="loading">Đang tải thời tiết...</div>';
+                updateStatusCard('weather', 'warning', 'Loading...', '...');
+                
+                currentWeatherData = await fetchWeatherData();
+                const weather = formatWeatherDisplay(currentWeatherData);
+                
+                weatherDisplay.innerHTML = `
+                    <div class="weather-display">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <div class="weather-temp">${weather.temp}°C</div>
+                                <div class="weather-desc">${weather.description}</div>
+                            </div>
+                            <div style="font-size: 4rem;">${weather.emoji}</div>
+                        </div>
+                        
+                        <div class="weather-details">
+                            <div class="weather-detail-item">
+                                <div style="font-size: 0.9rem; color: #999;">Cảm giác như</div>
+                                <div style="font-size: 1.5rem; font-weight: 700; color: var(--primary-blue);">${weather.feelsLike}°C</div>
+                            </div>
+                            <div class="weather-detail-item">
+                                <div style="font-size: 0.9rem; color: #999;">Độ ẩm</div>
+                                <div style="font-size: 1.5rem; font-weight: 700; color: var(--primary-blue);">${weather.humidity}%</div>
+                            </div>
+                            <div class="weather-detail-item">
+                                <div style="font-size: 0.9rem; color: #999;">Gió</div>
+                                <div style="font-size: 1.5rem; font-weight: 700; color: var(--primary-blue);">${weather.windSpeed} m/s</div>
+                            </div>
+                            <div class="weather-detail-item">
+                                <div style="font-size: 0.9rem; color: #999;">Tầm nhìn</div>
+                                <div style="font-size: 1.5rem; font-weight: 700; color: var(--primary-blue);">${weather.visibility} km</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                // Update status card
+                const now = new Date();
+                updateStatusCard('weather', 'success', `Last update: ${now.toLocaleTimeString('vi-VN')}`, 'OK');
+                console.log('✅ Weather loaded successfully');
+
+            } catch (error) {
+                console.error('Error loading weather:', error);
+                updateStatusCard('weather', 'error', error.message, 'Error');
+                
+                weatherDisplay.innerHTML = `
+                    <div class="status-message status-error">
+                        ❌ Lỗi khi tải thời tiết: ${error.message}
+                    </div>
+                    <div class="error-detail-box">
+                        <strong>⚠️ Nguyên nhân có thể:</strong>
+                        • API key không hợp lệ<br>
+                        • Vượt quota (1,500 requests/day)<br>
+                        • Mất kết nối internet<br>
+                        <a href="https://openweathermap.org/api" target="_blank" class="quick-fix-btn">
+                            📚 Xem Docs
+                        </a>
+                    </div>
+                `;
+            }
+        }
+
+        // Refresh weather
+        async function refreshWeather() {
+            await loadWeather();
+        }
+        window.refreshWeather = refreshWeather;
+
+        // Analyze weather with AI
+        async function analyzeWeather() {
+            const aiAnalysis = document.getElementById('aiAnalysis');
+            
+            try {
+                if (!currentWeatherData) {
+                    alert('Vui lòng tải thời tiết trước!');
+                    return;
+                }
+
+                aiAnalysis.innerHTML = '<div class="loading">🤖 AI đang phân tích...</div>';
+                updateStatusCard('ai', 'warning', 'Analyzing...', '...');
+                
+                const analysis = await getAIWeatherTip(currentWeatherData);
+                
+                // Check if using fallback
+                const isFallback = analysis.includes('Chúc em') || analysis.length < 100;
+                
+                aiAnalysis.innerHTML = `
+                    <div class="ai-box">
+                        <div class="ai-box-title">🤖 ${isFallback ? 'Fallback Tip' : 'Gemini AI Analysis'}</div>
+                        <div class="ai-text">${analysis}</div>
+                    </div>
+                `;
+
+                // Update status
+                if (isFallback) {
+                    updateStatusCard('ai', 'warning', 'Using fallback (API error)', 'Fallback');
+                } else {
+                    updateStatusCard('ai', 'success', 'Working perfectly', 'OK');
+                }
+                
+                console.log('✅ AI analysis completed');
+
+            } catch (error) {
+                console.error('Error analyzing weather:', error);
+                updateStatusCard('ai', 'error', 'API failed', 'Error');
+                
+                // Parse error to provide better help
+                const errorMsg = error.message;
+                let helpText = '';
+                
+                if (errorMsg.includes('404')) {
+                    helpText = `
+                        <strong>⚠️ Model không tồn tại</strong>
+                        • Gemini model "gemini-1.5-flash-latest" không khả dụng<br>
+                        • Có thể do API key không hợp lệ<br>
+                        • Hoặc region không support model này<br>
+                        <a href="https://aistudio.google.com/app/apikey" target="_blank" class="quick-fix-btn">
+                            🔑 Get New API Key
+                        </a>
+                        <a href="javascript:void(0)" onclick="disableAI()" class="quick-fix-btn" style="background: #6c757d;">
+                            ⚙️ Disable AI (Use Fallback)
+                        </a>
+                    `;
+                } else if (errorMsg.includes('403')) {
+                    helpText = `
+                        <strong>⚠️ API Key không hợp lệ</strong>
+                        • API key đã hết hạn hoặc bị vô hiệu hóa<br>
+                        • Tạo API key mới từ Google AI Studio<br>
+                        <a href="https://aistudio.google.com/app/apikey" target="_blank" class="quick-fix-btn">
+                            🔑 Get New API Key
+                        </a>
+                    `;
+                } else if (errorMsg.includes('429')) {
+                    helpText = `
+                        <strong>⚠️ Vượt quota</strong>
+                        • Đã vượt giới hạn 15 requests/phút hoặc 1,500/ngày<br>
+                        • Đợi quota reset hoặc nâng cấp plan<br>
+                        <a href="javascript:void(0)" onclick="disableAI()" class="quick-fix-btn">
+                            ⚙️ Use Fallback Temporarily
+                        </a>
+                    `;
+                } else {
+                    helpText = `
+                        <strong>⚠️ Lỗi không xác định</strong>
+                        • ${errorMsg}<br>
+                        <a href="javascript:void(0)" onclick="disableAI()" class="quick-fix-btn">
+                            ⚙️ Use Fallback
+                        </a>
+                    `;
+                }
+                
+                aiAnalysis.innerHTML = `
+                    <div class="status-message status-error">
+                        ❌ Lỗi khi phân tích AI
+                    </div>
+                    <div class="error-detail-box">
+                        ${helpText}
+                    </div>
+                    <div class="status-message status-info" style="margin-top: 15px;">
+                        💡 Fallback tips vẫn hoạt động tốt! Gemini AI chỉ là tùy chọn nâng cao.
+                    </div>
+                `;
+            }
+        }
+        window.analyzeWeather = analyzeWeather;
+        
+        // Disable AI function
+        function disableAI() {
+            if (confirm('Bạn muốn tắt Gemini AI và chỉ dùng fallback tips?\n\nBạn cần sửa ENABLED: false trong js/weather-service.js')) {
+                alert('Hướng dẫn:\n1. Mở js/weather-service.js\n2. Tìm GEMINI_CONFIG\n3. Đổi ENABLED: true → ENABLED: false\n4. Refresh trang');
+            }
+        }
+        window.disableAI = disableAI;
+
+        // Send test email
+        async function sendTestEmail() {
+            const statusMessage = document.getElementById('statusMessage');
+            const recipientEmail = document.getElementById('recipientEmail').value;
+            const emailjsKey = document.getElementById('emailjsKey').value;
+
+            if (!recipientEmail) {
+                statusMessage.innerHTML = `
+                    <div class="status-message status-error">
+                        ❌ Vui lòng nhập email người nhận!
+                    </div>
+                `;
+                return;
+            }
+
+            if (!emailjsKey) {
+                statusMessage.innerHTML = `
+                    <div class="status-message status-error">
+                        ❌ Vui lòng nhập EmailJS Public Key!<br>
+                        <small>Lấy key từ: https://dashboard.emailjs.com/admin</small>
+                    </div>
+                `;
+                return;
+            }
+
+            try {
+                statusMessage.innerHTML = `
+                    <div class="status-message" style="background: #cce5ff; color: #004085; border-color: #b8daff;">
+                        ⏳ Đang gửi email...
+                    </div>
+                `;
+                updateStatusCard('email', 'warning', 'Sending...', '...');
+
+                // Initialize EmailJS
+                initEmailJS(emailjsKey);
+
+                // Send test email
+                const result = await sendEmail(recipientEmail);
+
+                if (result.success) {
+                    statusMessage.innerHTML = `
+                        <div class="status-message status-success">
+                            ✅ Email đã được gửi thành công!<br>
+                            <small>Thời gian: ${result.duration}ms</small>
+                        </div>
+                    `;
+                    updateStatusCard('email', 'success', `Last sent: ${new Date().toLocaleTimeString('vi-VN')}`, 'OK');
+                } else {
+                    throw new Error(result.error);
+                }
+
+            } catch (error) {
+                console.error('Error sending email:', error);
+                updateStatusCard('email', 'error', error.message, 'Error');
+                
+                let helpText = '';
+                if (error.message.includes('Public Key')) {
+                    helpText = `
+                        <strong>⚠️ Public Key không đúng</strong>
+                        • Lấy Public Key từ EmailJS Dashboard<br>
+                        • Format: dạng chữ và số (không có ký tự đặc biệt)<br>
+                        <a href="https://dashboard.emailjs.com/admin/account" target="_blank" class="quick-fix-btn">
+                            🔑 Get Public Key
+                        </a>
+                    `;
+                } else if (error.message.includes('Template')) {
+                    helpText = `
+                        <strong>⚠️ Template ID không đúng</strong>
+                        • Template ID phải là: <code>weather_reminder</code><br>
+                        • Tạo template theo hướng dẫn trong docs<br>
+                        <a href="https://dashboard.emailjs.com/admin/templates" target="_blank" class="quick-fix-btn">
+                            📝 Create Template
+                        </a>
+                    `;
+                } else {
+                    helpText = `
+                        <strong>⚠️ Lỗi gửi email</strong>
+                        • ${error.message}<br>
+                        • Kiểm tra lại Public Key và Template ID<br>
+                        <a href="https://dashboard.emailjs.com/admin" target="_blank" class="quick-fix-btn">
+                            🔧 EmailJS Dashboard
+                        </a>
+                    `;
+                }
+                
+                statusMessage.innerHTML = `
+                    <div class="status-message status-error">
+                        ❌ Lỗi khi gửi email
+                    </div>
+                    <div class="error-detail-box">
+                        ${helpText}
+                    </div>
+                `;
+            }
+        }
+        window.sendTestEmail = sendTestEmail;
+
+        // View email template
+        function viewEmailTemplate() {
+            alert(`
+📧 Email Template Configuration
+
+Để setup EmailJS template:
+
+1. Vào: https://dashboard.emailjs.com/admin/templates
+
+2. Create New Template
+
+3. Subject:
+🌤️ Lịch học hôm nay - {{schedule_date}} | Dự báo thời tiết Đà Nẵng
+
+4. Sử dụng HTML content đã được cung cấp trong docs
+
+5. Variables cần có:
+   - schedule_date
+   - weather_temp
+   - weather_description
+   - weather_emoji
+   - weather_humidity
+   - weather_feels_like
+   - weather_wind_speed
+   - weather_visibility
+   - ai_weather_advice
+   - schedule_list
+
+6. Lưu Template ID: "weather_schedule_reminder"
+            `.trim());
+        }
+        window.viewEmailTemplate = viewEmailTemplate;
+
+        // ==================== RECIPIENTS MANAGEMENT ====================
+
+        // Load recipients from Firebase
+        async function loadRecipients() {
+            try {
+                recipients = await getRecipients();
+                renderRecipients();
+                updateRecipientsCount();
+            } catch (error) {
+                console.error('Error loading recipients:', error);
+            }
+        }
+
+        // Render recipients list
+        function renderRecipients() {
+            const listEl = document.getElementById('recipientsList');
+            
+            if (!recipients || Object.keys(recipients).length === 0) {
+                listEl.innerHTML = '<div class="recipients-empty">No recipients yet. Add one above!</div>';
+                return;
+            }
+
+            let html = '';
+            Object.entries(recipients).forEach(([id, data]) => {
+                const lastSentText = data.lastSent 
+                    ? new Date(data.lastSent).toLocaleString('vi-VN')
+                    : 'Never';
+                
+                const statusClass = data.active ? 'active' : 'inactive';
+                const itemClass = data.active ? '' : 'inactive';
+                
+                html += `
+                    <div class="recipient-item ${itemClass}">
+                        <div class="recipient-info">
+                            <div class="recipient-email">
+                                <span class="recipient-status ${statusClass}"></span>
+                                ${data.email}
+                            </div>
+                            <div class="recipient-meta">
+                                Last sent: ${lastSentText}
+                            </div>
+                        </div>
+                        <div class="recipient-actions">
+                            <button class="recipient-btn recipient-btn-test" onclick="testRecipient('${id}', '${data.email}')">
+                                Test
+                            </button>
+                            <button class="recipient-btn recipient-btn-toggle" onclick="toggleRecipient('${id}', ${data.active})">
+                                ${data.active ? 'Disable' : 'Enable'}
+                            </button>
+                            <button class="recipient-btn recipient-btn-remove" onclick="removeRecipient('${id}', '${data.email}')">
+                                Remove
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            listEl.innerHTML = html;
+        }
+
+        // Update recipients count
+        function updateRecipientsCount() {
+            const total = Object.keys(recipients).length;
+            const active = Object.values(recipients).filter(r => r.active).length;
+            document.getElementById('recipientsCount').textContent = 
+                `Total: ${total} recipients (${active} active)`;
+        }
+
+        // Add new recipient
+        async function addNewRecipient() {
+            const input = document.getElementById('newRecipientEmail');
+            const email = input.value.trim();
+            
+            if (!email) {
+                input.classList.add('error');
+                alert('Please enter an email address');
+                return;
+            }
+
+            try {
+                input.classList.remove('error');
+                await addRecipient(email);
+                input.value = '';
+                
+                // Show success message
+                const statusMsg = document.getElementById('statusMessage');
+                statusMsg.innerHTML = `
+                    <div class="status-message status-success">
+                        ✅ Added ${email} successfully!
+                    </div>
+                `;
+                setTimeout(() => statusMsg.innerHTML = '', 3000);
+                
+                // Reload list
+                await loadRecipients();
+                
+            } catch (error) {
+                input.classList.add('error');
+                const statusMsg = document.getElementById('statusMessage');
+                statusMsg.innerHTML = `
+                    <div class="status-message status-error">
+                        ❌ ${error.message}
+                    </div>
+                `;
+                setTimeout(() => statusMsg.innerHTML = '', 5000);
+            }
+        }
+        window.addNewRecipient = addNewRecipient;
+
+        // Test individual recipient
+        async function testRecipient(id, email) {
+            const statusMsg = document.getElementById('statusMessage');
+            const emailjsKey = document.getElementById('emailjsKey').value;
+
+            if (!emailjsKey) {
+                statusMsg.innerHTML = `
+                    <div class="status-message status-error">
+                        ❌ Please enter EmailJS Public Key first!
+                    </div>
+                `;
+                return;
+            }
+
+            try {
+                statusMsg.innerHTML = `
+                    <div class="status-message" style="background: #cce5ff; color: #004085; border-color: #b8daff;">
+                        ⏳ Sending test email to ${email}...
+                    </div>
+                `;
+
+                // Initialize EmailJS
+                initEmailJS(emailjsKey);
+
+                // Send test email
+                const result = await sendEmail(email);
+
+                if (result.success) {
+                    statusMsg.innerHTML = `
+                        <div class="status-message status-success">
+                            ✅ Test email sent to ${email}!<br>
+                            <small>Time: ${result.duration}ms</small>
+                        </div>
+                    `;
+                    
+                    // Update lastSent in Firebase
+                    await updateRecipient(id, { lastSent: Date.now() });
+                    await loadRecipients();
+                    
+                } else {
+                    throw new Error(result.error);
+                }
+
+            } catch (error) {
+                statusMsg.innerHTML = `
+                    <div class="status-message status-error">
+                        ❌ Failed to send to ${email}: ${error.message}
+                    </div>
+                `;
+            }
+        }
+        window.testRecipient = testRecipient;
+
+        // Toggle recipient active status
+        async function toggleRecipient(id, currentStatus) {
+            try {
+                await updateRecipient(id, { active: !currentStatus });
+                await loadRecipients();
+                
+                const statusMsg = document.getElementById('statusMessage');
+                statusMsg.innerHTML = `
+                    <div class="status-message status-success">
+                        ✅ Recipient ${!currentStatus ? 'enabled' : 'disabled'}!
+                    </div>
+                `;
+                setTimeout(() => statusMsg.innerHTML = '', 3000);
+                
+            } catch (error) {
+                alert('Error toggling recipient: ' + error.message);
+            }
+        }
+        window.toggleRecipient = toggleRecipient;
+
+        // Remove recipient
+        async function removeRecipient(id, email) {
+            if (!confirm(`Remove ${email} from recipients list?`)) {
+                return;
+            }
+
+            try {
+                await deleteRecipient(id);
+                await loadRecipients();
+                
+                const statusMsg = document.getElementById('statusMessage');
+                statusMsg.innerHTML = `
+                    <div class="status-message status-success">
+                        ✅ Removed ${email}!
+                    </div>
+                `;
+                setTimeout(() => statusMsg.innerHTML = '', 3000);
+                
+            } catch (error) {
+                alert('Error removing recipient: ' + error.message);
+            }
+        }
+        window.removeRecipient = removeRecipient;
+
+        // Send daily weather email to all active recipients NOW (WITH SCHEDULE)
+        async function sendDailyWeatherNow() {
+            const statusMsg = document.getElementById('statusMessage');
+            const emailjsKey = document.getElementById('emailjsKey').value;
+
+            if (!emailjsKey) {
+                statusMsg.innerHTML = `
+                    <div class="status-message status-error">
+                        ❌ Please enter EmailJS Public Key first!
+                    </div>
+                `;
+                return;
+            }
+
+            try {
+                statusMsg.innerHTML = `
+                    <div class="status-message" style="background: #cce5ff; color: #004085; border-color: #b8daff;">
+                        ⏳ Fetching schedule and sending emails...
+                    </div>
+                `;
+                updateStatusCard('email', 'warning', 'Preparing...', '...');
+
+                // Initialize EmailJS
+                initEmailJS(emailjsKey);
+
+                // Get all active recipients
+                const activeRecipients = Object.entries(recipients).filter(([id, data]) => data.active);
+                
+                if (activeRecipients.length === 0) {
+                    statusMsg.innerHTML = `
+                        <div class="status-message status-error">
+                            ❌ No active recipients found!
+                        </div>
+                    `;
+                    updateStatusCard('email', 'error', 'No recipients', 'Error');
+                    return;
+                }
+
+                // Fetch today's schedule for Quynh (assuming primary recipient is Quynh)
+                let todaySchedules = [];
+                try {
+                    console.log('📅 Fetching schedule from Firebase...');
+                    const allEvents = await getUserEvents('quynh');
+                    
+                    if (allEvents) {
+                        // Get today's date
+                        const today = new Date();
+                        const todayStr = today.toISOString().split('T')[0]; // YYYY-MM-DD
+                        
+                        // Filter events for today
+                        todaySchedules = Object.values(allEvents).filter(event => {
+                            return event.start_date === todayStr;
+                        }).sort((a, b) => {
+                            // Sort by start_time
+                            return a.start_time.localeCompare(b.start_time);
+                        });
+                        
+                        console.log(`✅ Found ${todaySchedules.length} schedule(s) for today`);
+                    }
+                } catch (error) {
+                    console.error('Error fetching schedule:', error);
+                    // Continue without schedule if fetch fails
+                }
+
+                let successCount = 0;
+                let failCount = 0;
+                const results = [];
+
+                // Send to each active recipient
+                for (const [id, data] of activeRecipients) {
+                    try {
+                        console.log(`📧 Sending to ${data.email} (with ${todaySchedules.length} schedule(s))...`);
+                        
+                        // Use sendScheduleWeatherEmail with actual schedule
+                        const result = await sendScheduleWeatherEmail(data.email, todaySchedules);
+                        
+                        if (result.success) {
+                            successCount++;
+                            results.push(`✅ ${data.email} (${result.duration}ms, ${todaySchedules.length} classes)`);
+                            // Update lastSent
+                            await updateRecipient(id, { lastSent: Date.now() });
+                        } else {
+                            failCount++;
+                            results.push(`❌ ${data.email}: ${result.error}`);
+                        }
+                    } catch (error) {
+                        console.error(`Failed to send to ${data.email}:`, error);
+                        failCount++;
+                        results.push(`❌ ${data.email}: ${error.message}`);
+                    }
+                }
+
+                // Reload recipients to show updated lastSent times
+                await loadRecipients();
+
+                statusMsg.innerHTML = `
+                    <div class="status-message status-success">
+                        ✅ Weather & schedule emails sent!<br>
+                        <small>Success: ${successCount} | Failed: ${failCount}</small><br>
+                        <small>Schedule items: ${todaySchedules.length} class(es)</small><br>
+                        <details style="margin-top: 10px;">
+                            <summary style="cursor: pointer;">View Details</summary>
+                            <div style="margin-top: 10px; font-size: 0.85rem;">
+                                ${results.join('<br>')}
+                            </div>
+                        </details>
+                    </div>
+                `;
+                updateStatusCard('email', 'success', `Sent to ${successCount} recipients`, 'OK');
+
+            } catch (error) {
+                statusMsg.innerHTML = `
+                    <div class="status-message status-error">
+                        ❌ Error: ${error.message}
+                    </div>
+                `;
+                updateStatusCard('email', 'error', error.message, 'Error');
+            }
+        }
+        window.sendDailyWeatherNow = sendDailyWeatherNow;
+
+        // Start automatic daily weather email at 6 AM
+        function startAutoSchedule() {
+            const emailjsKey = document.getElementById('emailjsKey').value;
+
+            if (!emailjsKey) {
+                alert('❌ Please enter EmailJS Public Key first!');
+                return;
+            }
+
+            if (confirm('Bật gửi email tự động lúc 6 AM mỗi ngày?\n\n⚠️ Lưu ý: Chỉ hoạt động khi trang web đang mở!')) {
+                // Initialize EmailJS
+                initEmailJS(emailjsKey);
+                
+                // Start scheduling
+                scheduleDailyWeatherEmail(6, 0);
+                
+                alert('✅ Đã bật gửi tự động!\n\nEmail sẽ được gửi lúc 6:00 AM hàng ngày.\n\n⚠️ Lưu trang web mở để tính năng hoạt động.');
+            }
+        }
+        window.startAutoSchedule = startAutoSchedule;
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            loadWeather();
+            loadRecipients(); // Load recipients list
+            
+            // Load saved EmailJS key if exists
+            const savedKey = localStorage.getItem('emailjs_key');
+            if (savedKey) {
+                document.getElementById('emailjsKey').value = savedKey;
+            }
+
+            // Save EmailJS key on change
+            document.getElementById('emailjsKey').addEventListener('change', (e) => {
+                localStorage.setItem('emailjs_key', e.target.value);
+            });
+
+            // Add recipient on Enter key
+            document.getElementById('newRecipientEmail').addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    addNewRecipient();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+

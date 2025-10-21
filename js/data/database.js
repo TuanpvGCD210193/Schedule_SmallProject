@@ -85,3 +85,82 @@ export function deleteEvent(userId, eventId) {
   const eventRef = ref(db, `users/${userId}/events/${eventId}`);
   return remove(eventRef);
 }
+
+// ==================== RECIPIENT MANAGEMENT ====================
+
+/**
+ * Validate email format
+ */
+function isValidEmail(email) {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
+}
+
+/**
+ * Add a new recipient
+ * @param {string} email - Email address
+ * @returns {Promise} - Firebase push promise
+ */
+export async function addRecipient(email) {
+  if (!isValidEmail(email)) {
+    throw new Error('Invalid email format');
+  }
+  
+  // Check if email already exists
+  const recipients = await getRecipients();
+  const emailExists = Object.values(recipients || {}).some(r => r.email === email);
+  
+  if (emailExists) {
+    throw new Error('Email already exists');
+  }
+  
+  const recipientsRef = ref(db, 'weather_admin/recipients');
+  const recipientData = {
+    email: email,
+    active: true,
+    createdAt: Date.now(),
+    lastSent: null
+  };
+  
+  return push(recipientsRef, recipientData);
+}
+
+/**
+ * Get all recipients
+ * @returns {Promise<Object>} - Object of recipients
+ */
+export async function getRecipients() {
+  const recipientsRef = ref(db, 'weather_admin/recipients');
+  try {
+    const snapshot = await get(recipientsRef);
+    if (snapshot.exists()) {
+      return snapshot.val();
+    } else {
+      return {};
+    }
+  } catch (error) {
+    console.error('Error getting recipients:', error);
+    return {};
+  }
+}
+
+/**
+ * Update a recipient
+ * @param {string} recipientId - ID of the recipient
+ * @param {Object} data - Data to update
+ * @returns {Promise} - Firebase update promise
+ */
+export function updateRecipient(recipientId, data) {
+  const recipientRef = ref(db, `weather_admin/recipients/${recipientId}`);
+  return update(recipientRef, data);
+}
+
+/**
+ * Delete a recipient
+ * @param {string} recipientId - ID of the recipient
+ * @returns {Promise} - Firebase remove promise
+ */
+export function deleteRecipient(recipientId) {
+  const recipientRef = ref(db, `weather_admin/recipients/${recipientId}`);
+  return remove(recipientRef);
+}

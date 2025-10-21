@@ -571,6 +571,354 @@
                 transform: translateY(-100px) scale(1.5);
             }
         }
+
+        /* Error Notification Badge */
+        .error-notification-badge {
+            position: fixed;
+            top: 90px;
+            right: 30px;
+            background: linear-gradient(135deg, #ff4757 0%, #ff6b9d 100%);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 50px;
+            box-shadow: 0 8px 32px rgba(255, 71, 87, 0.4);
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            z-index: 1000;
+            animation: errorPulse 2s infinite;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .error-notification-badge:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 40px rgba(255, 71, 87, 0.6);
+        }
+
+        .error-notification-badge.hidden {
+            display: none;
+        }
+
+        @keyframes errorPulse {
+            0%, 100% {
+                box-shadow: 0 8px 32px rgba(255, 71, 87, 0.4);
+            }
+            50% {
+                box-shadow: 0 8px 48px rgba(255, 71, 87, 0.7);
+            }
+        }
+
+        /* Error Modal */
+        .error-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            z-index: 2000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .error-modal.show {
+            display: flex;
+        }
+
+        .error-modal-content {
+            background: white;
+            border-radius: 30px;
+            padding: 30px;
+            max-width: 700px;
+            width: 100%;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: slideUp 0.4s ease-out;
+        }
+
+        .error-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .error-modal-title {
+            color: #ff4757;
+            font-size: 1.8rem;
+            font-weight: 800;
+            margin: 0;
+        }
+
+        .error-modal-close {
+            background: #f0f0f0;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            font-size: 24px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            color: #666;
+        }
+
+        .error-modal-close:hover {
+            background: #ff4757;
+            color: white;
+            transform: rotate(90deg);
+        }
+
+        .error-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .error-stat-card {
+            background: linear-gradient(135deg, #e3f2fd 0%, #f0f8ff 100%);
+            padding: 15px;
+            border-radius: 15px;
+            text-align: center;
+            border-left: 4px solid #007aff;
+        }
+
+        .error-stat-number {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #007aff;
+        }
+
+        .error-stat-label {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .error-list {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .error-item {
+            background: #fff0f6;
+            border-left: 4px solid #ff4757;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .error-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 4px 16px rgba(255, 71, 87, 0.2);
+        }
+
+        .error-item.critical {
+            border-left-color: #dc143c;
+            background: #ffe5ec;
+        }
+
+        .error-item.high {
+            border-left-color: #ff6b9d;
+        }
+
+        .error-item.medium {
+            border-left-color: #ffab73;
+            background: #fff8f0;
+        }
+
+        .error-item.low {
+            border-left-color: #5ac8fa;
+            background: #f0f8ff;
+        }
+
+        .error-item.info {
+            border-left-color: #28a745;
+            background: #f0fff4;
+        }
+
+        .error-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 10px;
+        }
+
+        .error-item-type {
+            font-weight: 700;
+            color: #ff4757;
+            font-size: 1rem;
+        }
+
+        .error-item-time {
+            font-size: 12px;
+            color: #999;
+        }
+
+        .error-item-message {
+            margin: 5px 0;
+            color: #333;
+            line-height: 1.5;
+        }
+
+        .error-item-details {
+            font-size: 13px;
+            color: #666;
+            margin-top: 8px;
+            padding-top: 8px;
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .error-item-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .error-btn {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 10px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .error-btn-read {
+            background: #007aff;
+            color: white;
+        }
+
+        .error-btn-read:hover {
+            background: #0056b3;
+        }
+
+        .error-btn-delete {
+            background: #ff4757;
+            color: white;
+        }
+
+        .error-btn-delete:hover {
+            background: #dc143c;
+        }
+
+        .error-modal-footer {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 2px solid #f0f0f0;
+            justify-content: flex-end;
+        }
+
+        .modal-btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .modal-btn-primary {
+            background: linear-gradient(135deg, #007aff 0%, #00d4ff 100%);
+            color: white;
+        }
+
+        .modal-btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 122, 255, 0.3);
+        }
+
+        .modal-btn-secondary {
+            background: #f0f0f0;
+            color: #666;
+        }
+
+        .modal-btn-secondary:hover {
+            background: #e0e0e0;
+        }
+
+        /* Weather Admin Card */
+        .weather-admin-card {
+            background: linear-gradient(135deg, #fff0f6 0%, #ffe5ec 100%);
+            border-radius: 24px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 16px rgba(255, 107, 157, 0.1);
+            border: 3px solid rgba(255, 107, 157, 0.2);
+        }
+
+        .weather-admin-title {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #ff6b9d;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .weather-admin-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .weather-admin-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 15px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .weather-admin-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        @media (max-width: 768px) {
+            .error-notification-badge {
+                top: 70px;
+                right: 20px;
+                padding: 10px 16px;
+                font-size: 12px;
+            }
+
+            .error-modal-content {
+                padding: 20px;
+                max-height: 90vh;
+            }
+
+            .error-modal-title {
+                font-size: 1.4rem;
+            }
+
+            .error-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
     </style>
 </head>
 <body>
@@ -585,6 +933,54 @@
 
     <!-- Net Pattern -->
     <div class="net-pattern"></div>
+
+    <!-- Error Notification Badge -->
+    <div class="error-notification-badge hidden" id="errorBadge" onclick="openErrorModal()">
+        <span>🚨</span>
+        <span id="errorCount">0</span>
+        <span>Lỗi</span>
+    </div>
+
+    <!-- Error Modal -->
+    <div class="error-modal" id="errorModal">
+        <div class="error-modal-content">
+            <div class="error-modal-header">
+                <h2 class="error-modal-title">🚨 Thông Báo Lỗi Hệ Thống</h2>
+                <button class="error-modal-close" onclick="closeErrorModal()">×</button>
+            </div>
+
+            <!-- Error Statistics -->
+            <div class="error-stats" id="errorStats">
+                <div class="error-stat-card">
+                    <div class="error-stat-number" id="totalErrors">0</div>
+                    <div class="error-stat-label">Tổng lỗi</div>
+                </div>
+                <div class="error-stat-card">
+                    <div class="error-stat-number" id="unreadErrors">0</div>
+                    <div class="error-stat-label">Chưa đọc</div>
+                </div>
+                <div class="error-stat-card">
+                    <div class="error-stat-number" id="last24hErrors">0</div>
+                    <div class="error-stat-label">24h gần đây</div>
+                </div>
+            </div>
+
+            <!-- Error List -->
+            <div class="error-list" id="errorList">
+                <p style="text-align: center; color: #999;">Đang tải...</p>
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="error-modal-footer">
+                <button class="modal-btn modal-btn-secondary" onclick="markAllErrorsAsRead()">
+                    Đánh dấu tất cả đã đọc
+                </button>
+                <button class="modal-btn modal-btn-primary" onclick="closeErrorModal()">
+                    Đóng
+                </button>
+            </div>
+        </div>
+    </div>
 
     <!-- Back Button -->
     <button class="back-button" onclick="goBackToIndex()">
@@ -603,11 +999,33 @@
             
             <h2 class="function-selection__title">Chọn một chức năng</h2>
             
+            <!-- Weather Admin Card -->
+            <div class="weather-admin-card">
+                <div class="weather-admin-title">
+                    <span>🌤️</span>
+                    <span>Quản Lý Thời Tiết & Email</span>
+                </div>
+                <div class="weather-admin-actions">
+                    <button class="weather-admin-btn" onclick="window.location.href='weather-admin.html?user=tuan'" style="background: linear-gradient(135deg, #ff6b9d 0%, #ff4757 100%); color: white;">
+                        <img src="assets/icon/panda.png" alt="Weather" style="width: 16px; height: 16px;">
+                        Xem Dashboard Thời Tiết
+                    </button>
+                    <button class="weather-admin-btn" onclick="testEmailSystem()" style="background: linear-gradient(135deg, #00d4ff 0%, #007aff 100%); color: white;">
+                        <img src="assets/icon/kitty.png" alt="Test" style="width: 16px; height: 16px;">
+                        Test Gửi Email
+                    </button>
+                    <button class="weather-admin-btn" onclick="viewEmailHistory()" style="background: linear-gradient(135deg, #ffab73 0%, #ffd700 100%); color: white;">
+                        <img src="assets/icon/lovely.png" alt="History" style="width: 16px; height: 16px;">
+                        Lịch Sử Email
+                    </button>
+                </div>
+            </div>
+            
             <!-- Water Control Panel -->
             <div class="water-control-panel">
                 <div class="control-title">
                     <img src="assets/icon/lovely.png" alt="Water Control" class="water-icon">
-                    <span>💧 Kiểm Soát Uống Nước - Quỳnh</span>
+                    <span>Quản lý function 💧</span>
                 </div>
                 
                 <div class="control-actions">
@@ -873,6 +1291,186 @@
                 console.log(`🎯 Tuân's avatar randomized: ${selectedAvatar}`);
             }
         }
+
+        // ===== ERROR NOTIFICATION SYSTEM =====
+        
+        // Load error logger
+        let adminLogger;
+        import('./js/error-logger.js').then(module => {
+            adminLogger = module.default;
+            window.adminLogger = adminLogger;
+            console.log('✅ Admin error logger loaded');
+            
+            // Load notifications on page load
+            loadErrorNotifications();
+        }).catch(error => {
+            console.error('❌ Failed to load error logger:', error);
+        });
+
+        // Load and display error notifications
+        async function loadErrorNotifications() {
+            try {
+                if (!window.adminLogger) {
+                    console.warn('Error logger not loaded yet');
+                    return;
+                }
+
+                const errors = await window.adminLogger.loadUnreadErrors();
+                const stats = await window.adminLogger.getStatistics();
+                
+                // Update badge
+                const errorCount = errors.length;
+                if (errorCount > 0) {
+                    document.getElementById('errorCount').textContent = errorCount;
+                    document.getElementById('errorBadge').classList.remove('hidden');
+                } else {
+                    document.getElementById('errorBadge').classList.add('hidden');
+                }
+
+                // Update stats
+                document.getElementById('totalErrors').textContent = stats.total;
+                document.getElementById('unreadErrors').textContent = stats.unread;
+                document.getElementById('last24hErrors').textContent = stats.last_24h;
+
+                return errors;
+
+            } catch (error) {
+                console.error('Error loading notifications:', error);
+            }
+        }
+
+        // Open error modal
+        async function openErrorModal() {
+            const errors = await window.adminLogger.loadErrors();
+            const errorList = document.getElementById('errorList');
+            
+            if (!errors || errors.length === 0) {
+                errorList.innerHTML = '<p style="text-align: center; color: #999;">Không có lỗi nào</p>';
+            } else {
+                errorList.innerHTML = errors.map(error => {
+                    const timeStr = new Date(error.timestamp).toLocaleString('vi-VN');
+                    const severityClass = error.severity.toLowerCase();
+                    const isRead = error.is_read ? '✓ Đã đọc' : '';
+                    
+                    return `
+                        <div class="error-item ${severityClass}">
+                            <div class="error-item-header">
+                                <strong class="error-item-type">${error.error_type.replace(/_/g, ' ')}</strong>
+                                <span class="error-item-time">${timeStr}</span>
+                            </div>
+                            <p class="error-item-message">${error.error_message}</p>
+                            <div class="error-item-details">
+                                <strong>Nguồn:</strong> ${error.source}<br>
+                                <strong>Người dùng:</strong> ${error.user_affected}<br>
+                                <strong>Mức độ:</strong> <span style="color: ${getSeverityColor(error.severity)}; font-weight: 700;">${error.severity}</span>
+                                ${error.auto_fallback_used ? '<br><strong>✅ Đã dùng fallback</strong>' : ''}
+                                ${error.details && error.details.duration_ms ? `<br><strong>Thời gian:</strong> ${error.details.duration_ms}ms` : ''}
+                            </div>
+                            <div class="error-item-actions">
+                                ${!error.is_read ? `
+                                    <button class="error-btn error-btn-read" onclick="markErrorAsRead('${error.id}')">
+                                        Đánh dấu đã đọc
+                                    </button>
+                                ` : `<span style="color: #28a745; font-size: 12px; font-weight: 600;">${isRead}</span>`}
+                                <button class="error-btn error-btn-delete" onclick="deleteError('${error.id}')">
+                                    Xóa
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            }
+            
+            document.getElementById('errorModal').classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Close error modal
+        function closeErrorModal() {
+            document.getElementById('errorModal').classList.remove('show');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Get severity color
+        function getSeverityColor(severity) {
+            const colors = {
+                'CRITICAL': '#dc143c',
+                'HIGH': '#ff4757',
+                'MEDIUM': '#ffab73',
+                'LOW': '#5ac8fa',
+                'INFO': '#28a745'
+            };
+            return colors[severity] || '#999';
+        }
+
+        // Mark error as read
+        async function markErrorAsRead(errorId) {
+            if (!window.adminLogger) return;
+            
+            await window.adminLogger.markAsRead(errorId);
+            
+            // Reload notifications and modal
+            await loadErrorNotifications();
+            await openErrorModal();
+        }
+
+        // Delete error
+        async function deleteError(errorId) {
+            if (!window.adminLogger) return;
+            
+            if (confirm('Bạn có chắc muốn xóa lỗi này?')) {
+                await window.adminLogger.deleteError(errorId);
+                
+                // Reload notifications and modal
+                await loadErrorNotifications();
+                await openErrorModal();
+            }
+        }
+
+        // Mark all errors as read
+        async function markAllErrorsAsRead() {
+            if (!window.adminLogger) return;
+            
+            await window.adminLogger.markAllAsRead();
+            
+            // Reload notifications and modal
+            await loadErrorNotifications();
+            await openErrorModal();
+        }
+
+        // Auto-refresh notifications every 30 seconds
+        setInterval(loadErrorNotifications, 30000);
+
+        // Make functions globally available
+        window.openErrorModal = openErrorModal;
+        window.closeErrorModal = closeErrorModal;
+        window.markErrorAsRead = markErrorAsRead;
+        window.deleteError = deleteError;
+        window.markAllErrorsAsRead = markAllErrorsAsRead;
+
+        // ===== WEATHER & EMAIL SYSTEM =====
+        
+        // Test email system
+        async function testEmailSystem() {
+            const recipientEmail = prompt('Nhập email để test gửi:', 'quynhtest@example.com');
+            if (!recipientEmail) return;
+            
+            alert('Đang gửi email test... Vui lòng chờ.');
+            
+            // This will be implemented in weather-admin.html
+            console.log('Test email to:', recipientEmail);
+            alert('Chức năng này sẽ hoạt động trong Weather Admin Dashboard.');
+            window.location.href = 'weather-admin.html?user=tuan';
+        }
+
+        // View email history
+        function viewEmailHistory() {
+            alert('Chức năng xem lịch sử email sẽ có trong Weather Admin Dashboard.');
+            window.location.href = 'weather-admin.html?user=tuan';
+        }
+
+        window.testEmailSystem = testEmailSystem;
+        window.viewEmailHistory = viewEmailHistory;
 
         // Initialize
         document.addEventListener('DOMContentLoaded', function() {

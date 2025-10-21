@@ -866,6 +866,117 @@
                 padding: 0 10px;
             }
         }
+
+        /* Weather Widget */
+        .weather-widget {
+            background: linear-gradient(135deg, #ffe5ec 0%, #fff0f6 100%);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 16px rgba(255, 107, 157, 0.15);
+            border: 3px solid rgba(255, 107, 157, 0.2);
+            animation: fadeIn 0.8s ease-out 0.3s both;
+        }
+
+        .weather-widget-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .weather-widget-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--primary-pink);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .weather-widget-refresh {
+            background: white;
+            border: 2px solid var(--primary-pink);
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 16px;
+        }
+
+        .weather-widget-refresh:hover {
+            background: var(--primary-pink);
+            color: white;
+            transform: rotate(180deg);
+        }
+
+        .weather-widget-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .weather-temp-display {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--primary-pink);
+        }
+
+        .weather-desc-display {
+            font-size: 1rem;
+            color: var(--text-dark);
+            margin-top: 5px;
+            font-weight: 600;
+        }
+
+        .weather-icon-display {
+            font-size: 3rem;
+            animation: float-icon 3s infinite ease-in-out;
+        }
+
+        .weather-ai-tip {
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 12px;
+            padding: 15px;
+            margin-top: 15px;
+            font-size: 0.95rem;
+            line-height: 1.7;
+            color: var(--text-dark);
+            border-left: 4px solid var(--primary-pink);
+            box-shadow: 0 2px 8px rgba(255, 107, 157, 0.1);
+            max-height: none;
+            overflow: visible;
+            word-wrap: break-word;
+            white-space: pre-wrap;
+        }
+
+        .weather-ai-tip::before {
+            content: '🤖 ';
+            font-size: 1.1rem;
+            margin-right: 5px;
+        }
+
+        @media (max-width: 768px) {
+            .weather-widget {
+                padding: 15px;
+            }
+
+            .weather-temp-display {
+                font-size: 2rem;
+            }
+
+            .weather-icon-display {
+                font-size: 2.5rem;
+            }
+
+            .weather-ai-tip {
+                font-size: 0.85rem;
+            }
+        }
     </style>
 </head>
 <body>
@@ -882,11 +993,11 @@
     <div class="net-pattern"></div>
 
     <!-- Gift Box 20/10 -->
-    <div class="gift-box-container">
+    <!-- <div class="gift-box-container">
         <div class="gift-box" id="gift-box">
             <!-- Gift box content will be added via CSS pseudo-elements -->
         </div>
-    </div>
+    </div> -->
 
     <!-- Gift Arrow - COMMENT OUT AFTER 20/10 -->
     <!-- 
@@ -897,12 +1008,12 @@
         </div>
     </div>
     -->
-    <div class="gift-arrow-container" id="gift-arrow-container">
+    <!-- <div class="gift-arrow-container" id="gift-arrow-container">
         <div class="gift-arrow">
             <span class="gift-arrow-icon">👆</span>
             <span class="gift-arrow-text">Nhấn vào hộp quà!</span>
         </div>
-    </div>
+    </div> -->
 
     <!-- Gift Modal (hidden by default) -->
     <div class="gift-modal" id="gift-modal">
@@ -925,7 +1036,7 @@
     </div>
 
     <!-- Back Button -->
-    <button class="back-button" onclick="goBackToIndex()">
+    <button class="back-button" onclick="sessionStorage.removeItem('giftClicked'); window.location.href='index.html';">
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
             <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
         </svg>
@@ -937,6 +1048,11 @@
         <div class="selection-box">
             <div id="current-user-profile" class="current-user-profile">
                 <!-- Profile will be loaded here -->
+            </div>
+
+            <!-- Weather Widget -->
+            <div id="weatherWidget" class="weather-widget" style="display: none;">
+                <!-- Weather will be loaded here -->
             </div>
             
             <h2 class="function-selection__title">Chọn một chức năng</h2>
@@ -1055,30 +1171,32 @@
         const shouldShowGift = isFromIndex || showGift === 'true' || giftClicked !== 'true';
         
         if (!shouldShowGift) {
-            giftBoxContainer.classList.add('hidden');
-            giftArrowContainer.classList.add('hidden'); // Hide arrow too
+            if (giftBoxContainer) giftBoxContainer.classList.add('hidden');
+            if (giftArrowContainer) giftArrowContainer.classList.add('hidden'); // Hide arrow too
             console.log('Hiding gift box - clicked and not from index');
         } else {
             console.log('Showing gift box - from index or showGift=true or not clicked');
         }
 
-        // Gift box click handler
-        giftBox.addEventListener('click', function() {
-            // Mark gift as clicked in this session
-            sessionStorage.setItem('giftClicked', 'true');
-            
-            // Create confetti effect
-            createConfetti();
-            
-            // Hide gift box and arrow immediately
-            giftBoxContainer.classList.add('hidden');
-            giftArrowContainer.classList.add('hidden');
-            
-            // Show modal after delay
-            setTimeout(() => {
-                showGiftModal();
-            }, 500);
-        });
+        // Gift box click handler (only if gift box exists)
+        if (giftBox) {
+            giftBox.addEventListener('click', function() {
+                // Mark gift as clicked in this session
+                sessionStorage.setItem('giftClicked', 'true');
+                
+                // Create confetti effect
+                createConfetti();
+                
+                // Hide gift box and arrow immediately
+                if (giftBoxContainer) giftBoxContainer.classList.add('hidden');
+                if (giftArrowContainer) giftArrowContainer.classList.add('hidden');
+                
+                // Show modal after delay
+                setTimeout(() => {
+                    showGiftModal();
+                }, 500);
+            });
+        }
 
         // Confetti creation
         function createConfetti() {
@@ -1124,17 +1242,78 @@
             }
         });
 
-        // Go back to index function
-        function goBackToIndex() {
-            // Clear session storage to reset gift box for next visit
-            sessionStorage.removeItem('giftClicked');
+        // Note: goBackToIndex is now inline in the button's onclick attribute
+
+        // ===== WEATHER WIDGET =====
+        
+        // Load weather widget
+        async function loadWeatherWidget() {
+            const weatherWidget = document.getElementById('weatherWidget');
             
-            // Navigate back to index
-            window.location.href = 'index.html';
+            try {
+                // Import weather service
+                const { fetchWeatherData, getAIWeatherTip, formatWeatherDisplay, getWeatherEmoji } = await import('./js/weather-service.js');
+                
+                // Fetch weather data
+                const weatherData = await fetchWeatherData();
+                const weather = formatWeatherDisplay(weatherData);
+                
+                // Get AI tip (full version - no truncation)
+                let aiTip = 'Đang tải lời khuyên AI...';
+                getAIWeatherTip(weatherData).then(tip => {
+                    const aiTipElement = document.getElementById('weatherAiTip');
+                    if (aiTipElement) {
+                        // Display full tip (no shortening)
+                        aiTipElement.textContent = tip;
+                    }
+                }).catch(error => {
+                    console.error('AI tip error:', error);
+                    const aiTipElement = document.getElementById('weatherAiTip');
+                    if (aiTipElement) {
+                        aiTipElement.textContent = 'Hôm nay hãy chú ý thời tiết nhé! 💕';
+                    }
+                });
+                
+                // Display weather widget
+                weatherWidget.innerHTML = `
+                    <div class="weather-widget-header">
+                        <div class="weather-widget-title">
+                            <span>🌤️</span>
+                            <span>Thời Tiết Đà Nẵng</span>
+                        </div>
+                        <div class="weather-widget-refresh" onclick="loadWeatherWidget()" title="Làm mới">
+                            🔄
+                        </div>
+                    </div>
+                    <div class="weather-widget-content">
+                        <div>
+                            <div class="weather-temp-display">${weather.temp}°C</div>
+                            <div class="weather-desc-display">${weather.description}</div>
+                        </div>
+                        <div class="weather-icon-display">${weather.emoji}</div>
+                    </div>
+                    <div class="weather-ai-tip" id="weatherAiTip">
+                        ${aiTip}
+                    </div>
+                `;
+                
+                weatherWidget.style.display = 'block';
+                console.log('✅ Weather widget loaded');
+                
+            } catch (error) {
+                console.error('❌ Error loading weather widget:', error);
+                // Hide widget if error
+                weatherWidget.style.display = 'none';
+            }
         }
 
         // Make function globally available
-        window.goBackToIndex = goBackToIndex;
+        window.loadWeatherWidget = loadWeatherWidget;
+
+        // Load weather widget on page load (after profile)
+        setTimeout(() => {
+            loadWeatherWidget();
+        }, 500);
 
     </script>
 </body>
