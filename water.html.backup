@@ -1,0 +1,3549 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UniSchedule | Nhắc Nhở Uống Nước</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-pink: #ff6b9d;
+            --secondary-pink: #ffc2d4;
+            --light-pink: #ffe5ec;
+            --accent-orange: #ffab73;
+            --accent-blue: #007aff;
+            --accent-purple: #8e44ad;
+            --white: #ffffff;
+            --text-dark: #4a4a4a;
+            --text-medium: #666;
+            --text-light: #888;
+            --shadow-soft: 0 8px 32px rgba(255, 107, 157, 0.15);
+            --shadow-hover: 0 12px 48px rgba(255, 107, 157, 0.25);
+        }
+
+        body {
+            font-family: 'Quicksand', 'Inter', sans-serif;
+            background: linear-gradient(135deg, #ffeef2 0%, #fff0f6 50%, #ffe5ec 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Volleyball Background Animation */
+        .volleyball-bg {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .volleyball {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background: radial-gradient(circle at 30% 30%, #fff, #ffd4e5);
+            border-radius: 50%;
+            opacity: 0.15;
+            animation: float-volleyball 15s infinite ease-in-out;
+        }
+
+        .volleyball::before,
+        .volleyball::after {
+            content: '';
+            position: absolute;
+            background: var(--primary-pink);
+            opacity: 0.3;
+        }
+
+        .volleyball::before {
+            width: 2px;
+            height: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .volleyball::after {
+            width: 100%;
+            height: 2px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .volleyball:nth-child(1) { left: 10%; top: 20%; animation-delay: 0s; }
+        .volleyball:nth-child(2) { left: 80%; top: 60%; animation-delay: 3s; }
+        .volleyball:nth-child(3) { left: 60%; top: 10%; animation-delay: 6s; }
+        .volleyball:nth-child(4) { left: 20%; top: 70%; animation-delay: 9s; }
+        .volleyball:nth-child(5) { left: 90%; top: 30%; animation-delay: 12s; }
+
+        @keyframes float-volleyball {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+            }
+            25% {
+                transform: translateY(-30px) rotate(90deg);
+            }
+            50% {
+                transform: translateY(-15px) rotate(180deg);
+            }
+            75% {
+                transform: translateY(-40px) rotate(270deg);
+            }
+        }
+
+        /* Net Pattern Background */
+        .net-pattern {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            opacity: 0.03;
+            background-image: 
+                repeating-linear-gradient(0deg, var(--primary-pink), var(--primary-pink) 2px, transparent 2px, transparent 20px),
+                repeating-linear-gradient(90deg, var(--primary-pink), var(--primary-pink) 2px, transparent 2px, transparent 20px);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Main Container */
+        .water-selection-screen {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 40px 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .selection-box {
+            width: 100%;
+            max-width: 800px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 40px;
+            padding: 50px 40px;
+            box-shadow: var(--shadow-soft);
+            border: 3px solid rgba(255, 107, 157, 0.1);
+            position: relative;
+            animation: slideUp 0.6s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Decorative Elements */
+        .selection-box::before,
+        .selection-box::after {
+            content: '💧';
+            position: absolute;
+            font-size: 40px;
+            opacity: 0.2;
+            animation: bounce 2s infinite ease-in-out;
+        }
+
+        .selection-box::before {
+            top: -20px;
+            right: 30px;
+            animation-delay: 0.3s;
+        }
+
+        .selection-box::after {
+            bottom: -20px;
+            left: 30px;
+            animation-delay: 0.6s;
+        }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-10px) rotate(10deg);
+            }
+        }
+
+        /* User Profile */
+        .current-user-profile {
+            text-align: center;
+            margin-bottom: 30px;
+            animation: fadeIn 0.8s ease-out 0.2s both;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .profile-card__avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid var(--primary-pink);
+            box-shadow: 0 8px 24px rgba(255, 107, 157, 0.3);
+            margin-bottom: 15px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            animation: pulse-avatar 3s infinite ease-in-out;
+        }
+
+        @keyframes pulse-avatar {
+            0%, 100% {
+                transform: scale(1);
+                box-shadow: 0 8px 24px rgba(255, 107, 157, 0.3);
+            }
+            50% {
+                transform: scale(1.05);
+                box-shadow: 0 12px 32px rgba(255, 107, 157, 0.4);
+            }
+        }
+
+        .profile-card__avatar:hover {
+            transform: scale(1.1) rotate(5deg);
+            border-color: var(--accent-orange);
+        }
+
+        .profile-card__name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-pink);
+            margin-bottom: 5px;
+            text-shadow: 0 2px 10px rgba(255, 107, 157, 0.2);
+        }
+
+        /* Title */
+        .water-selection__title {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--primary-pink);
+            text-align: center;
+            margin-bottom: 40px;
+            position: relative;
+            animation: fadeIn 0.8s ease-out 0.4s both;
+        }
+
+        .water-selection__title::after {
+            content: '✨';
+            position: absolute;
+            right: -10px;
+            top: -5px;
+            font-size: 1.5rem;
+            animation: sparkle 1.5s infinite ease-in-out;
+        }
+
+        @keyframes sparkle {
+            0%, 100% {
+                opacity: 1;
+                transform: scale(1) rotate(0deg);
+            }
+            50% {
+                opacity: 0.5;
+                transform: scale(1.2) rotate(20deg);
+            }
+        }
+
+        /* Streak Container */
+        .streak-container {
+            background: linear-gradient(135deg, #ff6b9d 0%, #ffd700 50%, #ff4757 100%);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            animation: streakGlow 3s infinite ease-in-out;
+        }
+
+        .streak-container.frozen {
+            background: linear-gradient(135deg, #00d4ff 0%, #5ac8fa 50%, #007aff 100%);
+            animation: frozenGlow 2s infinite ease-in-out;
+        }
+
+        @keyframes streakGlow {
+            0%, 100% {
+                box-shadow: 0 0 20px rgba(255, 107, 157, 0.3);
+            }
+            50% {
+                box-shadow: 0 0 40px rgba(255, 107, 157, 0.6);
+            }
+        }
+
+        @keyframes frozenGlow {
+            0%, 100% {
+                box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+            }
+            50% {
+                box-shadow: 0 0 40px rgba(0, 212, 255, 0.6);
+            }
+        }
+
+        .streak-container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+            animation: streakShine 4s infinite ease-in-out;
+        }
+
+        @keyframes streakShine {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .streak-title {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: white;
+            margin-bottom: 15px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            position: relative;
+            z-index: 1;
+        }
+
+        .streak-number {
+            font-size: 4rem;
+            font-weight: 900;
+            color: white;
+            margin-bottom: 10px;
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            position: relative;
+            z-index: 1;
+            animation: streakPulse 2s infinite ease-in-out;
+        }
+
+        @keyframes streakPulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+        }
+
+        .streak-level {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            position: relative;
+            z-index: 1;
+        }
+
+        .streak-emoji {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            animation: streakBounce 2s infinite ease-in-out;
+            position: relative;
+            z-index: 1;
+        }
+
+        @keyframes streakBounce {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-10px) rotate(10deg);
+            }
+        }
+
+        /* Freeze Status */
+        .freeze-status {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            padding: 15px;
+            margin-top: 15px;
+            color: white;
+            font-weight: 600;
+            position: relative;
+            z-index: 1;
+        }
+
+        .freeze-status.frozen {
+            background: rgba(0, 212, 255, 0.3);
+            border: 2px solid rgba(255, 255, 255, 0.5);
+        }
+
+        /* Recovery Status */
+        .recovery-status {
+            background: rgba(255, 193, 7, 0.2);
+            border-radius: 15px;
+            padding: 15px;
+            margin-top: 10px;
+            color: white;
+            font-weight: 600;
+            position: relative;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .recovery-icon {
+            font-size: 1.5rem;
+            margin-right: 10px;
+            animation: recoveryPulse 2s infinite ease-in-out;
+        }
+
+        @keyframes recoveryPulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+        }
+
+        .recovery-btn {
+            background: linear-gradient(135deg, #ffc107 0%, #ff8f00 100%);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(255, 193, 7, 0.3);
+        }
+
+        .recovery-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 193, 7, 0.4);
+        }
+
+        .recovery-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* Reminder Management */
+        .reminder-management {
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        .reminder-manage-btn {
+            background: linear-gradient(135deg, #8e44ad 0%, #9b59b6 100%);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 15px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin: 0 auto;
+            box-shadow: 0 4px 15px rgba(142, 68, 173, 0.3);
+        }
+
+        .reminder-manage-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(142, 68, 173, 0.4);
+        }
+
+        .reminder-manage-btn img {
+            width: 16px;
+            height: 16px;
+            object-fit: cover;
+        }
+
+        /* Reminder Modal */
+        .reminder-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 107, 157, 0.95);
+            backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 3000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.5s ease;
+        }
+
+        .reminder-modal.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .reminder-modal-content {
+            background: white;
+            border-radius: 24px;
+            padding: 30px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            box-shadow: 0 20px 60px rgba(255, 107, 157, 0.3);
+            transform: translateY(50px);
+            transition: transform 0.5s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .reminder-modal.show .reminder-modal-content {
+            transform: translateY(0);
+        }
+
+        .reminder-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light-pink);
+        }
+
+        .reminder-modal-title {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--primary-pink);
+            margin: 0;
+        }
+
+        .reminder-modal-close {
+            background: none;
+            border: none;
+            font-size: 2rem;
+            color: var(--text-light);
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .reminder-modal-close:hover {
+            color: var(--primary-pink);
+        }
+
+        .reminder-list {
+            max-height: 300px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+        }
+
+        .reminder-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px;
+            margin-bottom: 10px;
+            background: var(--light-pink);
+            border-radius: 15px;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .reminder-item:hover {
+            border-color: var(--primary-pink);
+            transform: translateY(-2px);
+        }
+
+        .reminder-time-input {
+            flex: 1;
+            padding: 8px 12px;
+            border: 2px solid var(--light-pink);
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-right: 10px;
+        }
+
+        .reminder-time-input:focus {
+            outline: none;
+            border-color: var(--primary-pink);
+        }
+
+        .reminder-label-input {
+            flex: 2;
+            padding: 8px 12px;
+            border: 2px solid var(--light-pink);
+            border-radius: 10px;
+            font-size: 1rem;
+            color: var(--text-dark);
+            margin-right: 10px;
+        }
+
+        .reminder-label-input:focus {
+            outline: none;
+            border-color: var(--primary-pink);
+        }
+
+        .reminder-delete-btn {
+            background: linear-gradient(135deg, #ff4757 0%, #ff3742 100%);
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .reminder-delete-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(255, 71, 87, 0.4);
+        }
+
+        .reminder-actions {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .reminder-add-btn, .reminder-reset-btn {
+            flex: 1;
+            padding: 12px 16px;
+            border: none;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .reminder-add-btn {
+            background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+            color: white;
+        }
+
+        .reminder-reset-btn {
+            background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+            color: white;
+        }
+
+        .reminder-add-btn:hover, .reminder-reset-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .reminder-modal-footer {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .reminder-save-btn, .reminder-cancel-btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 15px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .reminder-save-btn {
+            background: linear-gradient(135deg, var(--primary-pink) 0%, var(--accent-purple) 100%);
+            color: white;
+        }
+
+        .reminder-cancel-btn {
+            background: linear-gradient(135deg, #95a5a6 0%, #7f8c8d 100%);
+            color: white;
+        }
+
+        .reminder-save-btn:hover, .reminder-cancel-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .freeze-icon {
+            font-size: 1.5rem;
+            margin-right: 10px;
+            animation: freezePulse 2s infinite ease-in-out;
+        }
+
+        @keyframes freezePulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.2);
+            }
+        }
+
+        /* Water Progress */
+        .water-progress-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 30px;
+            box-shadow: var(--shadow-soft);
+            border: 3px solid rgba(255, 107, 157, 0.1);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .progress-title {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: var(--primary-pink);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .progress-title .water-icon {
+            width: 36px;
+            height: 36px;
+            object-fit: cover;
+            border-radius: 10px;
+            border: 3px solid var(--primary-pink);
+            padding: 4px;
+            background: rgba(255, 107, 157, 0.1);
+            animation: iconFloat 3s infinite ease-in-out;
+        }
+
+        @keyframes iconFloat {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-5px) rotate(5deg);
+            }
+        }
+
+        .water-glass {
+            width: 200px;
+            height: 250px;
+            margin: 0 auto 30px;
+            position: relative;
+            background: linear-gradient(to bottom, 
+                var(--light-pink) 0%, 
+                var(--light-pink) var(--water-level, 0%), 
+                transparent var(--water-level, 0%), 
+                transparent 100%);
+            border: 8px solid var(--primary-pink);
+            border-radius: 20px 20px 60px 60px;
+            overflow: hidden;
+            transition: all 0.5s ease;
+        }
+
+        .water-glass::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, 
+                transparent 30%, 
+                rgba(255, 255, 255, 0.3) 50%, 
+                transparent 70%);
+            animation: waterShine 3s infinite ease-in-out;
+        }
+
+        @keyframes waterShine {
+            0% {
+                transform: translateX(-100%);
+            }
+            50% {
+                transform: translateX(100%);
+            }
+        }
+
+        .water-level {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, 
+                var(--primary-pink) 0%, 
+                var(--secondary-pink) 50%, 
+                var(--accent-orange) 100%);
+            height: var(--water-level, 0%);
+            transition: height 0.5s ease;
+            border-radius: 0 0 50px 50px;
+        }
+
+        .water-bubbles {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: var(--water-level, 0%);
+            overflow: hidden;
+        }
+
+        .bubble {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 50%;
+            animation: bubbleUp 2s infinite ease-in-out;
+        }
+
+        @keyframes bubbleUp {
+            0% {
+                transform: translateY(0) scale(0);
+                opacity: 0;
+            }
+            50% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) scale(1);
+                opacity: 0;
+            }
+        }
+
+        .progress-stats {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--primary-pink);
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--text-dark);
+            font-weight: 600;
+        }
+
+        /* Reminder Schedule */
+        .reminder-schedule {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 30px;
+            box-shadow: var(--shadow-soft);
+            border: 3px solid rgba(255, 107, 157, 0.1);
+            margin-bottom: 30px;
+        }
+
+        .schedule-title {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: var(--primary-pink);
+            margin-bottom: 20px;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .schedule-title .schedule-icon {
+            width: 36px;
+            height: 36px;
+            object-fit: cover;
+            border-radius: 10px;
+            border: 3px solid var(--primary-pink);
+            padding: 4px;
+            background: rgba(255, 107, 157, 0.1);
+            animation: iconFloat 3s infinite ease-in-out;
+        }
+
+        .reminder-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .reminder-item {
+            background: var(--white);
+            border: 2px solid var(--light-pink);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .reminder-item.completed {
+            background: linear-gradient(135deg, var(--light-pink) 0%, rgba(255, 107, 157, 0.1) 100%);
+            border-color: var(--primary-pink);
+        }
+
+        .reminder-item.current {
+            background: linear-gradient(135deg, var(--primary-pink) 0%, var(--secondary-pink) 100%);
+            color: var(--white);
+            transform: scale(1.05);
+            box-shadow: var(--shadow-hover);
+            animation: currentReminderPulse 2s infinite ease-in-out;
+        }
+
+        @keyframes currentReminderPulse {
+            0%, 100% {
+                box-shadow: 0 0 20px rgba(255, 107, 157, 0.3);
+            }
+            50% {
+                box-shadow: 0 0 30px rgba(255, 107, 157, 0.6);
+            }
+        }
+
+        .reminder-time {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .reminder-status {
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .reminder-item.completed .reminder-status {
+            color: var(--primary-pink);
+        }
+
+        .reminder-item.current .reminder-status {
+            color: var(--white);
+        }
+
+        .reminder-item.missed {
+            background: linear-gradient(135deg, #ff4757 0%, #ff3742 100%);
+            color: var(--white);
+            border-color: #ff3742;
+            animation: missedPulse 2s infinite ease-in-out;
+        }
+
+        @keyframes missedPulse {
+            0%, 100% {
+                box-shadow: 0 0 10px rgba(255, 71, 87, 0.3);
+            }
+            50% {
+                box-shadow: 0 0 20px rgba(255, 71, 87, 0.6);
+            }
+        }
+
+        .reminder-item.missed .reminder-status {
+            color: var(--white);
+            font-weight: 700;
+        }
+
+        /* Drink Button */
+        .drink-button {
+            background: linear-gradient(135deg, var(--primary-pink) 0%, var(--accent-purple) 50%, var(--accent-orange) 100%);
+            color: var(--white);
+            border: none;
+            padding: 20px 40px;
+            border-radius: 30px;
+            font-size: 1.3rem;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin: 30px auto 0;
+            box-shadow: 0 8px 25px rgba(255, 107, 157, 0.4);
+            position: relative;
+            overflow: hidden;
+            animation: buttonPulse 3s infinite ease-in-out;
+            /* iOS fixes */
+            -webkit-tap-highlight-color: rgba(255, 107, 157, 0.3);
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            user-select: none;
+            touch-action: manipulation;
+        }
+
+        @keyframes buttonPulse {
+            0%, 100% {
+                transform: scale(1);
+                box-shadow: 0 8px 25px rgba(255, 107, 157, 0.4);
+            }
+            50% {
+                transform: scale(1.05);
+                box-shadow: 0 12px 35px rgba(255, 107, 157, 0.6);
+            }
+        }
+
+        .drink-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .drink-button:hover::before {
+            left: 100%;
+        }
+
+        .drink-button:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 15px 40px rgba(255, 107, 157, 0.5);
+        }
+
+        .drink-button:active {
+            transform: translateY(-1px) scale(1.02);
+        }
+
+        .drink-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            animation: none;
+        }
+
+        .drink-button img {
+            width: 24px;
+            height: 24px;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .drink-button:hover img {
+            transform: rotate(15deg) scale(1.1);
+        }
+
+        /* Notification Bell */
+        .notification-bell {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary-pink) 0%, var(--accent-purple) 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-soft);
+            z-index: 100;
+            animation: slideInRight 0.6s ease-out;
+            /* iOS fixes */
+            -webkit-tap-highlight-color: rgba(255, 107, 157, 0.3);
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            user-select: none;
+            touch-action: manipulation;
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .notification-bell:hover {
+            transform: scale(1.1);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .notification-bell.has-notifications {
+            animation: bellShake 1s infinite ease-in-out;
+        }
+
+        @keyframes bellShake {
+            0%, 100% {
+                transform: rotate(0deg);
+            }
+            25% {
+                transform: rotate(-10deg);
+            }
+            75% {
+                transform: rotate(10deg);
+            }
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            width: 20px;
+            height: 20px;
+            background: #ff4757;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: white;
+            animation: badgePulse 2s infinite ease-in-out;
+        }
+
+        @keyframes badgePulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.2);
+            }
+        }
+
+        /* Notification Panel */
+        .notification-panel {
+            position: fixed;
+            top: 100px;
+            right: 30px;
+            width: 350px;
+            max-height: 500px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            box-shadow: var(--shadow-hover);
+            border: 3px solid rgba(255, 107, 157, 0.1);
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateX(100%);
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+
+        .notification-panel.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(0);
+        }
+
+        .notification-header {
+            background: linear-gradient(135deg, var(--primary-pink) 0%, var(--accent-purple) 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        .notification-title {
+            font-size: 1.2rem;
+            font-weight: 800;
+            margin-bottom: 5px;
+        }
+
+        .notification-subtitle {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .notification-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+
+        .notification-close:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.1);
+        }
+
+        .notification-list {
+            max-height: 400px;
+            overflow-y: auto;
+            padding: 10px;
+        }
+
+        .notification-item {
+            background: var(--white);
+            border: 2px solid var(--light-pink);
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 10px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .notification-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 107, 157, 0.2);
+            border-color: var(--primary-pink);
+        }
+
+        .notification-item.unread {
+            background: linear-gradient(135deg, var(--light-pink) 0%, rgba(255, 107, 157, 0.05) 100%);
+            border-color: var(--primary-pink);
+        }
+
+        .notification-item.unread::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: var(--primary-pink);
+        }
+
+        .notification-time {
+            font-size: 0.8rem;
+            color: var(--text-light);
+            margin-bottom: 5px;
+        }
+
+        .notification-message {
+            font-size: 0.9rem;
+            color: var(--text-dark);
+            font-weight: 600;
+            line-height: 1.4;
+        }
+
+        .notification-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .notification-action-btn {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 10px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .drink-now-btn {
+            background: var(--primary-pink);
+            color: white;
+        }
+
+        .dismiss-btn {
+            background: var(--text-light);
+            color: white;
+        }
+
+        .notification-action-btn:hover {
+            transform: scale(1.05);
+        }
+
+        /* iOS touch fixes for all buttons */
+        button,
+        .notification-close,
+        .notification-item,
+        .reminder-manage-btn,
+        .recovery-btn,
+        .warning-close,
+        .info-close {
+            -webkit-tap-highlight-color: rgba(255, 107, 157, 0.3);
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            user-select: none;
+            touch-action: manipulation;
+        }
+
+        /* Back Button */
+        .back-button {
+            position: fixed;
+            top: 30px;
+            left: 30px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            background: var(--white);
+            border: 3px solid var(--primary-pink);
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--primary-pink);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-soft);
+            z-index: 100;
+            animation: slideInLeft 0.6s ease-out;
+            /* iOS fixes */
+            -webkit-tap-highlight-color: rgba(255, 107, 157, 0.3);
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            user-select: none;
+            touch-action: manipulation;
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .back-button:hover {
+            background: var(--primary-pink);
+            color: var(--white);
+            transform: translateX(-5px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .back-button svg {
+            transition: transform 0.3s ease;
+        }
+
+        .back-button:hover svg {
+            transform: translateX(-3px);
+        }
+
+        /* Funny Warning Modal */
+        .warning-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 3000;
+            animation: warningFadeIn 0.3s ease-out;
+        }
+
+        @keyframes warningFadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .warning-content {
+            background: linear-gradient(135deg, #ff6b9d 0%, #ffd700 50%, #ff4757 100%);
+            color: white;
+            border-radius: 25px;
+            padding: 40px;
+            text-align: center;
+            max-width: 500px;
+            box-shadow: 0 25px 80px rgba(255, 107, 157, 0.4);
+            animation: warningSlideIn 0.3s ease-out;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .warning-content::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+            animation: warningShine 2s infinite ease-in-out;
+        }
+
+        @keyframes warningShine {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes warningSlideIn {
+            from {
+                transform: translateY(-50px);
+            }
+            to {
+                transform: translateY(0);
+            }
+        }
+
+        .warning-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            animation: warningBounce 1s infinite ease-in-out;
+        }
+
+        @keyframes warningBounce {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+        }
+
+        .warning-icon.cheat {
+            animation: cheatShake 0.5s infinite ease-in-out;
+        }
+
+        @keyframes cheatShake {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            25% { transform: scale(1.1) rotate(-5deg); }
+            75% { transform: scale(1.1) rotate(5deg); }
+        }
+
+        .warning-message {
+            font-size: 1.4rem;
+            font-weight: 800;
+            margin-bottom: 15px;
+            line-height: 1.4;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .warning-details {
+            font-size: 1rem;
+            opacity: 0.9;
+            margin-bottom: 25px;
+            font-weight: 600;
+            text-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        .warning-close {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .warning-close:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 8px 25px rgba(255, 255, 255, 0.2);
+        }
+
+        /* Streak Modal */
+        .streak-modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 2500;
+            animation: streakFadeIn 0.5s ease-out;
+        }
+
+        @keyframes streakFadeIn {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1);
+            }
+        }
+
+        .streak-content {
+            background: linear-gradient(135deg, #ff6b9d 0%, #ffd700 50%, #ff4757 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(255, 107, 157, 0.4);
+            animation: streakPulse 1s infinite ease-in-out;
+        }
+
+        @keyframes streakPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .streak-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            animation: streakBounce 1s infinite ease-in-out;
+        }
+
+        .streak-message {
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin-bottom: 10px;
+        }
+
+        .streak-details {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .selection-box {
+                padding: 40px 25px;
+                border-radius: 30px;
+            }
+
+            .water-selection__title {
+                font-size: 1.6rem;
+            }
+
+            .water-glass {
+                width: 150px;
+                height: 200px;
+            }
+
+            .reminder-list {
+                grid-template-columns: 1fr;
+            }
+
+            .back-button {
+                top: 20px;
+                left: 20px;
+                padding: 10px 20px;
+                font-size: 0.9rem;
+            }
+
+            .notification-bell {
+                top: 20px;
+                right: 20px;
+                width: 50px;
+                height: 50px;
+            }
+
+            .notification-panel {
+                right: 15px;
+                width: calc(100vw - 30px);
+                max-width: 350px;
+            }
+
+            .warning-content {
+                padding: 30px 20px;
+                margin: 20px;
+            }
+
+            .warning-message {
+                font-size: 1.2rem;
+            }
+
+            .warning-details {
+                font-size: 0.9rem;
+            }
+        }
+
+        /* Info Modal Styles */
+        .info-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 3000;
+            animation: infoFadeIn 0.3s ease-out;
+        }
+
+        @keyframes infoFadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .info-content {
+            background: linear-gradient(135deg, #007aff 0%, #5ac8fa 50%, #34c759 100%);
+            color: white;
+            border-radius: 25px;
+            padding: 40px;
+            text-align: center;
+            max-width: 500px;
+            box-shadow: 0 25px 80px rgba(0, 122, 255, 0.4);
+            animation: infoSlideIn 0.3s ease-out;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .info-content::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+            animation: infoShine 2s infinite ease-in-out;
+        }
+
+        @keyframes infoShine {
+            0%, 100% {
+                transform: rotate(0deg);
+                opacity: 0.3;
+            }
+            50% {
+                transform: rotate(180deg);
+                opacity: 0.1;
+            }
+        }
+
+        @keyframes infoSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(50px) scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .info-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            animation: infoBounce 2s infinite ease-in-out;
+        }
+
+        @keyframes infoBounce {
+            0%, 100% {
+                transform: translateY(0) scale(1);
+            }
+            50% {
+                transform: translateY(-10px) scale(1.1);
+            }
+        }
+
+        .info-message {
+            font-size: 1.4rem;
+            font-weight: 800;
+            margin-bottom: 15px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            position: relative;
+            z-index: 1;
+        }
+
+        .info-details {
+            font-size: 1rem;
+            margin-bottom: 25px;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+
+        .info-close {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 1;
+            backdrop-filter: blur(10px);
+        }
+
+        .info-close:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 8px 25px rgba(255, 255, 255, 0.2);
+        }
+
+        .info-close:active {
+            transform: translateY(0) scale(0.98);
+        }
+
+        @media (max-width: 768px) {
+            .info-content {
+                padding: 30px 20px;
+                margin: 20px;
+            }
+
+            .info-message {
+                font-size: 1.2rem;
+            }
+
+            .info-details {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Volleyball Background -->
+    <div class="volleyball-bg">
+        <div class="volleyball"></div>
+        <div class="volleyball"></div>
+        <div class="volleyball"></div>
+        <div class="volleyball"></div>
+        <div class="volleyball"></div>
+    </div>
+
+    <!-- Net Pattern -->
+    <div class="net-pattern"></div>
+
+    <!-- Back Button -->
+    <button class="back-button" onclick="goBackToFunctions()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+        </svg>
+        <span>Quay lại</span>
+    </button>
+
+    <!-- Notification Bell -->
+    <div class="notification-bell" id="notificationBell" onclick="toggleNotificationPanel()">
+        <img src="assets/icon/kitty.png" alt="Notifications" style="width: 24px; height: 24px;">
+        <div class="notification-badge" id="notificationBadge" style="display: none;">0</div>
+    </div>
+
+    <!-- Notification Panel -->
+    <div class="notification-panel" id="notificationPanel">
+        <div class="notification-header">
+            <button class="notification-close" onclick="toggleNotificationPanel()">×</button>
+            <div class="notification-title">🔔 Thông Báo</div>
+            <div class="notification-subtitle">Nhắc nhở uống nước</div>
+        </div>
+        <div class="notification-list" id="notificationList">
+            <div style="text-align: center; padding: 20px; color: var(--text-light);">
+                Chưa có thông báo nào
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="water-selection-screen">
+        <div class="selection-box">
+            <div id="current-user-profile" class="current-user-profile">
+                <!-- Profile will be loaded here -->
+            </div>
+            
+            <h2 class="water-selection__title">💧 Nhắc Nhở Uống Nước</h2>
+            
+            <!-- Streak Container -->
+            <div class="streak-container" id="streakContainer">
+                <div class="streak-title">🔥 Chuỗi Uống Nước</div>
+                <div class="streak-number" id="streakNumber">0</div>
+                <div class="streak-level" id="streakLevel">Bắt đầu</div>
+                <div class="streak-emoji" id="streakEmoji">💧</div>
+                
+                <!-- Freeze Status -->
+                <div class="freeze-status" id="freezeStatus">
+                    <span class="freeze-icon">❄️</span>
+                    <span id="freezeText">Streak đang hoạt động</span>
+                </div>
+                
+                <!-- Recovery Status -->
+                <div class="recovery-status" id="recoveryStatus">
+                    <span class="recovery-icon">🔄</span>
+                    <span id="recoveryText">Khôi phục: 3/3</span>
+                    <button class="recovery-btn" id="recoveryBtn" onclick="recoverStreak()" style="display: none;">
+                        Khôi phục chuỗi
+                    </button>
+                </div>
+                
+                <!-- Reminder Management -->
+                <div class="reminder-management">
+                    <button class="reminder-manage-btn" id="reminderManageBtn" onclick="openReminderManagement()">
+                        <img src="assets/icon/panda.png" alt="Manage" style="width: 16px; height: 16px;">
+                        Quản lý nhắc nhở
+                    </button>
+                </div>
+            </div>
+
+            <!-- Water Progress -->
+            <div class="water-progress-container">
+                <div class="progress-title">
+                    <img src="assets/icon/lovely.png" alt="Water Progress" class="water-icon">
+                    <span>Tiến Độ Hôm Nay</span>
+                </div>
+                
+                <!-- Progress Stats - Moved to top -->
+                <div class="progress-stats">
+                    <div class="stat-item">
+                        <div class="stat-number" id="completedGlasses">0</div>
+                        <div class="stat-label">Đã uống</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" id="totalGlasses">8</div>
+                        <div class="stat-label">Mục tiêu</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" id="remainingGlasses">8</div>
+                        <div class="stat-label">Còn lại</div>
+                    </div>
+                </div>
+                
+                <div class="water-glass" id="waterGlass">
+                    <div class="water-level" id="waterLevel"></div>
+                    <div class="water-bubbles" id="waterBubbles">
+                        <!-- Bubbles will be generated dynamically -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reminder Schedule -->
+            <div class="reminder-schedule">
+                <div class="schedule-title">
+                    <img src="assets/icon/panda.png" alt="Schedule" class="schedule-icon">
+                    <span>Lịch Nhắc Nhở</span>
+                </div>
+                
+                <div class="reminder-list" id="reminderList">
+                    <!-- Reminder items will be generated dynamically -->
+                </div>
+            </div>
+
+            <!-- Drink Button -->
+            <button class="drink-button" id="drinkButton" onclick="drinkWater()">
+                <img src="assets/icon/kitty (1).png" alt="Drink Water">
+                <span>💧 Đã Uống Nước!</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Reminder Management Modal -->
+    <div class="reminder-modal" id="reminderModal">
+        <div class="reminder-modal-content">
+            <div class="reminder-modal-header">
+                <h2 class="reminder-modal-title">⏰ Quản Lý Nhắc Nhở</h2>
+                <button class="reminder-modal-close" onclick="closeReminderManagement()">×</button>
+            </div>
+            
+            <div class="reminder-modal-body">
+                <div class="reminder-list" id="reminderModalList">
+                    <!-- Reminder times will be loaded here -->
+                </div>
+                
+                <div class="reminder-actions">
+                    <button class="reminder-add-btn" onclick="addReminderTime()">
+                        <img src="assets/icon/kitty.png" alt="Add" style="width: 16px; height: 16px;">
+                        Thêm nhắc nhở
+                    </button>
+                    <button class="reminder-reset-btn" onclick="resetReminderTimes()">
+                        <img src="assets/icon/volleyball.png" alt="Reset" style="width: 16px; height: 16px;">
+                        Đặt lại mặc định
+                    </button>
+                </div>
+            </div>
+            
+            <div class="reminder-modal-footer">
+                <button class="reminder-save-btn" onclick="saveReminderChanges()">
+                    <img src="assets/icon/lovely.png" alt="Save" style="width: 16px; height: 16px;">
+                    Lưu thay đổi
+                </button>
+                <button class="reminder-cancel-btn" onclick="closeReminderManagement()">
+                    <img src="assets/icon/shot.png" alt="Cancel" style="width: 16px; height: 16px;">
+                    Hủy
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        // Get user from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const currentUser = urlParams.get('user') || 'quynh';
+
+        // Prevent page unload while saving
+        let isSaving = false;
+        let saveQueue = null; // Debounce save operations
+        let lastSaveData = null; // Cache last save data
+
+        // Reload throttle system - prevent spam reload
+        let lastReloadTime = Date.now();
+        let reloadCount = 0;
+        const RELOAD_COOLDOWN = 3000; // 3 seconds cooldown
+        const MAX_RELOADS_PER_MINUTE = 10; // Max 10 reloads per minute
+        let reloadTimestamps = [];
+
+        // Check if reload is allowed
+        function checkReloadThrottle() {
+            const now = Date.now();
+            
+            // Remove old timestamps (older than 1 minute)
+            reloadTimestamps = reloadTimestamps.filter(t => now - t < 60000);
+            
+            // Check cooldown (3 seconds)
+            if (now - lastReloadTime < RELOAD_COOLDOWN) {
+                const waitTime = Math.ceil((RELOAD_COOLDOWN - (now - lastReloadTime)) / 1000);
+                console.warn(`⏳ Reload quá nhanh! Chờ ${waitTime}s nữa...`);
+                return false;
+            }
+            
+            // Check max reloads per minute
+            if (reloadTimestamps.length >= MAX_RELOADS_PER_MINUTE) {
+                console.warn(`🚫 Reload quá nhiều! Tối đa ${MAX_RELOADS_PER_MINUTE} lần/phút`);
+                return false;
+            }
+            
+            // Update tracking
+            lastReloadTime = now;
+            reloadTimestamps.push(now);
+            console.log(`✅ Reload được phép (${reloadTimestamps.length}/${MAX_RELOADS_PER_MINUTE} lần trong phút này)`);
+            return true;
+        }
+
+        // Track page load
+        window.addEventListener('load', function() {
+            if (!checkReloadThrottle()) {
+                // Show warning if reload too fast
+                document.body.innerHTML = `
+                    <div style="display: flex; justify-content: center; align-items: center; height: 100vh; background: linear-gradient(135deg, #ffeef2 0%, #ffe5ec 100%); font-family: 'Quicksand', sans-serif;">
+                        <div style="text-align: center; padding: 40px; background: white; border-radius: 30px; box-shadow: 0 20px 60px rgba(255, 107, 157, 0.3);">
+                            <div style="font-size: 4rem; margin-bottom: 20px;">⏰</div>
+                            <h2 style="color: #ff6b9d; font-size: 1.8rem; margin-bottom: 15px;">Reload quá nhanh!</h2>
+                            <p style="color: #666; font-size: 1.1rem; margin-bottom: 20px;">Bạn đang reload quá nhiều. Vui lòng chờ 3 giây hoặc refresh lại sau.</p>
+                            <p style="color: #888; font-size: 0.9rem;">Tối đa ${MAX_RELOADS_PER_MINUTE} lần reload/phút để bảo vệ dữ liệu 💧</p>
+                            <button onclick="location.reload()" style="margin-top: 20px; padding: 12px 30px; background: linear-gradient(135deg, #ff6b9d, #ffc2d4); color: white; border: none; border-radius: 20px; font-size: 1rem; font-weight: 700; cursor: pointer;">
+                                Thử lại
+                            </button>
+                        </div>
+                    </div>
+                `;
+                throw new Error('Reload throttled');
+            }
+        });
+
+        window.addEventListener('beforeunload', function(e) {
+            if (isSaving) {
+                e.preventDefault();
+                e.returnValue = 'Đang lưu dữ liệu, vui lòng chờ...';
+                return 'Đang lưu dữ liệu, vui lòng chờ...';
+            }
+        });
+
+        // Water tracking data
+        let currentStreak = 0;
+        let streakFrozen = false;
+        let freezeCount = 3;
+        let freezeExpires = null;
+        let completedGlasses = 0;
+        let totalGlasses = 8;
+        let notifications = [];
+        let reminderStatus = {}; // Track reminder status for each time slot
+        let lastFreezeUpdate = new Date().toDateString(); // Track last freeze update date
+        
+        // Streak recovery system
+        let streakRecoveryCount = 3; // 3 recoveries per week
+        let lastRecoveryReset = new Date().toDateString();
+        let weeklyRecoveryUsed = 0;
+        let reminderTimes = [
+            { time: '06:00', label: '6:00 Sáng' },
+            { time: '08:00', label: '8:00 Sáng' },
+            { time: '10:00', label: '10:00 Sáng' },
+            { time: '12:00', label: '12:00 Trưa' },
+            { time: '14:00', label: '2:00 Chiều' },
+            { time: '16:00', label: '4:00 Chiều' },
+            { time: '18:00', label: '6:00 Tối' },
+            { time: '20:00', label: '8:00 Tối' },
+            { time: '22:00', label: '10:00 Tối' }
+        ];
+
+        // Anti-cheat tracking variables
+        let lastDrinkTime = 0;
+        let drinksThisHour = 0;
+        let drinksThisTwoHour = 0;
+        let currentHour = new Date().getHours();
+        let currentTwoHour = Math.floor(new Date().getHours() / 2);
+        let streakEarnedThisTwoHour = false;
+        let lastStreakTime = 0;
+        let streakCooldown = 2 * 60 * 60 * 1000; // 2 hours in milliseconds
+        let clickCount = 0;
+        let lastClickTime = 0;
+        let clickCooldown = 2000; // 2 seconds between clicks
+        let maxClicksPerSession = 10; // Maximum clicks per session
+        let sessionClicks = 0;
+        let windowStreaks = {}; // Track streaks per 2-hour window
+        let lastStreakDate = new Date().toDateString(); // Track last streak date
+
+        // Funny warning messages array
+        const funnyWarnings = {
+            // Time-based warnings
+            early: [
+                "Em xạo đúng khom!! Còn sớm mà 😴",
+                "Anh biết em muốn uống nước nhưng 6h chưa tới đâu! 🌅",
+                "Em ơi, mặt trời chưa mọc mà! ☀️",
+                "Anh thấy em đang cố cheat rồi! 😏",
+                "Em nghĩ anh không biết em đang làm gì à? 🤔",
+                "Too early, baby! Wait for the sun! 🌞",
+                "Anh đang theo dõi em đấy! 👀",
+                "Em đang cố gắng hack hệ thống của anh à? 💻",
+                "Em ơi, còn sớm lắm! Chờ anh một chút! ⏰",
+                "Anh thấy em đang vội vàng! 😅"
+            ],
+            
+            late: [
+                "Quá 10h rùi em hạn chế uống nước nha 🌙",
+                "Anh lo em sẽ phải dậy đi toilet giữa đêm! 🚽",
+                "Em ơi, giờ này uống nước không tốt đâu! 😴",
+                "Anh sợ em sẽ bị mất ngủ vì uống nước muộn! 😵",
+                "Too late, sweetie! Your bladder will thank you! 💧",
+                "Anh không muốn em phải dậy 3 lần trong đêm! 🌃",
+                "Em nghĩ anh không biết tác hại của việc uống nước muộn à? 🤷‍♂️",
+                "Anh thương em nên mới cảnh báo đấy! 💕",
+                "Em ơi, giờ này uống nước không tốt cho sức khỏe! 🏥",
+                "Anh thấy em đang cố gắng hack rồi! 💻"
+            ],
+            
+            // Cheat warnings
+            cheat: [
+                "Em cheat đúng khom =)) 😏",
+                "Anh thấy em đang cố gắng hack rồi! 💻",
+                "Em nghĩ anh ngu lắm à? Anh biết hết rồi! 🤓",
+                "Anh đã lập trình để chống em rồi! 🛡️",
+                "Em ơi, trong 1h chỉ được 2 lần thôi! ⏰",
+                "Anh thấy em đang spam button rồi! 🔄",
+                "Em đang cố gắng làm anh bối rối à? 😵‍💫",
+                "Anh biết em thông minh nhưng anh cũng không ngu đâu! 🧠",
+                "Too greedy, little one! Wait for your turn! ⏳",
+                "Anh đã tính toán kỹ rồi, em không cheat được đâu! 📊",
+                "Em ơi, anh thấy em đang cố gắng hack rồi! 💻",
+                "Anh đã lập trình để chống em rồi! 🛡️"
+            ],
+            
+            // Streak limit warnings
+            streakLimit: [
+                "Trong 2h chỉ được tăng 1 streak thôi em! ⏳",
+                "Anh thấy em đang cố gắng tăng streak nhanh! 🏃‍♀️",
+                "Em ơi, patience is a virtue! Chờ 2h nữa nhé! 😌",
+                "Anh không muốn em tăng streak quá nhanh! 🚫",
+                "Em nghĩ anh không biết em đang làm gì à? 🤨",
+                "Anh đã set limit rồi, em không thể cheat được! 🔒",
+                "Em đang cố gắng làm anh bối rối à? 😵‍💫",
+                "Anh thương em nên mới set limit đấy! 💝",
+                "Too fast, speedster! Slow down a bit! 🐌",
+                "Anh đã lập trình để chống em rồi! 🛡️",
+                "Em ơi, anh thấy em đang cố gắng hack rồi! 💻",
+                "Anh đã tính toán kỹ rồi, em không thể cheat được! 📊"
+            ],
+            
+            // Cooldown warnings
+            cooldown: [
+                "Chờ một chút nữa em ơi! ⏰",
+                "Anh thấy em đang vội vàng! 😅",
+                "Em ơi, patience is key! Chờ 30s nữa nhé! ⏳",
+                "Anh không muốn em uống quá nhanh! 🚫",
+                "Em nghĩ anh không biết em đang làm gì à? 🤔",
+                "Anh đã set cooldown rồi, em không thể spam được! 🔄",
+                "Em đang cố gắng làm anh bối rối à? 😵‍💫",
+                "Anh thương em nên mới set cooldown đấy! 💕",
+                "Too fast, little one! Wait a moment! ⏰",
+                "Anh đã lập trình để chống em rồi! 🛡️",
+                "Em ơi, anh thấy em đang cố gắng hack rồi! 💻",
+                "Anh đã tính toán kỹ rồi, em không thể spam được! 📊"
+            ],
+            
+            // Completed warnings
+            completed: [
+                "Bạn đã uống đủ nước hôm nay! ✅",
+                "Anh thấy em đã hoàn thành rồi! 🎉",
+                "Em ơi, hôm nay đã đủ rồi! Mai uống tiếp nhé! 🌅",
+                "Anh thương em nên mới set limit đấy! 💝",
+                "Em nghĩ anh không biết em đã uống đủ à? 🤨",
+                "Anh đã tính toán kỹ rồi, em không thể cheat được! 📊",
+                "Em đang cố gắng làm anh bối rối à? 😵‍💫",
+                "Anh thấy em đang cố gắng hack rồi! 💻",
+                "Too much, water lover! Save some for tomorrow! 💧",
+                "Anh đã lập trình để chống em rồi! 🛡️",
+                "Em ơi, anh thấy em đã hoàn thành rồi! 🎉",
+                "Anh đã tính toán kỹ rồi, em không thể cheat được! 📊"
+            ],
+            
+            // Frozen warnings
+            frozen: [
+                "Streak đang được đóng băng! ❄️",
+                "Anh thấy em đang cố gắng tăng streak! 🧊",
+                "Em ơi, streak đang bị đóng băng rồi! ❄️",
+                "Anh thương em nên mới đóng băng streak đấy! 💝",
+                "Em nghĩ anh không biết em đang làm gì à? 🤨",
+                "Anh đã set freeze rồi, em không thể tăng được! 🔒",
+                "Em đang cố gắng làm anh bối rối à? 😵‍💫",
+                "Anh thấy em đang cố gắng hack rồi! 💻",
+                "Too cold, ice queen! Wait for it to thaw! 🧊",
+                "Anh đã lập trình để chống em rồi! 🛡️",
+                "Em ơi, anh thấy em đang cố gắng hack rồi! 💻",
+                "Anh đã tính toán kỹ rồi, em không thể cheat được! 📊"
+            ],
+            
+            // New warning types for multiple clicks
+            tooManyClicks: [
+                "Em ơi, anh thấy em đang spam button rồi! 🔄",
+                "Anh biết em thích xem thông báo nhưng đừng spam quá! 😅",
+                "Em ơi, anh đã set limit rồi! Chờ một chút nhé! ⏰",
+                "Anh thấy em đang cố gắng hack rồi! 💻",
+                "Em nghĩ anh không biết em đang làm gì à? 🤔",
+                "Anh đã lập trình để chống em rồi! 🛡️",
+                "Em ơi, anh thấy em đang cố gắng làm anh bối rối! 😵‍💫",
+                "Anh thương em nên mới set limit đấy! 💝",
+                "Too much clicking, little one! Take a break! ⏰",
+                "Anh đã tính toán kỹ rồi, em không thể spam được! 📊"
+            ],
+            
+            clickTooFast: [
+                "Em ơi, anh thấy em đang click quá nhanh! ⚡",
+                "Anh biết em thích xem thông báo nhưng chờ một chút! 😅",
+                "Em ơi, anh đã set cooldown rồi! Chờ 2s nữa nhé! ⏰",
+                "Anh thấy em đang cố gắng hack rồi! 💻",
+                "Em nghĩ anh không biết em đang làm gì à? 🤔",
+                "Anh đã lập trình để chống em rồi! 🛡️",
+                "Em ơi, anh thấy em đang cố gắng làm anh bối rối! 😵‍💫",
+                "Anh thương em nên mới set cooldown đấy! 💝",
+                "Too fast clicking, little one! Slow down! ⏰",
+                "Anh đã tính toán kỹ rồi, em không thể spam được! 📊"
+            ],
+            
+            // New warning types for 2-hour window logic
+            timeRestriction: [
+                "Em ơi, uống ngoài khung giờ streak thì không được tính streak đâu! ⏰",
+                "Anh thấy em uống ngoài giờ streak rồi! 😅",
+                "Em ơi, uống ngoài khung giờ thì không có streak nhé! ⏳",
+                "Anh biết em muốn uống nước nhưng ngoài giờ streak! 🌅",
+                "Em nghĩ anh không biết em đang làm gì à? 🤔",
+                "Anh đã lập trình để chống em rồi! 🛡️",
+                "Em ơi, anh thấy em đang cố gắng hack rồi! 💻",
+                "Anh thương em nên mới set khung giờ đấy! 💝",
+                "Outside streak time, sweetie! No streak earned! ⏰",
+                "Anh đã tính toán kỹ rồi, em không thể cheat được! 📊"
+            ],
+            
+            tooEarly: [
+                "Em ơi, chờ 40 phút nữa mới được streak lần 2! ⏰ (Vẫn tính nước nhé!)",
+                "Anh thấy em đang vội vàng! Chờ một chút nhé! 😅 (Nước vẫn được tính!)",
+                "Em ơi, patience is key! Chờ 40 phút nữa! ⏳ (Uống nước vẫn OK!)",
+                "Anh biết em muốn streak nhưng chưa đủ thời gian! 💧 (Nước vẫn được tính!)",
+                "Em nghĩ anh không biết em đang làm gì à? 🤔 (Nước vẫn được tính!)",
+                "Anh đã lập trình để chống em rồi! 🛡️ (Nhưng nước vẫn được tính!)",
+                "Em ơi, anh thấy em đang cố gắng hack rồi! 💻 (Nước vẫn được tính!)",
+                "Anh thương em nên mới set thời gian đấy! 💝 (Nước vẫn được tính!)",
+                "Too soon for streak, little one! Wait 40 minutes! ⏰ (Water still counts!)",
+                "Anh đã tính toán kỹ rồi, em không thể cheat được! 📊 (Nước vẫn được tính!)"
+            ],
+            
+            tooManyInWindow: [
+                "Em ơi, trong 1 khung 2h chỉ được streak 2 lần thôi! 🚫 (Nước vẫn được tính!)",
+                "Anh thấy em đang cố gắng hack rồi! 💻 (Nước vẫn được tính!)",
+                "Em ơi, chờ khung giờ tiếp theo nhé! ⏰ (Nước vẫn được tính!)",
+                "Anh biết em thích uống nước nhưng đã đủ rồi! 💧 (Nước vẫn được tính!)",
+                "Em nghĩ anh không biết em đang làm gì à? 🤔 (Nước vẫn được tính!)",
+                "Anh đã lập trình để chống em rồi! 🛡️ (Nước vẫn được tính!)",
+                "Em ơi, anh thấy em đang cố gắng spam rồi! 🔄 (Nước vẫn được tính!)",
+                "Anh thương em nên mới set limit đấy! 💝 (Nước vẫn được tính!)",
+                "Too many drinks, water lover! Wait for next window! ⏰ (Water still counts!)",
+                "Anh đã tính toán kỹ rồi, em không thể cheat được! 📊 (Nước vẫn được tính!)"
+            ]
+        };
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🚀 Initializing water reminder app...');
+            loadUserProfile();
+            
+            // Delay to ensure DOM is fully ready
+            setTimeout(() => {
+                loadWaterData();
+                updateDailyFreeze();
+                updateWeeklyRecovery();
+                setupNotificationSystem();
+                setupAntiCheatSystem();
+                console.log('✅ Initialization complete');
+            }, 100);
+        });
+
+        // Update daily freeze count
+        function updateDailyFreeze() {
+            const today = new Date().toDateString();
+            
+            if (lastFreezeUpdate !== today) {
+                // New day - add 2 freeze, max 4
+                freezeCount = Math.min(freezeCount + 2, 4);
+                lastFreezeUpdate = today;
+                
+                // Reset reminder status for new day
+                reminderStatus = {};
+                
+                console.log(`🔄 New day - freeze count updated to ${freezeCount}`);
+                
+                // Save updated data
+                saveWaterData();
+            }
+        }
+
+        // Update weekly recovery count
+        function updateWeeklyRecovery() {
+            const today = new Date();
+            const startOfWeek = new Date(today.setDate(today.getDate() - today.getDay()));
+            const startOfWeekString = startOfWeek.toDateString();
+            
+            if (lastRecoveryReset !== startOfWeekString) {
+                // New week - reset recovery count
+                streakRecoveryCount = 3;
+                weeklyRecoveryUsed = 0;
+                lastRecoveryReset = startOfWeekString;
+                
+                console.log(`🔄 New week - recovery count reset to ${streakRecoveryCount}`);
+                
+                // Save updated data
+                saveWaterData();
+            }
+        }
+
+        // Load user profile
+        function loadUserProfile() {
+            const profileDisplay = document.getElementById('current-user-profile');
+            if (currentUser === 'quynh') {
+                profileDisplay.innerHTML = `
+                    <img src="assets/quynh-avatar.jpg" alt="Avatar của Quỳnh" class="profile-card__avatar" onerror="this.src='https://ui-avatars.com/api/?name=Quynh&background=ff6b9d&color=fff&size=200'">
+                    <p class="profile-card__name">_uyqhn 💧</p>
+                `;
+            }
+        }
+
+        // Load water data from Firebase ONLY (no localStorage)
+        async function loadWaterData() {
+            try {
+                console.log('📥 Loading water data from Firebase ONLY...');
+                
+                const response = await fetch(`https://unisched-app-11368-default-rtdb.asia-southeast1.firebasedatabase.app/users/${currentUser}/water_tracking.json`);
+                const firebaseData = await response.json();
+                
+                console.log('🔍 Firebase data:', firebaseData);
+                
+                if (firebaseData) {
+                    currentStreak = firebaseData.current_streak || 0;
+                    streakFrozen = firebaseData.streak_frozen || false;
+                    freezeCount = firebaseData.freeze_count || 3;
+                    freezeExpires = firebaseData.freeze_expires || null;
+                    completedGlasses = firebaseData.completed_glasses || 0;
+                    totalGlasses = firebaseData.total_glasses || 8;
+                    lastStreakDate = firebaseData.last_streak_date || new Date().toDateString();
+                    windowStreaks = firebaseData.window_streaks || {};
+                    reminderStatus = firebaseData.reminder_status || {};
+                    lastFreezeUpdate = firebaseData.last_freeze_update || new Date().toDateString();
+                    streakRecoveryCount = firebaseData.streak_recovery_count || 3;
+                    lastRecoveryReset = firebaseData.last_recovery_reset || new Date().toDateString();
+                    weeklyRecoveryUsed = firebaseData.weekly_recovery_used || 0;
+                    
+                    console.log('✅ Loaded from Firebase - Streak:', currentStreak, '| Glasses:', completedGlasses + '/' + totalGlasses);
+                } else {
+                    console.log('📝 No Firebase data found - using defaults');
+                }
+                
+                // Load reminder times
+                await loadReminderTimes();
+                
+                updateStreakDisplay();
+                updateWaterProgress();
+                updateNotificationBadge();
+                console.log('✅ Water data loaded successfully');
+            } catch (error) {
+                console.error('❌ Error loading water data:', error);
+                alert('Lỗi khi tải dữ liệu từ Firebase! Vui lòng reload lại trang.');
+            }
+        }
+
+        // Load water data from localStorage fallback
+        function loadWaterFromLocalStorage() {
+            const storedData = localStorage.getItem('water_data_' + currentUser);
+            if (storedData) {
+                const data = JSON.parse(storedData);
+                currentStreak = data.current_streak || 0;
+                streakFrozen = data.streak_frozen || false;
+                freezeCount = data.freeze_count || 3;
+                freezeExpires = data.freeze_expires || null;
+                completedGlasses = data.completed_glasses || 0;
+                totalGlasses = data.total_glasses || 8;
+                lastStreakDate = data.last_streak_date || new Date().toDateString();
+                windowStreaks = data.window_streaks || {};
+                reminderStatus = data.reminder_status || {};
+                lastFreezeUpdate = data.last_freeze_update || new Date().toDateString();
+                streakRecoveryCount = data.streak_recovery_count || 3;
+                lastRecoveryReset = data.last_recovery_reset || new Date().toDateString();
+                weeklyRecoveryUsed = data.weekly_recovery_used || 0;
+                console.log('📥 Loaded from localStorage');
+            }
+            
+            // Load reminder times from localStorage
+            loadReminderTimesFromLocalStorage();
+            
+            updateStreakDisplay();
+            updateWaterProgress();
+            updateNotificationBadge();
+        }
+
+        // Load reminder times from Firebase
+        async function loadReminderTimes() {
+            try {
+                console.log('📥 Loading reminder times from Firebase...');
+                const response = await fetch(`https://unisched-app-11368-default-rtdb.asia-southeast1.firebasedatabase.app/users/${currentUser}/reminder_times.json`);
+                const data = await response.json();
+                
+                if (data && Array.isArray(data) && data.length > 0) {
+                    reminderTimes = data;
+                    console.log('✅ Reminder times loaded from Firebase:', reminderTimes.length);
+                } else {
+                    // If no data in Firebase, save default reminder times
+                    await saveReminderTimes();
+                    console.log('📝 Saved default reminder times to Firebase');
+                }
+                
+                // Update reminder schedule with new times
+                setupReminderSchedule();
+                
+            } catch (error) {
+                console.error('❌ Error loading reminder times:', error);
+                loadReminderTimesFromLocalStorage();
+            }
+        }
+
+        // Load reminder times from localStorage fallback
+        function loadReminderTimesFromLocalStorage() {
+            const storedReminderTimes = localStorage.getItem('reminder_times_' + currentUser);
+            if (storedReminderTimes) {
+                reminderTimes = JSON.parse(storedReminderTimes);
+                console.log('📥 Reminder times loaded from localStorage:', reminderTimes.length);
+            } else {
+                // Use default reminder times
+                console.log('📝 Using default reminder times');
+            }
+            
+            // Update reminder schedule
+            setupReminderSchedule();
+        }
+
+        // Save reminder times to Firebase
+        async function saveReminderTimes() {
+            try {
+                const response = await fetch(`https://unisched-app-11368-default-rtdb.asia-southeast1.firebasedatabase.app/users/${currentUser}/reminder_times.json`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(reminderTimes)
+                });
+                
+                if (response.ok) {
+                    console.log('✅ Reminder times saved to Firebase');
+                    return true;
+                } else {
+                    throw new Error('Failed to save reminder times to Firebase');
+                }
+            } catch (error) {
+                console.error('❌ Error saving reminder times:', error);
+                saveReminderTimesToLocalStorage();
+                return false;
+            }
+        }
+
+        // Save reminder times to localStorage fallback
+        function saveReminderTimesToLocalStorage() {
+            localStorage.setItem('reminder_times_' + currentUser, JSON.stringify(reminderTimes));
+            console.log('💾 Reminder times saved to localStorage');
+        }
+
+        // Update streak display
+        function updateStreakDisplay() {
+            const streakNumber = document.getElementById('streakNumber');
+            const streakLevel = document.getElementById('streakLevel');
+            const streakEmoji = document.getElementById('streakEmoji');
+            
+            if (!streakNumber || !streakLevel || !streakEmoji) {
+                console.warn('⚠️ Streak display elements not found');
+                return;
+            }
+            
+            streakNumber.textContent = currentStreak;
+            
+            const levelInfo = getStreakLevelInfo(currentStreak);
+            streakLevel.textContent = levelInfo.name;
+            streakEmoji.textContent = levelInfo.emoji;
+            
+            // Update freeze status
+            const streakContainer = document.getElementById('streakContainer');
+            const freezeStatus = document.getElementById('freezeStatus');
+            const freezeText = document.getElementById('freezeText');
+            
+            if (streakContainer && freezeStatus && freezeText) {
+                if (streakFrozen) {
+                    streakContainer.classList.add('frozen');
+                    freezeStatus.classList.add('frozen');
+                    freezeText.textContent = `Streak đã được đóng băng! (Còn ${freezeCount} lần)`;
+                } else {
+                    streakContainer.classList.remove('frozen');
+                    freezeStatus.classList.remove('frozen');
+                    freezeText.textContent = `Streak đang hoạt động (Còn ${freezeCount} lần đóng băng)`;
+                }
+            }
+            
+            // Update recovery status
+            const recoveryText = document.getElementById('recoveryText');
+            const recoveryBtn = document.getElementById('recoveryBtn');
+            
+            if (recoveryText) {
+                recoveryText.textContent = `Khôi phục: ${streakRecoveryCount}/3`;
+            }
+            
+            if (recoveryBtn) {
+                // Show recovery button only if streak is 0 and recovery is available
+                if (currentStreak === 0 && streakRecoveryCount > 0) {
+                    recoveryBtn.style.display = 'block';
+                } else {
+                    recoveryBtn.style.display = 'none';
+                }
+            }
+        }
+
+        // Get streak level info
+        function getStreakLevelInfo(streak) {
+            const levels = [
+                { min: 0, max: 2, name: "Bắt đầu", emoji: "💧" },
+                { min: 3, max: 6, name: "Khởi động", emoji: "💦" },
+                { min: 7, max: 13, name: "Tuần đầu", emoji: "🌊" },
+                { min: 14, max: 29, name: "Kiên trì", emoji: "🏊‍♀️" },
+                { min: 30, max: 59, name: "Tháng vàng", emoji: "🏆" },
+                { min: 60, max: 99, name: "Siêu cường", emoji: "⚡" },
+                { min: 100, max: 364, name: "Huyền thoại", emoji: "👑" },
+                { min: 365, max: Infinity, name: "Bất tử", emoji: "🌟" }
+            ];
+            
+            return levels.find(level => streak >= level.min && streak <= level.max) || levels[0];
+        }
+
+        // Update water progress
+        function updateWaterProgress() {
+            const waterLevelElement = document.getElementById('waterLevel');
+            const waterGlassElement = document.getElementById('waterGlass');
+            const completedGlassesElement = document.getElementById('completedGlasses');
+            const totalGlassesElement = document.getElementById('totalGlasses');
+            const remainingGlassesElement = document.getElementById('remainingGlasses');
+            
+            if (!waterLevelElement || !waterGlassElement) {
+                console.warn('⚠️ Water progress elements not found');
+                return;
+            }
+            
+            const waterLevel = (completedGlasses / totalGlasses) * 100;
+            waterLevelElement.style.height = waterLevel + '%';
+            waterGlassElement.style.setProperty('--water-level', waterLevel + '%');
+            
+            if (completedGlassesElement) completedGlassesElement.textContent = completedGlasses;
+            if (totalGlassesElement) totalGlassesElement.textContent = totalGlasses;
+            if (remainingGlassesElement) remainingGlassesElement.textContent = totalGlasses - completedGlasses;
+            
+            // Generate bubbles
+            generateBubbles();
+        }
+
+        // Generate water bubbles
+        function generateBubbles() {
+            const bubblesContainer = document.getElementById('waterBubbles');
+            
+            if (!bubblesContainer) {
+                console.warn('⚠️ Bubbles container not found');
+                return;
+            }
+            
+            bubblesContainer.innerHTML = '';
+            
+            for (let i = 0; i < 5; i++) {
+                const bubble = document.createElement('div');
+                bubble.className = 'bubble';
+                bubble.style.left = Math.random() * 100 + '%';
+                bubble.style.animationDelay = Math.random() * 2 + 's';
+                bubblesContainer.appendChild(bubble);
+            }
+        }
+
+        // Setup reminder schedule
+        function setupReminderSchedule() {
+            const reminderList = document.getElementById('reminderList');
+            
+            // Check if element exists (prevent null error)
+            if (!reminderList) {
+                console.warn('⚠️ reminderList element not found - skipping setup');
+                return;
+            }
+            
+            const currentTime = new Date();
+            const currentHour = currentTime.getHours();
+            const currentMinute = currentTime.getMinutes();
+            const currentTimeString = `${currentHour.toString().padStart(2, '0')}:${currentMinute.toString().padStart(2, '0')}`;
+            
+            reminderList.innerHTML = reminderTimes.map(reminder => {
+                const reminderKey = reminder.time;
+                const reminderData = reminderStatus[reminderKey] || { status: 'pending', completed: false, missed: false };
+                
+                // Check if reminder time has passed
+                const reminderHour = parseInt(reminder.time.split(':')[0]);
+                const reminderMinute = parseInt(reminder.time.split(':')[1]);
+                const reminderDateTime = new Date();
+                reminderDateTime.setHours(reminderHour, reminderMinute, 0, 0);
+                
+                const isPastTime = currentTime > reminderDateTime;
+                const isCurrent = reminder.time === currentTimeString;
+                
+                let statusText = '';
+                let statusClass = '';
+                
+                if (reminderData.completed) {
+                    statusText = '✅ Đã uống';
+                    statusClass = 'completed';
+                } else if (reminderData.missed) {
+                    statusText = '❌ Đã bỏ lỡ';
+                    statusClass = 'missed';
+                } else if (isCurrent) {
+                    statusText = '⏰ Đang nhắc';
+                    statusClass = 'current';
+                } else if (isPastTime) {
+                    // Mark as missed if time has passed and not completed
+                    if (!reminderData.missed) {
+                        markReminderAsMissed(reminderKey);
+                    }
+                    statusText = '❌ Đã bỏ lỡ';
+                    statusClass = 'missed';
+                } else {
+                    statusText = '⏳ Chờ';
+                    statusClass = 'pending';
+                }
+                
+                return `
+                    <div class="reminder-item ${statusClass}">
+                        <div class="reminder-time">${reminder.label}</div>
+                        <div class="reminder-status">${statusText}</div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Mark reminder as missed and deduct freeze
+        function markReminderAsMissed(reminderKey) {
+            if (!reminderStatus[reminderKey] || !reminderStatus[reminderKey].missed) {
+                reminderStatus[reminderKey] = {
+                    status: 'missed',
+                    completed: false,
+                    missed: true,
+                    missedAt: new Date().toISOString()
+                };
+                
+                // Deduct 1 freeze if available
+                if (freezeCount > 0) {
+                    freezeCount--;
+                    console.log(`❌ Reminder ${reminderKey} missed - freeze deducted. Remaining: ${freezeCount}`);
+                    
+                    // Show notification
+                    createNotification(
+                        'Đã bỏ lỡ nhắc nhở! ❌', 
+                        `Bạn đã bỏ lỡ nhắc nhở uống nước lúc ${reminderKey}. Đã trừ 1 freeze. Còn lại: ${freezeCount} freeze.`
+                    );
+                } else {
+                    console.log(`❌ Reminder ${reminderKey} missed - no freeze available`);
+                    
+                    // Check if streak should be lost
+                    if (currentStreak > 0) {
+                        currentStreak = 0;
+                        console.log(`💔 Streak lost due to missed reminder without freeze`);
+                        
+                        // Show notification about streak loss
+                        createNotification(
+                            'Chuỗi bị mất! 💔', 
+                            `Bạn đã bỏ lỡ nhắc nhở uống nước lúc ${reminderKey} và không còn freeze. Chuỗi đã bị mất! Bạn có thể khôi phục chuỗi ${streakRecoveryCount} lần trong tuần này.`
+                        );
+                    } else {
+                        // Show notification
+                        createNotification(
+                            'Đã bỏ lỡ nhắc nhở! ❌', 
+                            `Bạn đã bỏ lỡ nhắc nhở uống nước lúc ${reminderKey}. Không còn freeze để trừ!`
+                        );
+                    }
+                }
+                
+                // Save data
+                saveWaterData();
+            }
+        }
+
+        // Recover streak function
+        function recoverStreak() {
+            if (streakRecoveryCount > 0 && weeklyRecoveryUsed < 3) {
+                const previousStreak = currentStreak;
+                currentStreak = Math.max(currentStreak, 1); // At least 1 streak
+                weeklyRecoveryUsed++;
+                streakRecoveryCount--;
+                
+                console.log(`🔄 Streak recovered! Previous: ${previousStreak}, New: ${currentStreak}`);
+                
+                // Show notification
+                createNotification(
+                    'Chuỗi đã được khôi phục! 🔄', 
+                    `Chuỗi của bạn đã được khôi phục! Còn lại ${streakRecoveryCount} lần khôi phục trong tuần này.`
+                );
+                
+                // Update UI
+                updateStreakDisplay();
+                
+                // Save data
+                saveWaterData();
+                
+                return true;
+            } else {
+                // Show notification
+                createNotification(
+                    'Không thể khôi phục chuỗi! ❌', 
+                    `Bạn đã sử dụng hết ${weeklyRecoveryUsed}/3 lần khôi phục chuỗi trong tuần này. Hãy đợi tuần sau!`
+                );
+                
+                return false;
+            }
+        }
+
+        // Setup notification systemUniSchedule
+        function setupNotificationSystem() {
+            // Check for notifications every 2 hours
+            setInterval(checkForNotifications, 2 * 60 * 60 * 1000);
+            
+            // Initial check
+            checkForNotifications();
+        }
+
+        // Check for notifications
+        function checkForNotifications() {
+            const currentTime = new Date();
+            const currentHour = currentTime.getHours();
+            const currentMinute = currentTime.getMinutes();
+            const currentTimeString = `${currentHour.toString().padStart(2, '0')}:${currentMinute.toString().padStart(2, '0')}`;
+            
+            // Check if it's reminder time
+            const isReminderTime = reminderTimes.some(reminder => reminder.time === currentTimeString);
+            
+            if (isReminderTime && completedGlasses < totalGlasses) {
+                createNotification('Nhắc nhở uống nước', `Đã đến giờ uống nước! Hãy uống một ly nước để duy trì streak.`);
+            }
+        }
+
+        // Create notification
+        function createNotification(title, message) {
+            const notification = {
+                id: Date.now(),
+                title: title,
+                message: message,
+                timestamp: new Date().toISOString(),
+                read: false
+            };
+            
+            notifications.unshift(notification);
+            updateNotificationDisplay();
+            updateNotificationBadge();
+            
+            // Show browser notification if permission granted
+            if (Notification.permission === 'granted') {
+                new Notification(title, {
+                    body: message,
+                    icon: 'assets/icon/kitty.png'
+                });
+            }
+        }
+
+        // Update notification display
+        function updateNotificationDisplay() {
+            const notificationList = document.getElementById('notificationList');
+            
+            if (!notificationList) {
+                console.warn('⚠️ Notification list element not found');
+                return;
+            }
+            
+            if (notifications.length === 0) {
+                notificationList.innerHTML = '<div style="text-align: center; padding: 20px; color: var(--text-light);">Chưa có thông báo nào</div>';
+                return;
+            }
+            
+            notificationList.innerHTML = notifications.map(notification => `
+                <div class="notification-item ${notification.read ? '' : 'unread'}" onclick="markAsRead(${notification.id})">
+                    <div class="notification-time">${new Date(notification.timestamp).toLocaleString('vi-VN')}</div>
+                    <div class="notification-message">${notification.message}</div>
+                    <div class="notification-actions">
+                        <button class="notification-action-btn drink-now-btn" onclick="event.stopPropagation(); drinkWater()">
+                            💧 Uống ngay
+                        </button>
+                        <button class="notification-action-btn dismiss-btn" onclick="event.stopPropagation(); dismissNotification(${notification.id})">
+                            ❌ Bỏ qua
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Update notification badge
+        function updateNotificationBadge() {
+            const unreadCount = notifications.filter(n => !n.read).length;
+            const badge = document.getElementById('notificationBadge');
+            const bell = document.getElementById('notificationBell');
+            
+            // Check if elements exist
+            if (!badge || !bell) {
+                console.warn('⚠️ Notification badge/bell elements not found');
+                return;
+            }
+            
+            if (unreadCount > 0) {
+                badge.textContent = unreadCount;
+                badge.style.display = 'flex';
+                bell.classList.add('has-notifications');
+            } else {
+                badge.style.display = 'none';
+                bell.classList.remove('has-notifications');
+            }
+        }
+
+        // Toggle notification panel
+        function toggleNotificationPanel() {
+            const panel = document.getElementById('notificationPanel');
+            
+            if (!panel) {
+                console.warn('⚠️ Notification panel not found');
+                return;
+            }
+            
+            panel.classList.toggle('show');
+        }
+
+        // Mark notification as read
+        function markAsRead(notificationId) {
+            const notification = notifications.find(n => n.id === notificationId);
+            if (notification) {
+                notification.read = true;
+                updateNotificationDisplay();
+                updateNotificationBadge();
+            }
+        }
+
+        // Dismiss notification
+        function dismissNotification(notificationId) {
+            notifications = notifications.filter(n => n.id !== notificationId);
+            updateNotificationDisplay();
+            updateNotificationBadge();
+        }
+
+        // Setup anti-cheat system
+        function setupAntiCheatSystem() {
+            // Reset session clicks every hour
+            setInterval(() => {
+                sessionClicks = 0;
+                console.log('🔄 Session clicks reset!');
+            }, 60 * 60 * 1000); // Every hour
+
+            // Reset session clicks on page load
+            sessionClicks = 0;
+            clickCount = 0;
+        }
+
+        // Get random funny warning
+        function getRandomWarning(type) {
+            const warnings = funnyWarnings[type] || funnyWarnings.cheat;
+            return warnings[Math.floor(Math.random() * warnings.length)];
+        }
+
+        // Enhanced warning system
+        function showWarning(type) {
+            const message = getRandomWarning(type);
+            const warningModal = document.createElement('div');
+            warningModal.className = 'warning-modal';
+            warningModal.innerHTML = `
+                <div class="warning-content">
+                    <div class="warning-icon ${type}">
+                        ${getWarningIcon(type)}
+                    </div>
+                    <div class="warning-message">${message}</div>
+                    <div class="warning-details">${getWarningDetails(type)}</div>
+                    <button class="warning-close">Đã hiểu rồiiiii! 😅</button>
+                </div>
+            `;
+            
+            document.body.appendChild(warningModal);
+            
+            // No auto close - user must click to close
+            // This allows users to read and enjoy the funny messages!
+        }
+
+        function showInfoMessage(type) {
+            const message = getRandomWarning(type);
+            const infoModal = document.createElement('div');
+            infoModal.className = 'info-modal';
+            infoModal.innerHTML = `
+                <div class="info-content">
+                    <div class="info-icon">
+                        ℹ️
+                    </div>
+                    <div class="info-message">${message}</div>
+                    <div class="info-details">Uống nước vẫn được tính nhưng không có streak nhé! 💧</div>
+                    <button class="info-close">Đã hiểu rồiiiii! 😊</button>
+                </div>
+            `;
+            
+            document.body.appendChild(infoModal);
+            
+            // Auto close after 3 seconds
+            setTimeout(() => {
+                if (infoModal.parentNode) {
+                    infoModal.remove();
+                }
+            }, 3000);
+        }
+
+        function getWarningIcon(type) {
+            switch(type) {
+                case 'early': return '😴';
+                case 'late': return '🌙';
+                case 'cheat': return '😏';
+                case 'streakLimit': return '⏳';
+                case 'cooldown': return '⏰';
+                case 'completed': return '✅';
+                case 'frozen': return '❄️';
+                case 'tooManyClicks': return '🔄';
+                case 'clickTooFast': return '⚡';
+                default: return '⚠️';
+            }
+        }
+
+        function getWarningDetails(type) {
+            switch(type) {
+                case 'early': return 'Anh thương em nên mới cảnh báo đấy! 💕';
+                case 'late': return 'Anh lo em sẽ phải dậy đi toilet giữa đêm! 🚽';
+                case 'cheat': return 'Anh đã lập trình để chống em rồi! 🛡️';
+                case 'streakLimit': return 'Anh thương em nên mới set limit đấy! 💝';
+                case 'cooldown': return 'Anh không muốn em uống quá nhanh! 🚫';
+                case 'completed': return 'Anh thấy em đã hoàn thành rồi! 🎉';
+                case 'frozen': return 'Anh thương em nên mới đóng băng streak đấy! 💝';
+                case 'tooManyClicks': return 'Anh đang theo dõi em đấy! 👀';
+                case 'clickTooFast': return 'Anh đang theo dõi em đấy! 👀';
+                default: return 'Anh đang theo dõi em đấy! 👀';
+            }
+        }
+
+        function closeWarning() {
+            const warningModal = document.querySelector('.warning-modal');
+            if (warningModal) {
+                warningModal.remove();
+            }
+        }
+
+        function closeInfo() {
+            const infoModal = document.querySelector('.info-modal');
+            if (infoModal) {
+                infoModal.remove();
+            }
+        }
+
+        // Show streak message
+        function showStreakMessage() {
+            const streakModal = document.createElement('div');
+            streakModal.className = 'streak-modal';
+            streakModal.innerHTML = `
+                <div class="streak-content">
+                    <div class="streak-icon">🔥</div>
+                    <div class="streak-message">Streak +1!</div>
+                    <div class="streak-details">Chúc mừng! Bạn đã tăng streak thành công!</div>
+                </div>
+            `;
+            
+            document.body.appendChild(streakModal);
+            
+            setTimeout(() => {
+                streakModal.remove();
+            }, 2000);
+        }
+
+        // Enhanced drink water function with improved anti-cheat logic
+        async function drinkWater() {
+            const now = Date.now();
+            const currentTime = new Date();
+            const currentHourNow = currentTime.getHours();
+            const currentTwoHourNow = Math.floor(currentHourNow / 2);
+            
+            // Increment click count
+            clickCount++;
+            sessionClicks++;
+            
+            // Check if too many clicks in session
+            if (sessionClicks > maxClicksPerSession) {
+                showWarning('tooManyClicks');
+                return;
+            }
+            
+            // Check click cooldown (prevent spam clicking) - INCREASED to 2 seconds
+            if (now - lastClickTime < 2000) {
+                showWarning('clickTooFast');
+                return;
+            }
+            
+            lastClickTime = now;
+            
+            // Reset hourly counters
+            if (currentHourNow !== currentHour) {
+                drinksThisHour = 0;
+                currentHour = currentHourNow;
+            }
+            
+            // Reset 2-hour counters
+            if (currentTwoHourNow !== currentTwoHour) {
+                drinksThisTwoHour = 0;
+                streakEarnedThisTwoHour = false;
+                currentTwoHour = currentTwoHourNow;
+            }
+            
+            // Check if already completed daily goal
+            if (completedGlasses >= totalGlasses) {
+                showWarning('completed');
+                return;
+            }
+            
+            // Check streak freeze status
+            if (streakFrozen) {
+                showWarning('frozen');
+                return;
+            }
+            
+            // Check time validation - only allow drinking between 6 AM and 10 PM
+            if (currentHourNow < 6) {
+                showWarning('early');
+                return; // Không tính uống nước
+            }
+            
+            if (currentHourNow > 22) {
+                showWarning('late');
+                return; // Không tính uống nước
+            }
+            
+            // Check 1-hour limit - max 2 drinks per hour
+            if (drinksThisHour >= 2) {
+                showWarning('cheat');
+                return; // Không tính uống nước
+            }
+            
+            // All basic checks passed - proceed with detailed processing
+            await processDrink();
+        }
+
+        async function processDrink() {
+            const now = Date.now();
+            const currentTime = new Date();
+            const currentHour = currentTime.getHours();
+            
+            // Allow streak in 2-hour windows: 6-8, 8-10, 10-12, 12-14, 14-16, 16-18, 18-20, 20-22
+            // Anyone between 6AM and 10PM can earn streak
+            const isInStreakWindow = (currentHour >= 6 && currentHour < 22);
+            
+            // Mark current reminder as completed regardless of streak window
+            // Find the closest reminder time slot (within 1 hour)
+            const currentTimeString = `${currentTime.getHours().toString().padStart(2, '0')}:00`;
+            const currentReminder = reminderTimes.find(reminder => reminder.time === currentTimeString);
+            
+            if (currentReminder) {
+                reminderStatus[currentReminder.time] = {
+                    status: 'completed',
+                    completed: true,
+                    missed: false,
+                    completedAt: new Date().toISOString()
+                };
+                console.log(`✅ Marked reminder ${currentReminder.time} as completed`);
+            } else {
+                // If no exact match, find the closest reminder time
+                const currentHour = currentTime.getHours();
+                const closestReminder = reminderTimes.find(reminder => {
+                    const reminderHour = parseInt(reminder.time.split(':')[0]);
+                    return Math.abs(reminderHour - currentHour) <= 1;
+                });
+                
+                if (closestReminder) {
+                    reminderStatus[closestReminder.time] = {
+                        status: 'completed',
+                        completed: true,
+                        missed: false,
+                        completedAt: new Date().toISOString()
+                    };
+                    console.log(`✅ Marked closest reminder ${closestReminder.time} as completed`);
+                }
+            }
+            
+            // If not in streak window, still allow drinking but no streak earned
+            if (!isInStreakWindow) {
+                // Outside streak windows - drink counted but no streak
+                completedGlasses++;
+                lastDrinkTime = now;
+                drinksThisHour++;
+                
+                // Update display
+                updateWaterProgress();
+                setupReminderSchedule();
+                
+                // Save to Firebase
+                await saveWaterData();
+                
+                // Show info message instead of warning
+                showInfoMessage('timeRestriction');
+                
+                // Show celebration
+                showCelebration();
+                
+                console.log('✅ Water consumed (outside streak window - no streak earned)');
+                return;
+            }
+            
+            // Get current 2-hour window
+            const windowStart = Math.floor(currentHour / 2) * 2;
+            const windowKey = `${windowStart}h-${windowStart + 2}h`;
+            
+            // Check if this is a new day - reset window streaks
+            const today = currentTime.toDateString();
+            if (lastStreakDate !== today) {
+                windowStreaks = {};
+                lastStreakDate = today;
+                console.log('🔄 New day - resetting window streaks');
+            }
+            
+            // Check if this is a new window - reset window data
+            if (!windowStreaks[windowKey] || windowStreaks[windowKey].date !== today) {
+                windowStreaks[windowKey] = {
+                    firstDrink: now,
+                    drinkCount: 0,
+                    streakEarned: false,
+                    date: today
+                };
+                console.log(`🆕 New window: ${windowKey}`);
+            }
+            
+            windowStreaks[windowKey].drinkCount++;
+            
+            // Process drinks within 2-hour window
+            if (windowStreaks[windowKey].drinkCount <= 2) {
+                // First drink in window = +1 Streak + +1 Glass
+                if (windowStreaks[windowKey].drinkCount === 1) {
+                    currentStreak++;
+                    completedGlasses++;
+                    windowStreaks[windowKey].streakEarned = true;
+                    showStreakMessage();
+                    console.log(`✅ First drink in ${windowKey}: +1 Streak, +1 Glass`);
+                }
+                // Second drink after 40 minutes = +1 Streak + +1 Glass
+                else if (windowStreaks[windowKey].drinkCount === 2) {
+                    const timeSinceFirst = now - windowStreaks[windowKey].firstDrink;
+                    
+                    if (timeSinceFirst >= 40 * 60 * 1000) {
+                        currentStreak++;
+                        completedGlasses++;
+                        showStreakMessage();
+                        console.log(`✅ Second drink in ${windowKey} (after 40min): +1 Streak, +1 Glass`);
+                    } else {
+                        // Before 40 minutes - count water but no streak (INFO, not WARNING)
+                        completedGlasses++;
+                        showInfoMessage('tooEarly');
+                        console.log(`ℹ️ Second drink in ${windowKey} before 40min - water counted, no streak`);
+                    }
+                }
+            } else {
+                // More than 2 drinks - count water but no streak (INFO, not WARNING)
+                completedGlasses++;
+                showInfoMessage('tooManyInWindow');
+                console.log(`ℹ️ Drink #${windowStreaks[windowKey].drinkCount} in ${windowKey} - water counted, no streak`);
+            }
+            
+            // Update tracking variables
+            lastDrinkTime = now;
+            drinksThisHour++;
+            
+            // Update display
+            updateStreakDisplay();
+            updateWaterProgress();
+            setupReminderSchedule();
+            
+            // Save to Firebase with verification
+            const saveSuccess = await saveWaterData();
+            
+            if (!saveSuccess) {
+                console.warn('⚠️ Data may not be persisted to Firebase - saved to localStorage only');
+            }
+            
+            // Wait to ensure save completes before allowing reload
+            await new Promise(resolve => setTimeout(resolve, 500));
+            
+            // Show celebration
+            showCelebration();
+            
+            console.log('✅ Water consumed successfully!');
+        }
+
+        // Show celebration
+        function showCelebration() {
+            // Create floating hearts
+            for (let i = 0; i < 5; i++) {
+                setTimeout(() => {
+                    createFloatingHeart();
+                }, i * 100);
+            }
+        }
+
+        // Create floating heart
+        function createFloatingHeart() {
+            const heart = document.createElement('div');
+            heart.textContent = '💧';
+            heart.style.position = 'fixed';
+            heart.style.left = Math.random() * window.innerWidth + 'px';
+            heart.style.top = window.innerHeight + 'px';
+            heart.style.fontSize = '20px';
+            heart.style.pointerEvents = 'none';
+            heart.style.zIndex = '9999';
+            heart.style.animation = 'float-heart-up 3s ease-out forwards';
+            document.body.appendChild(heart);
+            
+            setTimeout(() => heart.remove(), 3000);
+        }
+
+        // Save water data to Firebase ONLY (no localStorage)
+        async function saveWaterData() {
+            // If already saving, queue this save
+            if (isSaving) {
+                console.log('⏳ Save already in progress - queuing...');
+                
+                // Cancel previous queued save
+                if (saveQueue) {
+                    clearTimeout(saveQueue);
+                }
+                
+                // Queue new save after 500ms
+                saveQueue = setTimeout(() => {
+                    saveQueue = null;
+                    saveWaterData();
+                }, 500);
+                
+                return;
+            }
+            
+            isSaving = true;
+            const maxRetries = 3;
+            let retryCount = 0;
+            
+            // CREATE DATA OBJECT
+            const data = {
+                current_streak: currentStreak,
+                streak_frozen: streakFrozen,
+                freeze_count: freezeCount,
+                freeze_expires: freezeExpires,
+                completed_glasses: completedGlasses,
+                total_glasses: totalGlasses,
+                last_streak_date: lastStreakDate,
+                window_streaks: windowStreaks,
+                reminder_status: reminderStatus,
+                last_freeze_update: lastFreezeUpdate,
+                streak_recovery_count: streakRecoveryCount,
+                last_recovery_reset: lastRecoveryReset,
+                weekly_recovery_used: weeklyRecoveryUsed,
+                last_drink: new Date().toISOString(),
+                last_updated: new Date().toISOString(),
+                save_timestamp: Date.now()
+            };
+            
+            // Check if data is same as last save (prevent duplicate saves)
+            if (lastSaveData && JSON.stringify(data) === JSON.stringify(lastSaveData)) {
+                console.log('ℹ️ Data unchanged - skipping save');
+                isSaving = false;
+                return true;
+            }
+            
+            lastSaveData = data;
+            
+            console.log('💾 Saving to Firebase ONLY - Streak:', currentStreak, '| Glasses:', completedGlasses);
+            
+            // Save to Firebase with retry
+            while (retryCount < maxRetries) {
+                try {
+                    console.log('💾 Saving water data to Firebase... (attempt ' + (retryCount + 1) + ')');
+                    
+                    const response = await fetch(`https://unisched-app-11368-default-rtdb.asia-southeast1.firebasedatabase.app/users/${currentUser}/water_tracking.json`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(data)
+                    });
+                    
+                    if (!response.ok) {
+                        throw new Error(`Firebase save failed: ${response.status}`);
+                    }
+                    
+                    // Wait for Firebase to propagate
+                    await new Promise(resolve => setTimeout(resolve, 300));
+                    
+                    // Verify save by reading back
+                    const verifyResponse = await fetch(`https://unisched-app-11368-default-rtdb.asia-southeast1.firebasedatabase.app/users/${currentUser}/water_tracking.json`);
+                    const savedData = await verifyResponse.json();
+                    
+                    // Verify by streak match
+                    if (savedData && savedData.current_streak === data.current_streak) {
+                        console.log('✅ Water data saved to Firebase successfully (streak:', data.current_streak, ')');
+                        isSaving = false;
+                        return true;
+                    } else {
+                        throw new Error('Verification failed - streak mismatch');
+                    }
+                    
+                } catch (error) {
+                    retryCount++;
+                    console.error(`❌ Error saving water data (attempt ${retryCount}/${maxRetries}):`, error);
+                    
+                    if (retryCount >= maxRetries) {
+                        console.error('❌ All Firebase save attempts failed!');
+                        alert('Lỗi khi lưu dữ liệu lên Firebase! Vui lòng thử lại.');
+                        isSaving = false;
+                        return false;
+                    }
+                    
+                    // Wait before retry
+                    await new Promise(resolve => setTimeout(resolve, 1000 * retryCount));
+                }
+            }
+            
+            isSaving = false;
+            return false;
+        }
+
+        // Save water data to localStorage with timestamp
+        function saveWaterToLocalStorage(dataToSave = null) {
+            const data = dataToSave || {
+                current_streak: currentStreak,
+                streak_frozen: streakFrozen,
+                freeze_count: freezeCount,
+                freeze_expires: freezeExpires,
+                completed_glasses: completedGlasses,
+                total_glasses: totalGlasses,
+                last_streak_date: lastStreakDate,
+                window_streaks: windowStreaks,
+                reminder_status: reminderStatus,
+                last_freeze_update: lastFreezeUpdate,
+                streak_recovery_count: streakRecoveryCount,
+                last_recovery_reset: lastRecoveryReset,
+                weekly_recovery_used: weeklyRecoveryUsed,
+                last_drink: new Date().toISOString(),
+                last_updated: new Date().toISOString(),
+                save_timestamp: Date.now()
+            };
+            
+            localStorage.setItem('water_data_' + currentUser, JSON.stringify(data));
+            console.log('💾 Saved to localStorage with timestamp:', data.save_timestamp);
+        }
+
+        // Go back to functions
+        function goBackToFunctions() {
+            window.location.href = `quynh-functions.html?user=${currentUser}`;
+        }
+
+        // Request notification permission
+        if (Notification.permission === 'default') {
+            Notification.requestPermission();
+        }
+
+        // Reminder Management Functions
+        function openReminderManagement() {
+            const modal = document.getElementById('reminderModal');
+            modal.classList.add('show');
+            document.body.style.overflow = 'hidden';
+            loadReminderList();
+        }
+
+        function closeReminderManagement() {
+            const modal = document.getElementById('reminderModal');
+            modal.classList.remove('show');
+            document.body.style.overflow = 'auto';
+        }
+
+        function loadReminderList() {
+            const reminderList = document.getElementById('reminderModalList');
+            
+            // Check if element exists
+            if (!reminderList) {
+                console.warn('⚠️ reminderModalList element not found in modal');
+                return;
+            }
+            
+            if (reminderTimes.length === 0) {
+                reminderList.innerHTML = '<div style="text-align: center; padding: 20px; color: var(--text-light);">Chưa có nhắc nhở nào</div>';
+                return;
+            }
+
+            reminderList.innerHTML = reminderTimes.map((reminder, index) => `
+                <div class="reminder-item">
+                    <input type="time" class="reminder-time-input" value="${reminder.time}" data-index="${index}">
+                    <input type="text" class="reminder-label-input" value="${reminder.label}" data-index="${index}" placeholder="Nhãn nhắc nhở">
+                    <button class="reminder-delete-btn" onclick="deleteReminderTime(${index})">
+                        <img src="assets/icon/volleyball.png" alt="Delete" style="width: 12px; height: 12px;">
+                        Xóa
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        function addReminderTime() {
+            const newReminder = {
+                time: '12:00',
+                label: 'Nhắc nhở mới'
+            };
+            reminderTimes.push(newReminder);
+            loadReminderList();
+        }
+
+        function deleteReminderTime(index) {
+            if (reminderTimes.length > 1) {
+                reminderTimes.splice(index, 1);
+                loadReminderList();
+            } else {
+                alert('Phải có ít nhất 1 nhắc nhở!');
+            }
+        }
+
+        function resetReminderTimes() {
+            if (confirm('Bạn có chắc muốn đặt lại nhắc nhở về mặc định?')) {
+                reminderTimes = [
+                    { time: '06:00', label: '6:00 Sáng' },
+                    { time: '08:00', label: '8:00 Sáng' },
+                    { time: '10:00', label: '10:00 Sáng' },
+                    { time: '12:00', label: '12:00 Trưa' },
+                    { time: '14:00', label: '2:00 Chiều' },
+                    { time: '16:00', label: '4:00 Chiều' },
+                    { time: '18:00', label: '6:00 Tối' },
+                    { time: '20:00', label: '8:00 Tối' },
+                    { time: '22:00', label: '10:00 Tối' }
+                ];
+                loadReminderList();
+            }
+        }
+
+        async function saveReminderChanges() {
+            // Update reminder times from inputs
+            const timeInputs = document.querySelectorAll('.reminder-time-input');
+            const labelInputs = document.querySelectorAll('.reminder-label-input');
+            
+            timeInputs.forEach((input, index) => {
+                if (reminderTimes[index]) {
+                    reminderTimes[index].time = input.value;
+                }
+            });
+            
+            labelInputs.forEach((input, index) => {
+                if (reminderTimes[index]) {
+                    reminderTimes[index].label = input.value;
+                }
+            });
+
+            // Sort by time
+            reminderTimes.sort((a, b) => a.time.localeCompare(b.time));
+
+            // Save to Firebase
+            const success = await saveReminderTimes();
+            
+            if (success) {
+                // Update reminder schedule
+                setupReminderSchedule();
+                
+                // Show success message
+                createNotification(
+                    'Lưu thành công! ✅',
+                    'Các thay đổi nhắc nhở đã được lưu thành công!'
+                );
+                
+                closeReminderManagement();
+            } else {
+                alert('Lỗi khi lưu thay đổi! Vui lòng thử lại.');
+            }
+        }
+
+        // Close modal when clicking outside
+        document.addEventListener('click', function(e) {
+            const modal = document.getElementById('reminderModal');
+            if (e.target === modal) {
+                closeReminderManagement();
+            }
+        });
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                const modal = document.getElementById('reminderModal');
+                if (modal.classList.contains('show')) {
+                    closeReminderManagement();
+                }
+            }
+        });
+
+        // iOS touch fix for drink button
+        const drinkButton = document.getElementById('drinkButton');
+        if (drinkButton) {
+            // Add touchstart event for iOS
+            drinkButton.addEventListener('touchstart', function(e) {
+                // Prevent default to avoid 300ms delay
+                e.preventDefault();
+                // Trigger the click
+                drinkWater();
+            }, { passive: false });
+            
+            // Also keep click event for desktop
+            drinkButton.addEventListener('click', function(e) {
+                // Only trigger if not from touch (to avoid double trigger)
+                if (e.pointerType !== 'touch') {
+                    drinkWater();
+                }
+            });
+            
+            // Remove inline onclick to avoid conflict
+            drinkButton.removeAttribute('onclick');
+        }
+
+        // iOS touch fix for notification bell
+        const notificationBell = document.getElementById('notificationBell');
+        if (notificationBell) {
+            // Add touchstart event for iOS
+            notificationBell.addEventListener('touchstart', function(e) {
+                // Prevent default to avoid 300ms delay
+                e.preventDefault();
+                // Trigger the toggle
+                toggleNotificationPanel();
+            }, { passive: false });
+            
+            // Also keep click event for desktop
+            notificationBell.addEventListener('click', function(e) {
+                // Only trigger if not from touch (to avoid double trigger)
+                if (e.pointerType !== 'touch') {
+                    toggleNotificationPanel();
+                }
+            });
+            
+            // Remove inline onclick to avoid conflict
+            notificationBell.removeAttribute('onclick');
+        }
+
+        // iOS touch fix for back button
+        const backButton = document.querySelector('.back-button');
+        if (backButton) {
+            // Add touchstart event for iOS
+            backButton.addEventListener('touchstart', function(e) {
+                // Prevent default to avoid 300ms delay
+                e.preventDefault();
+                // Trigger the navigation
+                goBackToFunctions();
+            }, { passive: false });
+            
+            // Also keep click event for desktop
+            backButton.addEventListener('click', function(e) {
+                // Only trigger if not from touch (to avoid double trigger)
+                if (e.pointerType !== 'touch') {
+                    goBackToFunctions();
+                }
+            });
+            
+            // Remove inline onclick to avoid conflict
+            backButton.removeAttribute('onclick');
+        }
+
+        // iOS touch fixes for dynamically created warning/info buttons
+        document.body.addEventListener('touchstart', function(e) {
+            if (e.target.classList.contains('warning-close')) {
+                e.preventDefault();
+                e.stopPropagation();
+                closeWarning();
+            } else if (e.target.classList.contains('info-close')) {
+                e.preventDefault();
+                e.stopPropagation();
+                closeInfo();
+            }
+        }, { passive: false });
+
+        // Also handle click events for desktop
+        document.body.addEventListener('click', function(e) {
+            if (e.target.classList.contains('warning-close') && e.pointerType !== 'touch') {
+                e.stopPropagation();
+                closeWarning();
+            } else if (e.target.classList.contains('info-close') && e.pointerType !== 'touch') {
+                e.stopPropagation();
+                closeInfo();
+            }
+        });
+
+        // Make functions globally available
+        window.goBackToFunctions = goBackToFunctions;
+        window.drinkWater = drinkWater;
+        window.toggleNotificationPanel = toggleNotificationPanel;
+        window.markAsRead = markAsRead;
+        window.dismissNotification = dismissNotification;
+        window.closeWarning = closeWarning;
+        window.closeInfo = closeInfo;
+        window.recoverStreak = recoverStreak;
+        window.openReminderManagement = openReminderManagement;
+        window.closeReminderManagement = closeReminderManagement;
+        window.addReminderTime = addReminderTime;
+        window.deleteReminderTime = deleteReminderTime;
+        window.resetReminderTimes = resetReminderTimes;
+        window.saveReminderChanges = saveReminderChanges;
+    </script>
+</body>
+</html>
+

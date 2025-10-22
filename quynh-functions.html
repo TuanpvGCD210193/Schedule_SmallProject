@@ -290,6 +290,17 @@
             cursor: pointer;
         }
 
+        /* Special styling for calendar card with preview */
+        .function-card[data-function="calendar"] {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(255, 247, 251, 0.95) 50%, var(--light-pink) 100%);
+            border: 3px solid rgba(255, 107, 157, 0.15);
+        }
+
+        .function-card[data-function="calendar"]:hover {
+            border-color: rgba(255, 107, 157, 0.4);
+            box-shadow: 0 12px 48px rgba(255, 107, 157, 0.3);
+        }
+
         .function-card::before {
             content: '';
             position: absolute;
@@ -360,6 +371,335 @@
         .function-card:hover .function-card__name {
             color: var(--primary-pink);
             transform: scale(1.1);
+        }
+
+        /* Calendar Preview Widget - Enhanced Collapsible Style */
+        .calendar-preview {
+            margin-top: 15px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(255, 247, 251, 0.95) 50%, rgba(255, 240, 246, 0.92) 100%);
+            border-radius: 16px;
+            border: 2.5px solid rgba(255, 107, 157, 0.25);
+            font-size: 0.85rem;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
+            box-shadow: 
+                0 4px 16px rgba(255, 107, 157, 0.12),
+                inset 0 1px 3px rgba(255, 255, 255, 0.6);
+        }
+
+        .calendar-preview::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 30% 50%, rgba(255, 107, 157, 0.08) 0%, transparent 60%);
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .function-card:hover .calendar-preview {
+            border-color: rgba(255, 107, 157, 0.45);
+            box-shadow: 
+                0 8px 24px rgba(255, 107, 157, 0.25),
+                inset 0 1px 3px rgba(255, 255, 255, 0.8);
+            transform: translateY(-2px);
+        }
+
+        .function-card:hover .calendar-preview::before {
+            opacity: 1;
+        }
+
+        .calendar-preview-header {
+            font-weight: 800;
+            color: var(--primary-pink);
+            padding: 14px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            user-select: none;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.5) 0%, rgba(255, 240, 246, 0.3) 100%);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            -webkit-tap-highlight-color: rgba(255, 107, 157, 0.3);
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            touch-action: manipulation;
+            min-height: 46px;
+            position: relative;
+            border-bottom: 2px solid rgba(255, 107, 157, 0.08);
+        }
+
+        .calendar-preview-header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary-pink) 0%, var(--accent-orange) 100%);
+            transition: width 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .calendar-preview-header:hover::after {
+            width: 100%;
+        }
+
+        .calendar-preview-header:hover,
+        .calendar-preview-header:active {
+            background: linear-gradient(135deg, rgba(255, 107, 157, 0.12) 0%, rgba(255, 171, 115, 0.08) 100%);
+            transform: scale(1.02);
+        }
+
+        .calendar-preview-header-left {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex: 1;
+            position: relative;
+            z-index: 1;
+        }
+
+        .calendar-preview-header-left span:first-child {
+            animation: iconBounce 2s infinite ease-in-out;
+            display: inline-block;
+        }
+
+        @keyframes iconBounce {
+            0%, 100% {
+                transform: translateY(0) scale(1);
+            }
+            50% {
+                transform: translateY(-3px) scale(1.1);
+            }
+        }
+
+        .calendar-preview-toggle {
+            font-size: 1.3rem;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: inline-block;
+            padding: 4px;
+            color: var(--primary-pink);
+            filter: drop-shadow(0 2px 4px rgba(255, 107, 157, 0.2));
+        }
+
+        .calendar-preview-toggle.collapsed {
+            transform: rotate(-90deg);
+        }
+
+        .calendar-preview-header:hover .calendar-preview-toggle {
+            transform: scale(1.2);
+        }
+
+        .calendar-preview-header:hover .calendar-preview-toggle.collapsed {
+            transform: rotate(-90deg) scale(1.2);
+        }
+
+        .calendar-preview-content {
+            max-height: 300px;
+            overflow: hidden;
+            transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
+            opacity: 1;
+        }
+
+        .calendar-preview-content.collapsed {
+            max-height: 0;
+            opacity: 0;
+        }
+
+        .calendar-preview-inner {
+            padding: 12px 15px;
+            padding-top: 0;
+        }
+
+        .calendar-preview-event {
+            padding: 12px 14px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.8) 0%, rgba(255, 247, 251, 0.6) 100%);
+            border-radius: 12px;
+            border-left: 4px solid var(--primary-pink);
+            margin-top: 10px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(255, 107, 157, 0.08);
+        }
+
+        .calendar-preview-event::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(180deg, var(--primary-pink) 0%, var(--accent-orange) 100%);
+            transition: width 0.3s ease;
+        }
+
+        .calendar-preview-event:hover {
+            transform: translateX(4px);
+            box-shadow: 0 4px 12px rgba(255, 107, 157, 0.15);
+        }
+
+        .calendar-preview-event:hover::before {
+            width: 6px;
+        }
+
+        .calendar-preview-title {
+            font-weight: 800;
+            color: var(--text-dark);
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            letter-spacing: 0.3px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .calendar-preview-time {
+            font-size: 0.78rem;
+            color: var(--primary-pink);
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: 700;
+            letter-spacing: 0.2px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .calendar-preview-time::before {
+            content: '';
+            width: 3px;
+            height: 3px;
+            background: var(--primary-pink);
+            border-radius: 50%;
+            box-shadow: 0 0 6px var(--primary-pink);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 0.6;
+                transform: scale(1.3);
+            }
+        }
+
+        .calendar-preview-location {
+            font-size: 0.75rem;
+            color: #666;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            font-weight: 600;
+            position: relative;
+            z-index: 1;
+        }
+
+        .calendar-preview-empty {
+            text-align: center;
+            padding: 20px 15px;
+            color: var(--text-dark);
+            font-weight: 600;
+            line-height: 1.8;
+            background: linear-gradient(135deg, rgba(255, 247, 251, 0.4) 0%, rgba(255, 240, 246, 0.3) 100%);
+            border-radius: 12px;
+            margin-top: 10px;
+            border: 2px dashed rgba(255, 107, 157, 0.15);
+        }
+
+        .calendar-preview-empty-icon {
+            font-size: 2rem;
+            margin-bottom: 8px;
+            display: inline-block;
+            animation: sparkleRotate 3s infinite ease-in-out;
+        }
+
+        @keyframes sparkleRotate {
+            0%, 100% {
+                transform: rotate(0deg) scale(1);
+            }
+            25% {
+                transform: rotate(-10deg) scale(1.1);
+            }
+            75% {
+                transform: rotate(10deg) scale(1.1);
+            }
+        }
+
+        .calendar-preview-loading {
+            text-align: center;
+            padding: 12px;
+            color: var(--primary-pink);
+            font-weight: 700;
+            font-size: 0.85rem;
+        }
+
+        .calendar-preview-loading::after {
+            content: '...';
+            display: inline-block;
+            animation: dots 1.5s infinite;
+        }
+
+        @keyframes dots {
+            0%, 20% {
+                content: '.';
+            }
+            40% {
+                content: '..';
+            }
+            60%, 100% {
+                content: '...';
+            }
+        }
+
+        /* Calendar Badge - Show event count */
+        .calendar-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: linear-gradient(135deg, var(--primary-pink) 0%, var(--accent-orange) 100%);
+            color: white;
+            font-size: 0.7rem;
+            font-weight: 800;
+            padding: 5px 10px;
+            border-radius: 20px;
+            box-shadow: 0 4px 12px rgba(255, 107, 157, 0.4);
+            z-index: 10;
+            animation: badgePulse 2s infinite ease-in-out;
+            letter-spacing: 0.5px;
+        }
+
+        @keyframes badgePulse {
+            0%, 100% {
+                transform: scale(1);
+                box-shadow: 0 4px 12px rgba(255, 107, 157, 0.4);
+            }
+            50% {
+                transform: scale(1.05);
+                box-shadow: 0 6px 16px rgba(255, 107, 157, 0.6);
+            }
+        }
+
+        .function-card:hover .calendar-badge {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(255, 107, 157, 0.7);
         }
 
         /* Back Button */
@@ -446,6 +786,77 @@
             .volleyball {
                 width: 40px;
                 height: 40px;
+            }
+
+            .calendar-preview {
+                font-size: 0.8rem;
+                margin-top: 12px;
+                border-radius: 14px;
+                border-width: 2px;
+            }
+            
+            .calendar-preview-header {
+                padding: 12px 14px;
+                font-size: 0.8rem;
+                min-height: 44px;
+            }
+            
+            .calendar-preview-header-left span:first-child {
+                font-size: 0.95rem;
+            }
+            
+            .calendar-preview-toggle {
+                font-size: 1.2rem;
+            }
+            
+            .calendar-preview-inner {
+                padding: 10px 12px;
+                padding-top: 0;
+            }
+            
+            .calendar-preview-event {
+                padding: 10px 12px;
+                margin-top: 8px;
+                border-radius: 10px;
+                border-left-width: 3px;
+            }
+            
+            .calendar-preview-title {
+                font-size: 0.88rem;
+                margin-bottom: 6px;
+            }
+            
+            .calendar-preview-time {
+                font-size: 0.72rem;
+                margin-bottom: 4px;
+                gap: 5px;
+            }
+            
+            .calendar-preview-time::before {
+                width: 2.5px;
+                height: 2.5px;
+            }
+            
+            .calendar-preview-location {
+                font-size: 0.7rem;
+                gap: 5px;
+            }
+            
+            .calendar-preview-empty {
+                padding: 16px 12px;
+                font-size: 0.82rem;
+                border-radius: 10px;
+                margin-top: 8px;
+            }
+            
+            .calendar-preview-empty-icon {
+                font-size: 1.6rem;
+                margin-bottom: 6px;
+            }
+            
+            .calendar-preview-loading {
+                padding: 10px;
+                font-size: 0.8rem;
             }
         }
 
@@ -1495,6 +1906,13 @@
                 <a href="#" class="function-card" data-function="calendar">
                     <img src="https://cdn-icons-png.flaticon.com/512/2693/2693507.png" class="function-card__icon" alt="Calendar Icon">
                     <span class="function-card__name">📅 Lịch</span>
+                    
+                    <!-- Calendar Preview -->
+                    <div class="calendar-preview" id="calendarPreview">
+                        <div class="calendar-preview-loading">
+                            ⏳ Đang tải...
+                        </div>
+                    </div>
                 </a>
                 <a href="#" class="function-card" data-function="notes">
                     <img src="assets/icon/kitty.png" class="function-card__icon" alt="Notes Icon">
@@ -1978,6 +2396,326 @@
             console.log('🔄 Auto-refreshing weather widget...');
             loadWeatherWidget();
         }, 30 * 60 * 1000);
+
+        // ===== CALENDAR PREVIEW =====
+        
+        // Load calendar preview (next event)
+        async function loadCalendarPreview() {
+            const previewContainer = document.getElementById('calendarPreview');
+            if (!previewContainer) {
+                console.log('❌ Calendar preview container not found');
+                return;
+            }
+            
+            try {
+                console.log('🔄 Loading calendar preview for user:', currentUser);
+                
+                // Import database functions
+                const { getUserEvents } = await import('./js/data/database.js');
+                
+                // Get user events
+                const eventsData = await getUserEvents(currentUser);
+                console.log('📅 Events data received:', eventsData);
+                
+                if (!eventsData || Object.keys(eventsData).length === 0) {
+                    console.log('⚠️ No events found');
+                    updateCalendarBadge(0);
+                    previewContainer.innerHTML = `
+                        <div class="calendar-preview-header" id="calendarPreviewHeader">
+                            <div class="calendar-preview-header-left">
+                                <span style="font-size: 1rem;">📚</span>
+                                <span>Sắp tới</span>
+                            </div>
+                            <span class="calendar-preview-toggle" id="calendarPreviewToggle">▼</span>
+                        </div>
+                        <div class="calendar-preview-content" id="calendarPreviewContent">
+                            <div class="calendar-preview-inner">
+                                <div class="calendar-preview-empty">
+                                    <div class="calendar-preview-empty-icon">✨</div>
+                                    <div>Không có lịch sắp tới</div>
+                                    <div style="font-size: 0.75rem; margin-top: 3px; color: #999;">Thời gian rảnh rỗi! 💕</div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    setupCalendarPreviewCollapse();
+                    return;
+                }
+                
+                // Convert events object to array
+                const now = new Date();
+                const today = now.getDay(); // 0-6 (Sunday-Saturday)
+                const todayStr = now.toISOString().split('T')[0];
+                const currentTime = now.getHours() * 60 + now.getMinutes();
+                
+                console.log('📊 Current time:', { today, todayStr, currentTime });
+                
+                const upcomingEvents = [];
+                
+                // Process all events
+                Object.entries(eventsData).forEach(([eventId, event]) => {
+                    console.log('🔍 Checking event:', eventId, event);
+                    
+                    // Single event
+                    if (event.type === 'single' && event.date) {
+                        const eventDate = new Date(event.date + 'T00:00:00');
+                        const eventTime = event.startTime ? event.startTime.split(':').map(Number) : [0, 0];
+                        const eventMinutes = eventTime[0] * 60 + eventTime[1];
+                        const eventDateTime = new Date(event.date + 'T' + (event.startTime || '00:00:00'));
+                        
+                        console.log('  Single event check:', {
+                            eventDate: event.date,
+                            eventDateTime,
+                            now,
+                            isFuture: eventDateTime >= now
+                        });
+                        
+                        if (eventDateTime >= now) {
+                            upcomingEvents.push({
+                                ...event,
+                                eventId,
+                                displayDate: eventDate,
+                                sortTime: eventDateTime.getTime()
+                            });
+                        }
+                    }
+                    
+                    // Recurring event
+                    if (event.type === 'recurring' && event.daysOfWeek && event.daysOfWeek.length > 0) {
+                        const startDate = event.startDate ? new Date(event.startDate + 'T00:00:00') : null;
+                        const endDate = event.endDate ? new Date(event.endDate + 'T23:59:59') : null;
+                        const inRange = (!startDate || now >= startDate) && (!endDate || now <= endDate);
+                        
+                        console.log('  Recurring event check:', {
+                            daysOfWeek: event.daysOfWeek,
+                            today,
+                            inRange,
+                            startDate,
+                            endDate
+                        });
+                        
+                        if (inRange && event.daysOfWeek.includes(today)) {
+                            const eventTime = event.startTime ? event.startTime.split(':').map(Number) : [0, 0];
+                            const eventMinutes = eventTime[0] * 60 + eventTime[1];
+                            
+                            console.log('    Event is today, time check:', {
+                                eventMinutes,
+                                currentTime,
+                                isFuture: eventMinutes > currentTime
+                            });
+                            
+                            // If event is today, check if it's in the future
+                            if (eventMinutes > currentTime) {
+                                const todayEventDateTime = new Date(todayStr + 'T' + (event.startTime || '00:00:00'));
+                                upcomingEvents.push({
+                                    ...event,
+                                    eventId,
+                                    displayDate: todayEventDateTime,
+                                    sortTime: todayEventDateTime.getTime()
+                                });
+                            }
+                        } else if (inRange) {
+                            // Find next occurrence of this recurring event
+                            for (let i = 1; i <= 7; i++) {
+                                const futureDate = new Date(now);
+                                futureDate.setDate(futureDate.getDate() + i);
+                                const futureDay = futureDate.getDay();
+                                
+                                if (event.daysOfWeek.includes(futureDay)) {
+                                    const futureDateStr = futureDate.toISOString().split('T')[0];
+                                    const futureDateTime = new Date(futureDateStr + 'T' + (event.startTime || '00:00:00'));
+                                    
+                                    upcomingEvents.push({
+                                        ...event,
+                                        eventId,
+                                        displayDate: futureDateTime,
+                                        sortTime: futureDateTime.getTime()
+                                    });
+                                    break; // Only add the next occurrence
+                                }
+                            }
+                        }
+                    }
+                });
+                
+                console.log('📋 Upcoming events found:', upcomingEvents);
+                
+                // Update calendar badge with event count
+                updateCalendarBadge(upcomingEvents.length);
+                
+                if (upcomingEvents.length === 0) {
+                    console.log('⚠️ No upcoming events');
+                    previewContainer.innerHTML = `
+                        <div class="calendar-preview-header" id="calendarPreviewHeader">
+                            <div class="calendar-preview-header-left">
+                                <span style="font-size: 1rem;">📚</span>
+                                <span>Sắp tới</span>
+                            </div>
+                            <span class="calendar-preview-toggle" id="calendarPreviewToggle">▼</span>
+                        </div>
+                        <div class="calendar-preview-content" id="calendarPreviewContent">
+                            <div class="calendar-preview-inner">
+                                <div class="calendar-preview-empty">
+                                    <div class="calendar-preview-empty-icon">✨</div>
+                                    <div>Không có lịch sắp tới</div>
+                                    <div style="font-size: 0.75rem; margin-top: 3px; color: #999;">Thời gian rảnh rỗi! 💕</div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    setupCalendarPreviewCollapse();
+                    return;
+                }
+                
+                // Sort by time
+                upcomingEvents.sort((a, b) => a.sortTime - b.sortTime);
+                
+                // Show next event
+                const nextEvent = upcomingEvents[0];
+                const eventDate = nextEvent.displayDate;
+                const todayDate = new Date();
+                const tomorrow = new Date(todayDate);
+                tomorrow.setDate(tomorrow.getDate() + 1);
+                
+                let dateDisplay = '';
+                if (eventDate.toDateString() === todayDate.toDateString()) {
+                    dateDisplay = 'Hôm nay';
+                } else if (eventDate.toDateString() === tomorrow.toDateString()) {
+                    dateDisplay = 'Ngày mai';
+                } else {
+                    dateDisplay = eventDate.toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit' });
+                }
+                
+                const eventTitle = nextEvent.subjectName || nextEvent.title || 'Không có tiêu đề';
+                const eventLocation = nextEvent.classroom || nextEvent.location || '';
+                
+                console.log('✅ Displaying event:', {
+                    title: eventTitle,
+                    time: nextEvent.startTime,
+                    date: dateDisplay,
+                    location: eventLocation
+                });
+                
+                previewContainer.innerHTML = `
+                    <div class="calendar-preview-header" id="calendarPreviewHeader">
+                        <div class="calendar-preview-header-left">
+                            <span style="font-size: 1rem;">📚</span>
+                            <span>Sắp tới</span>
+                        </div>
+                        <span class="calendar-preview-toggle" id="calendarPreviewToggle">▼</span>
+                    </div>
+                    <div class="calendar-preview-content" id="calendarPreviewContent">
+                        <div class="calendar-preview-inner">
+                            <div class="calendar-preview-event">
+                                <div class="calendar-preview-title">${eventTitle}</div>
+                                <div class="calendar-preview-time">
+                                    ⏰ ${nextEvent.startTime || 'Cả ngày'} - ${dateDisplay}
+                                </div>
+                                ${eventLocation ? `
+                                    <div class="calendar-preview-location">
+                                        📍 ${eventLocation}
+                                    </div>
+                                ` : ''}
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                console.log('✅ Calendar preview loaded successfully');
+                
+                // Setup collapsible functionality
+                setupCalendarPreviewCollapse();
+                
+            } catch (error) {
+                console.error('❌ Error loading calendar preview:', error);
+                console.error('Error stack:', error.stack);
+                previewContainer.innerHTML = `
+                    <div class="calendar-preview-empty">
+                        <div style="color: #999; font-size: 0.8rem;">📅 Nhấn để xem lịch</div>
+                    </div>
+                `;
+            }
+        }
+
+        // Update calendar badge
+        function updateCalendarBadge(eventCount) {
+            const calendarCard = document.querySelector('.function-card[data-function="calendar"]');
+            if (!calendarCard) return;
+            
+            // Remove existing badge
+            const existingBadge = calendarCard.querySelector('.calendar-badge');
+            if (existingBadge) {
+                existingBadge.remove();
+            }
+            
+            // Add badge if there are upcoming events
+            if (eventCount > 0) {
+                const badge = document.createElement('div');
+                badge.className = 'calendar-badge';
+                badge.textContent = `${eventCount} sự kiện`;
+                calendarCard.appendChild(badge);
+                console.log(`✅ Calendar badge added: ${eventCount} events`);
+            }
+        }
+
+        // Setup calendar preview collapse functionality
+        function setupCalendarPreviewCollapse() {
+            const header = document.getElementById('calendarPreviewHeader');
+            const content = document.getElementById('calendarPreviewContent');
+            const toggle = document.getElementById('calendarPreviewToggle');
+            
+            if (!header || !content || !toggle) {
+                console.log('❌ Calendar preview collapse elements not found');
+                return;
+            }
+            
+            // Toggle function
+            function toggleCalendarPreview(e) {
+                // Stop propagation to prevent card navigation
+                e.stopPropagation();
+                e.preventDefault();
+                
+                const isCollapsed = content.classList.contains('collapsed');
+                
+                if (isCollapsed) {
+                    // Expand
+                    content.classList.remove('collapsed');
+                    toggle.classList.remove('collapsed');
+                    toggle.textContent = '▼';
+                    console.log('📅 Calendar preview expanded');
+                } else {
+                    // Collapse
+                    content.classList.add('collapsed');
+                    toggle.classList.add('collapsed');
+                    toggle.textContent = '▶';
+                    console.log('📅 Calendar preview collapsed');
+                }
+            }
+            
+            // iOS touch event (immediate response, no 300ms delay)
+            header.addEventListener('touchstart', toggleCalendarPreview, { passive: false });
+            
+            // Desktop click event
+            header.addEventListener('click', function(e) {
+                // Only trigger if not from touch (to avoid double trigger)
+                if (e.pointerType !== 'touch') {
+                    toggleCalendarPreview(e);
+                }
+            });
+            
+            console.log('✅ Calendar preview collapse initialized');
+        }
+
+        // Load calendar preview after profile and weather load
+        setTimeout(() => {
+            loadCalendarPreview();
+        }, 1000);
+
+        // Refresh calendar preview when page gains focus (returning from calendar page)
+        window.addEventListener('focus', () => {
+            console.log('🔄 Page focused, refreshing calendar preview...');
+            loadCalendarPreview();
+        });
 
         // iOS touch fix for back button
         const backButton = document.querySelector('.back-button');
