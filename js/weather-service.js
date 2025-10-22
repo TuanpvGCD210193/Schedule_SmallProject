@@ -165,6 +165,7 @@ export function getHourlyForecast(forecastData) {
             time: new Date(item.dt * 1000),
             temp: Math.round(item.main.temp),
             rain: item.rain ? item.rain['3h'] || 0 : 0,
+            pop: Math.round((item.pop || 0) * 100), // Probability of precipitation (0-100%)
             humidity: item.main.humidity,
             wind: item.wind.speed,
             description: item.weather[0].description,
